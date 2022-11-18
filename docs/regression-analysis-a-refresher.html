@@ -5,25 +5,25 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 Regression analysis (a refresher) | Crime Mapping in R</title>
-  <meta name="description" content="Worksheets for labs of Crime Mapping course" />
+  <meta name="description" content="This is the course material for Crime Mapping" />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 Regression analysis (a refresher) | Crime Mapping in R" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="Worksheets for labs of Crime Mapping course" />
-  <meta name="github-repo" content="maczokni/crime_mapping_textbook" />
+  <meta property="og:description" content="This is the course material for Crime Mapping" />
+  <meta name="github-repo" content="eonk/cm_book" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 8 Regression analysis (a refresher) | Crime Mapping in R" />
   
-  <meta name="twitter:description" content="Worksheets for labs of Crime Mapping course" />
+  <meta name="twitter:description" content="This is the course material for Crime Mapping" />
   
 
-<meta name="author" content="Reka Solymosi and Juanjo Medina" />
+<meta name="author" content="Eon Kim and Joanna Hill (based on material developed with Reka Solymosi and Juanjo Medina)" />
 
 
-<meta name="date" content="2022-11-15" />
+<meta name="date" content="2022-11-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -428,7 +428,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We will use a dataset that includes information about homicides in the US, as well as information in a number of sociodemographic variables that are often thought of as associated with the geographical distribution of homicides. We had used this data set in an earlier lab session, so you may have it saved alredy. In case you do not, it is available on blackboard under the data tab for this week’s learning materials. Is is the file <code>NAT.csv</code> inside the <code>ncovr.zip</code> file (rememver you’ll have to extract the zip folder first!).</p>
 <div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="regression-analysis-a-refresher.html#cb403-1" aria-hidden="true" tabindex="-1"></a>ncovr <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&#39;data/ncovr/NAT.csv&#39;</span>)</span></code></pre></div>
 <pre><code>## Rows: 3085 Columns: 69
-## ── Column specification ──────────────────────────────────────
+## ── Column specification ────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (5): NAME, STATE_NAME, STATE_FIPS, CNTY_FIPS, FIPS
 ## dbl (64): STFIPS, COFIPS, FIPSNO, SOUTH, HR60, HR70, HR80, HR90, HC60, HC70,...
