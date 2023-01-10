@@ -1,4 +1,3 @@
-
 # Thematic maps in R
 
 ## Intro and recap

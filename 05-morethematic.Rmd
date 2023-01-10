@@ -1,7 +1,4 @@
-
-
 # More on thematic maps
-
 
 ## Introduction
 
@@ -26,7 +23,6 @@ library(ggspatial)
 library(geogrid)
 ```
 
-
 Some of the above are new libraries we will use for the first time this week. Remember, if you don't already have these you will need to install them. 
 
 ### Pro-tip: do I need to install this package?
@@ -37,16 +33,13 @@ Why am I telling you this? Well you should always check if you have a package, b
 
 So as a first step, you have to assign a list of all the packages you have to check to an object. Let's say I tell you that today we will be using the following packaes: "sp", "rgdal", "classInt", "RColorBrewer", "ggplot2", "hexbin", "ggmap", "XML", and "dplyr". Then you can add these to an object called `libs`, using the `c()` function: 
 
-
 ```{r}
 libs <- c("sf", "tmap", "sp", "spdep", "DCluster", "cartogram")
-
 ```
 
 Now you can run the below bit of code, and you will see in the console an output of what is and isn't installed, as well as install the packages that are not!
 
 ```{r}
-
 for (x in libs){                                                #cycle through each item in libs object
   if(x %in% rownames(installed.packages()) == FALSE) {          #if the package is not installed
     print(paste0("installing ", x, "..."))                      #print a message to tell me
@@ -57,7 +50,6 @@ for (x in libs){                                                #cycle through e
   }
   library(x, character.only = TRUE)                             #and then load the packages
 }
-
 ```
 
 As you can see if you read through the comments there, this bit of code checks each package in the list you pass to tbe `libs` object when you create it, and if it is not installed it installs for you, and if it is, it just loads it for you. It can be a handy bit of code to keep around. 
