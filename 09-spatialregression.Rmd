@@ -25,7 +25,7 @@ library(lubridate)
 # library(transformr) - this needs to be installed, but doesn't need loading
 ```
 
-Then we will be using the ncovr data from last week. You can go back to last week's learning materials to download from Blackboard. 
+Then we will be using the ncovr data from last week. You can go back to last week's learning materials to download from Blackboard.. 
 
 Last week we did not treat the data as spatial and, consequently, relied on the .csv file. But notice that in the unzip ncovr file there is also a shapefile that we can load as a spatial object into R:
 
