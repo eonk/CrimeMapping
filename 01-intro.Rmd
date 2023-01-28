@@ -282,7 +282,7 @@ my_5th_vector <- c("a", "b", "c")
 my_6th_vector <- c(1+0i, 2+4i) 
 ```
 
-2. *lists*: technically they, too, are vectors but they are more complex because they are not restricted on the length, structure, or class of the included elements. For example, to create a list containing strings, numbers, vectors and a logical, use the `list()` function, and inside the brackets, put everything tat you want to combine into a list:
+2. *lists*: technically they, too, are vectors but they are more complex because they are not restricted on the length, structure, or class of the included elements. For example, to create a list containing strings, numbers, vectors and a logical, use the `list()` function, and inside the brackets, put everything that you want to combine into a list:
 
 ```{r}
 
@@ -422,7 +422,7 @@ library("fivethirtyeight")
 data(package="fivethirtyeight") #This function will return all the data frames that are available in the named package.
 ```
 
-Notice that this package has some data sets that relate to stories covered in this newspaper that had a criminological angle. Let's look for example at the `hate_crimes` data set. How do you that? First we have to load the data frame into our global environment. To do so use the following code:
+Notice that this package has some data sets that relate to stories covered in this newspaper that had a criminological angle. Let's look for example at the `hate_crimes` data set. How do you do that? First we have to load the data frame into our global environment. To do so use the following code:
 
 ```{r}
 data("hate_crimes")
@@ -436,7 +436,7 @@ Every object in R can have **attributes**. These are: names; dimensions (for mat
 attributes(hate_crimes)
 ```
 
-This prints out the row names (not very exciting here..) the class (see above when we used `class()` function) and the names, which are the column headers - or the *names of the variables within this data set*. You can see there are things like state, and share who voted trump (in the 2016 election, not most recent!). 
+This prints out the row names (not very exciting!) the class (see above when we used `class()` function) and the names, which are the column headers - or the *names of the variables within this data set*. You can see there are things like state, and share who voted trump (in the 2016 election, not most recent!). 
 
 Now use the `View()` function to glance at your data frame. What you get there is a spreadsheet with 12 variables and 51 observations. Each variable in this case is providing you with information (demographics, voting patterns, and hate crime) about each of the US states.  
 
