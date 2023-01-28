@@ -203,7 +203,7 @@ Log(100)
 log(100)
 ```
 
-Okay, now you know these, the answer to Activity 6 was...
+Okay, now you know these, the answer to Activity 5 was...
  
 
 ```{r activity6ans}
@@ -272,6 +272,7 @@ my_2nd_vector <- c(1L, 2L, 3L)
 
 # 3. logical vector
 my_3rd_vector <- c(TRUE, FALSE, FALSE) 
+
 # 'my_4th_vector' creates a logical vector using abbreviations of True and False, but you should use the full words instead
 my_4th_vector <- c(T, F) 
 
@@ -333,7 +334,7 @@ Let us say that we suddenly forgot what was in our object called 'plates'. Like 
 print(plates)
 ```
 
-This can apply to obtaining the mean, the minimum, and maximum. You could assign those statistics to an object this time:
+This can apply to creating `nums` object and then obtaining the mean, the minimum, and maximum.
 
 ```{r listnums}
 nums <- c(10, 34, 5, 3, 77)
@@ -354,24 +355,30 @@ To do something to an entire dataframe, we would use the name of the object (`df
 
 To refer to a variable (column) inside a dataframe, you use:
 
-$dataframe name + \$ + variable name$
+**dataframe name + \$ + variable name/column**
 
 For example, to refer to the variable `VioRatePer1k`, we use the notation `df$VioRatePer1k`. 
 
-And if we wanted to View only that column, we use: 
+Say we wanted to know the mean violence rate across our units of analysis, the cities, for example, we would take the numeric column to calculate this:
+
+```{r meanviol tableTop}
+mean(df$VioRatePer1k)
+```
+
+You can also use the following syntax to select specific columns in a dataframe:
+
+- select columns by name: df[c('TopVioCities', 'VioRatePer1k', 'State')]
+- select columns by index: df[c(1, 2, 3)]
+
+If we wanted to View only `VioRatePer1k` column, we use: 
 
 ```{r viewonecol, eval = FALSE}
-View(df$VioRatePer1k)
+View(df[c(2)]) #If you want to view only one variable, you can remove concatenate, View(df[2])
 ```
 
 You should see: 
 ![](img/view_col_only.png)
 
-Say we wanted to know the mean violence rate across our units of analysis, the cities, for example, we would take the numeric column to calculate this: 
-
-```{r meanviol}
-mean(df$VioRatePer1k)
-```
 
 ## Packages 
 

@@ -185,4 +185,3 @@ time-matters
 activity-7-small-multiples
 activity-8-animations
 recap-2
-networks

@@ -23,7 +23,7 @@
 <meta name="author" content="Eon Kim and Joanna Hill (based on material developed with Reka Solymosi and Juanjo Medina)" />
 
 
-<meta name="date" content="2023-01-10" />
+<meta name="date" content="2023-01-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -102,7 +102,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -115,7 +115,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -551,7 +551,7 @@ As indicated above, the window in the bottom left corner is the main <strong>con
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="a-first-lesson-about-r.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Instead, it should be:</span></span>
 <span id="cb11-2"><a href="a-first-lesson-about-r.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">log</span>(<span class="dv">100</span>)</span></code></pre></div>
 <pre><code>## [1] 4.60517</code></pre>
-<p>Okay, now you know these, the answer to Activity 6 was…</p>
+<p>Okay, now you know these, the answer to Activity 5 was…</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="a-first-lesson-about-r.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(<span class="dv">10</span>, <span class="dv">34</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">77</span>)</span></code></pre></div>
 <pre><code>## [1] 10</code></pre>
 <p>Now let us move on to our second key topic: objects!</p>
@@ -595,14 +595,15 @@ But if you run this code, you will get an error. Let’s see:</p>
 <span id="cb17-6"><a href="a-first-lesson-about-r.html#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-7"><a href="a-first-lesson-about-r.html#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. logical vector</span></span>
 <span id="cb17-8"><a href="a-first-lesson-about-r.html#cb17-8" aria-hidden="true" tabindex="-1"></a>my_3rd_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>) </span>
-<span id="cb17-9"><a href="a-first-lesson-about-r.html#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># &#39;my_4th_vector&#39; creates a logical vector using abbreviations of True and False, but you should use the full words instead</span></span>
-<span id="cb17-10"><a href="a-first-lesson-about-r.html#cb17-10" aria-hidden="true" tabindex="-1"></a>my_4th_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(T, F) </span>
-<span id="cb17-11"><a href="a-first-lesson-about-r.html#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-12"><a href="a-first-lesson-about-r.html#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. character vector</span></span>
-<span id="cb17-13"><a href="a-first-lesson-about-r.html#cb17-13" aria-hidden="true" tabindex="-1"></a>my_5th_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>) </span>
-<span id="cb17-14"><a href="a-first-lesson-about-r.html#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-15"><a href="a-first-lesson-about-r.html#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. complex vector (we will not use this for our class)</span></span>
-<span id="cb17-16"><a href="a-first-lesson-about-r.html#cb17-16" aria-hidden="true" tabindex="-1"></a>my_6th_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">+</span>0i, <span class="dv">2</span><span class="sc">+</span>4i) </span></code></pre></div>
+<span id="cb17-9"><a href="a-first-lesson-about-r.html#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="a-first-lesson-about-r.html#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># &#39;my_4th_vector&#39; creates a logical vector using abbreviations of True and False, but you should use the full words instead</span></span>
+<span id="cb17-11"><a href="a-first-lesson-about-r.html#cb17-11" aria-hidden="true" tabindex="-1"></a>my_4th_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(T, F) </span>
+<span id="cb17-12"><a href="a-first-lesson-about-r.html#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="a-first-lesson-about-r.html#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. character vector</span></span>
+<span id="cb17-14"><a href="a-first-lesson-about-r.html#cb17-14" aria-hidden="true" tabindex="-1"></a>my_5th_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>) </span>
+<span id="cb17-15"><a href="a-first-lesson-about-r.html#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="a-first-lesson-about-r.html#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. complex vector (we will not use this for our class)</span></span>
+<span id="cb17-17"><a href="a-first-lesson-about-r.html#cb17-17" aria-hidden="true" tabindex="-1"></a>my_6th_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">+</span>0i, <span class="dv">2</span><span class="sc">+</span>4i) </span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li><em>lists</em>: technically they, too, are vectors but they are more complex because they are not restricted on the length, structure, or class of the included elements. For example, to create a list containing strings, numbers, vectors and a logical, use the <code>list()</code> function, and inside the brackets, put everything tat you want to combine into a list:</li>
 </ol>
@@ -633,7 +634,7 @@ But if you run this code, you will get an error. Let’s see:</p>
 <p>Let us say that we suddenly forgot what was in our object called ‘plates’. Like what we learned earlier, we use the function <code>print()</code> to see what is inside this object:</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="a-first-lesson-about-r.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(plates)</span></code></pre></div>
 <pre><code>## [1] &quot;yellow plate&quot; &quot;purple plate&quot; &quot;silver plate&quot; &quot;orange bowl&quot;</code></pre>
-<p>This can apply to obtaining the mean, the minimum, and maximum. You could assign those statistics to an object this time:</p>
+<p>This can apply to creating <code>nums</code> object and then obtaining the mean, the minimum, and maximum.</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="a-first-lesson-about-r.html#cb26-1" aria-hidden="true" tabindex="-1"></a>nums <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">34</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">77</span>)</span></code></pre></div>
 <p>Now if we want to know the mean, we can take the mean of the object <code>nums</code>, which we just created:</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="a-first-lesson-about-r.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(nums)</span></code></pre></div>
@@ -643,15 +644,20 @@ But if you run this code, you will get an error. Let’s see:</p>
 <p><img src="img/df_view.png" />
 To do something to an entire dataframe, we would use the name of the object (<code>df</code>) to refer to it. In the case of the <code>View()</code> function, we want to see the whole thing, so we will call <code>View(df)</code>. On the other hand, if we want to refer to only one variable in the data, (remember back to term 1 - each varible is held in each column) there is a special notation to do this.</p>
 <p>To refer to a variable (column) inside a dataframe, you use:</p>
-<p><span class="math inline">\(dataframe name + \$ + variable name\)</span></p>
+<p><strong>dataframe name + $ + variable name/column</strong></p>
 <p>For example, to refer to the variable <code>VioRatePer1k</code>, we use the notation <code>df$VioRatePer1k</code>.</p>
-<p>And if we wanted to View only that column, we use:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="a-first-lesson-about-r.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(df<span class="sc">$</span>VioRatePer1k)</span></code></pre></div>
+<p>Say we wanted to know the mean violence rate across our units of analysis, the cities, for example, we would take the numeric column to calculate this:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="a-first-lesson-about-r.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>VioRatePer1k)</span></code></pre></div>
+<pre><code>## [1] 20.56667</code></pre>
+<p>You can also use the following syntax to select specific columns in a dataframe:</p>
+<ul>
+<li>select columns by name: df[c(‘TopVioCities’, ‘VioRatePer1k’, ‘State’)]</li>
+<li>select columns by index: df[c(1, 2, 3)]</li>
+</ul>
+<p>If we wanted to View only <code>VioRatePer1k</code> column, we use:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="a-first-lesson-about-r.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(df[<span class="fu">c</span>(<span class="dv">2</span>)]) <span class="co">#If you want to view only one variable, you can remove concatenate, View(df[2])</span></span></code></pre></div>
 <p>You should see:
 <img src="img/view_col_only.png" /></p>
-<p>Say we wanted to know the mean violence rate across our units of analysis, the cities, for example, we would take the numeric column to calculate this:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="a-first-lesson-about-r.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>VioRatePer1k)</span></code></pre></div>
-<pre><code>## [1] 20.56667</code></pre>
 </div>
 </div>
 </div>
