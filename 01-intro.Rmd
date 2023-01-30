@@ -79,7 +79,7 @@ R Studio is what we call an IDE, an **integrated development environment**. It i
 
 When you first open R Studio, you will see (as in the image above) that there are 3 main windows. The bigger one to your left is the console. If you read the text in the console you will see that R Studio is indeed opening R and you can see what version of R you are running. Since R is constantly being updated the version you installed is likely more recent that the one we used at time of writing.
 
-#### Activity 3: Opening up the script pane
+### Activity 3: Opening up the script pane
 
 The view in R Studio is structured so that you have 4 open windows in a regular session. However when you first open, you might be starting with only 3. To open the script pane (the one missing) click in the *File* drop down Menu, select *New File*, then *R Script*.
 
@@ -111,7 +111,7 @@ Window 4. **File directory, Plots, Packages, Help**:
 
   d) *4.4 Help* tab- you can access further information on the various packages. 
 
-#### Activity 4: Interacting with the 4 panes
+### Activity 4: Interacting with the 4 panes
 
 In the previous activity, you opened up the 'script' pane. We now write some code in it, and see what happens. 
 

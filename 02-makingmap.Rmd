@@ -110,22 +110,20 @@ Let's download some data for crime in Manchester.
 
 ### Activity 1: Get some crime data
 
-To do acquire the data, open the [data.police.uk/data](https://data.police.uk/data/) website. Choose the data tab, in order to download some data. 
+To do acquire the police recorded crime data in the UK, you can use [data.police.uk/data](https://data.police.uk/data/) website. If you want to use the data from 'data.police.uk', you need to follow these steps:     
 
-- In `Date range` just select one month of data. Choose whatever month you like EXCEPT nothing more recent than June 2019. Unfortunately, for GMP there is no more recent data available than that. This is because they are having some serious IT issues [see this article](https://www.manchestereveningnews.co.uk/news/greater-manchester-news/gmp-finally-switches-new-27m-16632975) which apparently have disrupted this flow of data.
-- In `Force` find `Greater Manchester Police`, and tick the box next to it. 
+- Choose `Custom download` under `Data` tab, in order to download some data. 
+
+- In `Date range` just select one month of data. Choose whatever month you like. Unfortunately, for GMP there is no more recent data available since June 2019. This is because they are having some serious IT issues [see this article](https://www.manchestereveningnews.co.uk/news/greater-manchester-news/gmp-finally-switches-new-27m-16632975) which apparently have disrupted this flow of data.
+
+- Select the `Force` you are interested in and tick the box next to it. 
+
 - In `Data sets` tick `Include crime data`.
+
 - Finally click on `Generate File` button.
 
-This will take you to a download page, where you have to click the `Download now` button. This will open a dialogue to save a .zip file. Navigate to the project directory folder you've created and save it there, ideally in a subfolder. I call my subfolder 'data'. 
 
-Unzip the file. You can use the unzip function for this. A cool function you may want to use as well is file.choose(). If we pass this function as an argument to unzip(), we will get a pop window where we will be able to select our file using familiar point and click. Ideally, you want to rather write down the path to your file. But sometimes these shortcuts are convenient.
-
-```{r, eval=FALSE}
-unzip(file.choose())
-```
-
-If you look at the *Files* window in the bottom right corner of RStudio you should see now a new subdirectory that contains a .csv file with the data that we need. Since I downloaded the data from June 2019 in my case this subdirectory is called 2019-06.
+Because the latest data of GMP is June 2019, we should download data from `Archive` tab, not `Custom download` tab. If you scroll down, you will find `June 2021` folder which contains crime data from July 2018 to June 2021. I know!!😩 it's a huge file as it has 'crime' and 'stop and search' data of all police forces from July 2018 to June 2021. You can download the folder as a practice or use the data that we already have downloaded for you. You can go back to this week’s learning materials to download from Blackboard.
 
 Before we can use this data we need to read it or import it into R and turn it into a dataframe object. To read in the .csv file, which is the format we just downloaded, the command is `read_csv()` from the `readr` package. You'll need to load this package first. 
 
@@ -137,7 +135,6 @@ Again there are two ways to read in the data, if you want to open a window where
 
 ```{r, eval=FALSE}
 #This code creates a dataframe object called crimes which will include the spreadsheet in the file we have downloaded. In my case, that is 2007-11-greater-manchester-street.csv.
-
 crimes <- read_csv(file.choose())
 ```
 
@@ -145,6 +142,13 @@ Or, if you know the path to your file, you can code it in there, within quotatio
 
 ```{r, eval=TRUE}
 crimes <- read_csv("data/2019-06-greater-manchester-street.csv")
+```
+
+Or, you can download it from the a website where we keep the data with the following code:
+```{r, eval=FALSE}
+# save URL into an object
+urlfile <- "https://raw.githubusercontent.com/eonk/cm_book/main/data/2019-06-greater-manchester-street.csv"
+crimes <- read_csv(url(urlfile))
 ```
 
 You might notice that the object `crimes` has appeared in your work environment window. It will tell you how many observations (rows - and incidentally the number of recorded crimes in June 2019 within the GMP jurisdiction) and how many variables (columns) your data has.

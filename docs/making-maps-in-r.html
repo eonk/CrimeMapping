@@ -23,7 +23,7 @@
 <meta name="author" content="Eon Kim and Joanna Hill (based on material developed with Reka Solymosi and Juanjo Medina)" />
 
 
-<meta name="date" content="2023-01-28" />
+<meta name="date" content="2023-01-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -102,7 +102,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
+code span.bu { } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -115,7 +115,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.im { } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -160,7 +160,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="1.2" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#open-up-and-explore-rstudio"><i class="fa fa-check"></i><b>1.2</b> Open up and explore RStudio</a>
 <ul>
-<li class="chapter" data-level="1.2.1" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#the-four-panes-of-r-studio"><i class="fa fa-check"></i><b>1.2.1</b> The four panes of R Studio</a></li>
+<li class="chapter" data-level="1.2.1" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#activity-3-opening-up-the-script-pane"><i class="fa fa-check"></i><b>1.2.1</b> Activity 3: Opening up the script pane</a></li>
+<li class="chapter" data-level="1.2.2" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#the-four-panes-of-r-studio"><i class="fa fa-check"></i><b>1.2.2</b> The four panes of R Studio</a></li>
+<li class="chapter" data-level="1.2.3" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#activity-4-interacting-with-the-4-panes"><i class="fa fa-check"></i><b>1.2.3</b> Activity 4: Interacting with the 4 panes</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#customising-the-rstudio-look"><i class="fa fa-check"></i><b>1.3</b> Customising the RStudio look</a>
 <ul>
@@ -503,27 +505,24 @@ This will be important later on when we are linking data from different projecti
 </div>
 <div id="activity-1-get-some-crime-data" class="section level3 hasAnchor" number="2.2.2">
 <h3><span class="header-section-number">2.2.2</span> Activity 1: Get some crime data<a href="making-maps-in-r.html#activity-1-get-some-crime-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>To do acquire the data, open the <a href="https://data.police.uk/data/">data.police.uk/data</a> website. Choose the data tab, in order to download some data.</p>
+<p>To do acquire the police recorded crime data in the UK, you can use <a href="https://data.police.uk/data/">data.police.uk/data</a> website. If you want to use the data from ‘data.police.uk’, you need to follow these steps:</p>
 <ul>
-<li>In <code>Date range</code> just select one month of data. Choose whatever month you like EXCEPT nothing more recent than June 2019. Unfortunately, for GMP there is no more recent data available than that. This is because they are having some serious IT issues <a href="https://www.manchestereveningnews.co.uk/news/greater-manchester-news/gmp-finally-switches-new-27m-16632975">see this article</a> which apparently have disrupted this flow of data.</li>
-<li>In <code>Force</code> find <code>Greater Manchester Police</code>, and tick the box next to it.</li>
-<li>In <code>Data sets</code> tick <code>Include crime data</code>.</li>
-<li>Finally click on <code>Generate File</code> button.</li>
+<li><p>Choose <code>Custom download</code> under <code>Data</code> tab, in order to download some data.</p></li>
+<li><p>In <code>Date range</code> just select one month of data. Choose whatever month you like. Unfortunately, for GMP there is no more recent data available since June 2019. This is because they are having some serious IT issues <a href="https://www.manchestereveningnews.co.uk/news/greater-manchester-news/gmp-finally-switches-new-27m-16632975">see this article</a> which apparently have disrupted this flow of data.</p></li>
+<li><p>Select the <code>Force</code> you are interested in and tick the box next to it.</p></li>
+<li><p>In <code>Data sets</code> tick <code>Include crime data</code>.</p></li>
+<li><p>Finally click on <code>Generate File</code> button.</p></li>
 </ul>
-<p>This will take you to a download page, where you have to click the <code>Download now</code> button. This will open a dialogue to save a .zip file. Navigate to the project directory folder you’ve created and save it there, ideally in a subfolder. I call my subfolder ‘data’.</p>
-<p>Unzip the file. You can use the unzip function for this. A cool function you may want to use as well is file.choose(). If we pass this function as an argument to unzip(), we will get a pop window where we will be able to select our file using familiar point and click. Ideally, you want to rather write down the path to your file. But sometimes these shortcuts are convenient.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="making-maps-in-r.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(<span class="fu">file.choose</span>())</span></code></pre></div>
-<p>If you look at the <em>Files</em> window in the bottom right corner of RStudio you should see now a new subdirectory that contains a .csv file with the data that we need. Since I downloaded the data from June 2019 in my case this subdirectory is called 2019-06.</p>
+<p>Because the latest data of GMP is June 2019, we should download data from <code>Archive</code> tab, not <code>Custom download</code> tab. If you scroll down, you will find <code>June 2021</code> folder which contains crime data from July 2018 to June 2021. I know!!😩 it’s a huge file as it has ‘crime’ and ‘stop and search’ data of all police forces from July 2018 to June 2021. You can download the folder as a practice or use the data that we already have downloaded for you. You can go back to this week’s learning materials to download from Blackboard.</p>
 <p>Before we can use this data we need to read it or import it into R and turn it into a dataframe object. To read in the .csv file, which is the format we just downloaded, the command is <code>read_csv()</code> from the <code>readr</code> package. You’ll need to load this package first.</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="making-maps-in-r.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="making-maps-in-r.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span></code></pre></div>
 <p>Again there are two ways to read in the data, if you want to open a window where you can manually navigate and open the file, you can pass <code>file.choose()</code> argument to the <code>read_csv()</code> function as illustrated earlier.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="making-maps-in-r.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co">#This code creates a dataframe object called crimes which will include the spreadsheet in the file we have downloaded. In my case, that is 2007-11-greater-manchester-street.csv.</span></span>
-<span id="cb57-2"><a href="making-maps-in-r.html#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-3"><a href="making-maps-in-r.html#cb57-3" aria-hidden="true" tabindex="-1"></a>crimes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">file.choose</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="making-maps-in-r.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co">#This code creates a dataframe object called crimes which will include the spreadsheet in the file we have downloaded. In my case, that is 2007-11-greater-manchester-street.csv.</span></span>
+<span id="cb56-2"><a href="making-maps-in-r.html#cb56-2" aria-hidden="true" tabindex="-1"></a>crimes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">file.choose</span>())</span></code></pre></div>
 <p>Or, if you know the path to your file, you can code it in there, within quotation marks:</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="making-maps-in-r.html#cb58-1" aria-hidden="true" tabindex="-1"></a>crimes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/2019-06-greater-manchester-street.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="making-maps-in-r.html#cb57-1" aria-hidden="true" tabindex="-1"></a>crimes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/2019-06-greater-manchester-street.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 32058 Columns: 12
-## ── Column specification ───────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (9): Crime ID, Month, Reported by, Falls within, Location, LSOA code, LS...
 ## dbl (2): Longitude, Latitude
@@ -531,6 +530,10 @@ This will be important later on when we are linking data from different projecti
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>Or, you can download it from the a website where we keep the data with the following code:</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="making-maps-in-r.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save URL into an object</span></span>
+<span id="cb59-2"><a href="making-maps-in-r.html#cb59-2" aria-hidden="true" tabindex="-1"></a>urlfile <span class="ot">&lt;-</span> <span class="st">&quot;https://raw.githubusercontent.com/eonk/cm_book/main/data/2019-06-greater-manchester-street.csv&quot;</span></span>
+<span id="cb59-3"><a href="making-maps-in-r.html#cb59-3" aria-hidden="true" tabindex="-1"></a>crimes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">url</span>(urlfile))</span></code></pre></div>
 <p>You might notice that the object <code>crimes</code> has appeared in your work environment window. It will tell you how many observations (rows - and incidentally the number of recorded crimes in June 2019 within the GMP jurisdiction) and how many variables (columns) your data has.</p>
 <p>Let’s have a look at the crimes dataframe with the <code>View()</code> function. This will open the data browser in RStudio</p>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="making-maps-in-r.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(crimes)</span></code></pre></div>
@@ -803,7 +806,7 @@ Contains OS data © Crown copyright [and database right] (year)”</p>
 <p>Now use the <code>st_read()</code> function to read in the shapefile:</p>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="making-maps-in-r.html#cb93-1" aria-hidden="true" tabindex="-1"></a>manchester_lsoa <span class="ot">&lt;-</span> <span class="fu">st_read</span>(shp_name)</span></code></pre></div>
 <pre><code>## Reading layer `england_lsoa_2011&#39; from data source 
-##   `/Users/EonKim/Desktop/R/CM_book/cm_book/data/BoundaryData/england_lsoa_2011.shp&#39; 
+##   `/Users/eonkim/Desktop/R/CM_book/data/BoundaryData/england_lsoa_2011.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 282 features and 3 fields
 ## Geometry type: POLYGON

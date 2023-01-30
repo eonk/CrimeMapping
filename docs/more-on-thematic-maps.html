@@ -23,7 +23,7 @@
 <meta name="author" content="Eon Kim and Joanna Hill (based on material developed with Reka Solymosi and Juanjo Medina)" />
 
 
-<meta name="date" content="2023-01-28" />
+<meta name="date" content="2023-01-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -102,7 +102,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
+code span.bu { } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -115,7 +115,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.im { } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -160,7 +160,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="1.2" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#open-up-and-explore-rstudio"><i class="fa fa-check"></i><b>1.2</b> Open up and explore RStudio</a>
 <ul>
-<li class="chapter" data-level="1.2.1" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#the-four-panes-of-r-studio"><i class="fa fa-check"></i><b>1.2.1</b> The four panes of R Studio</a></li>
+<li class="chapter" data-level="1.2.1" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#activity-3-opening-up-the-script-pane"><i class="fa fa-check"></i><b>1.2.1</b> Activity 3: Opening up the script pane</a></li>
+<li class="chapter" data-level="1.2.2" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#the-four-panes-of-r-studio"><i class="fa fa-check"></i><b>1.2.2</b> The four panes of R Studio</a></li>
+<li class="chapter" data-level="1.2.3" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#activity-4-interacting-with-the-4-panes"><i class="fa fa-check"></i><b>1.2.3</b> Activity 4: Interacting with the 4 panes</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#customising-the-rstudio-look"><i class="fa fa-check"></i><b>1.3</b> Customising the RStudio look</a>
 <ul>
@@ -570,7 +572,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb227-30"><a href="more-on-thematic-maps.html#cb227-30" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb227-31"><a href="more-on-thematic-maps.html#cb227-31" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <pre><code>## Reading layer `1951&#39; from data source 
-##   `/Users/EonKim/Desktop/R/CM_book/cm_book/data/IndiaBoundaryData/1951.shp&#39; 
+##   `/Users/eonkim/Desktop/R/CM_book/data/IndiaBoundaryData/1951.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 316 features and 9 fields
 ## Geometry type: MULTIPOLYGON
@@ -578,7 +580,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Bounding box:  xmin: 68.11009 ymin: 6.755698 xmax: 97.4091 ymax: 37.0503
 ## Geodetic CRS:  WGS 84
 ## Reading layer `1961&#39; from data source 
-##   `/Users/EonKim/Desktop/R/CM_book/cm_book/data/IndiaBoundaryData/1961.shp&#39; 
+##   `/Users/eonkim/Desktop/R/CM_book/data/IndiaBoundaryData/1961.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 341 features and 50 fields
 ## Geometry type: MULTIPOLYGON
@@ -586,7 +588,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Bounding box:  xmin: 68.11009 ymin: 6.755698 xmax: 97.4091 ymax: 37.0503
 ## Geodetic CRS:  WGS 84
 ## Reading layer `1971&#39; from data source 
-##   `/Users/EonKim/Desktop/R/CM_book/cm_book/data/IndiaBoundaryData/1971.shp&#39; 
+##   `/Users/eonkim/Desktop/R/CM_book/data/IndiaBoundaryData/1971.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 360 features and 70 fields
 ## Geometry type: MULTIPOLYGON
@@ -594,7 +596,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Bounding box:  xmin: 68.11009 ymin: 6.755698 xmax: 97.4091 ymax: 37.0503
 ## Geodetic CRS:  WGS 84
 ## Reading layer `1981&#39; from data source 
-##   `/Users/EonKim/Desktop/R/CM_book/cm_book/data/IndiaBoundaryData/1981.shp&#39; 
+##   `/Users/eonkim/Desktop/R/CM_book/data/IndiaBoundaryData/1981.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 426 features and 59 fields
 ## Geometry type: MULTIPOLYGON
@@ -602,7 +604,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Bounding box:  xmin: 68.11009 ymin: 6.755698 xmax: 97.4091 ymax: 37.0503
 ## Geodetic CRS:  WGS 84
 ## Reading layer `1991&#39; from data source 
-##   `/Users/EonKim/Desktop/R/CM_book/cm_book/data/IndiaBoundaryData/1991.shp&#39; 
+##   `/Users/eonkim/Desktop/R/CM_book/data/IndiaBoundaryData/1991.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 468 features and 144 fields
 ## Geometry type: MULTIPOLYGON
@@ -610,7 +612,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Bounding box:  xmin: 68.11009 ymin: 6.755698 xmax: 97.4091 ymax: 37.0503
 ## Geodetic CRS:  WGS 84
 ## Reading layer `2001&#39; from data source 
-##   `/Users/EonKim/Desktop/R/CM_book/cm_book/data/IndiaBoundaryData/2001.shp&#39; 
+##   `/Users/eonkim/Desktop/R/CM_book/data/IndiaBoundaryData/2001.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 595 features and 170 fields
 ## Geometry type: MULTIPOLYGON
@@ -640,7 +642,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="more-on-thematic-maps.html#cb232-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in the 1971 shapefile</span></span>
 <span id="cb232-2"><a href="more-on-thematic-maps.html#cb232-2" aria-hidden="true" tabindex="-1"></a>shapefile <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&#39;data/IndiaBoundaryData/1971.shp&#39;</span>)</span></code></pre></div>
 <pre><code>## Reading layer `1971&#39; from data source 
-##   `/Users/EonKim/Desktop/R/CM_book/cm_book/data/IndiaBoundaryData/1971.shp&#39; 
+##   `/Users/eonkim/Desktop/R/CM_book/data/IndiaBoundaryData/1971.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 360 features and 70 fields
 ## Geometry type: MULTIPOLYGON
@@ -883,12 +885,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## New names:
 ## Rows: 32162 Columns: 15
 ## ── Column specification
-## ─────────────────────────────────────────────────── Delimiter: &quot;,&quot; chr
+## ───────────────────────────────────────────────── Delimiter: &quot;,&quot; chr
 ## (8): Month, Reported.by, Falls.within, Location, LSOA.code, LSOA.name,
 ## C... dbl (4): ...1, X, Longitude, Latitude lgl (3): Crime.ID,
 ## Last.outcome.category, Context
-## ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
-## Specify the column types or set `show_col_types = FALSE` to quiet this
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this
 ## message.
 ## • `` -&gt; `...1`</code></pre>
 <p>This is currently just a text dataframe, so we need to let R know that actually this is a spatial object, who’s geometry can be find in its longitude and latitude coordinates. As we have long/lat we can assure it’s in WGS 84 projection.</p>
@@ -1059,7 +1061,7 @@ aggregation.</li>
 <p>You can download the full set of EU referendum result data as a csv from <a href="https://www.electoralcommission.org.uk/find-information-by-subject/elections-and-referendums/past-elections-and-referendums/eu-referendum/eu-referendum-result-visualisations">the Electoral Commission webside</a>. Let’s read it straight into R:</p>
 <div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="more-on-thematic-maps.html#cb271-1" aria-hidden="true" tabindex="-1"></a>eu_ref <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://www.electoralcommission.org.uk/sites/default/files/2019-07/EU-referendum-result-data.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 382 Columns: 21
-## ── Column specification ───────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (4): Region_Code, Region, Area_Code, Area
 ## dbl (17): id, Electorate, ExpectedBallots, VerifiedBallotPapers, Pct_Turnout...
@@ -1072,7 +1074,7 @@ aggregation.</li>
 <p>Once you have the file, download, extract (unzip) and put the folder in your working directory. Mine is in a subfolder in my working directory called data, so I point R inside that folder to find my shape file.</p>
 <div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="more-on-thematic-maps.html#cb273-1" aria-hidden="true" tabindex="-1"></a>las <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/England_lad_2011_gen/england_lad_2011_gen.shp&quot;</span>)</span></code></pre></div>
 <pre><code>## Reading layer `england_lad_2011_gen&#39; from data source 
-##   `/Users/EonKim/Desktop/R/CM_book/cm_book/data/England_lad_2011_gen/england_lad_2011_gen.shp&#39; 
+##   `/Users/eonkim/Desktop/R/CM_book/data/England_lad_2011_gen/england_lad_2011_gen.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 326 features and 4 fields
 ## Geometry type: MULTIPOLYGON
