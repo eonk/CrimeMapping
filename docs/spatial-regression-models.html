@@ -23,7 +23,7 @@
 <meta name="author" content="Eon Kim and Joanna Hill (based on material developed with Reka Solymosi and Juanjo Medina)" />
 
 
-<meta name="date" content="2023-01-30" />
+<meta name="date" content="2023-02-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -102,7 +102,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -115,7 +115,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -428,7 +428,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb463-2"><a href="spatial-regression-models.html#cb463-2" aria-hidden="true" tabindex="-1"></a>shp_name <span class="ot">&lt;-</span> <span class="st">&quot;data/ncovr/NAT.shp&quot;</span></span>
 <span id="cb463-3"><a href="spatial-regression-models.html#cb463-3" aria-hidden="true" tabindex="-1"></a>ncovr_sf <span class="ot">&lt;-</span> <span class="fu">st_read</span>(shp_name)</span></code></pre></div>
 <pre><code>## Reading layer `NAT&#39; from data source 
-##   `/Users/eonkim/Desktop/R/CM_book/data/ncovr/NAT.shp&#39; using driver `ESRI Shapefile&#39;
+##   `/Users/EonKim/Desktop/R/CM_book/cm_book/data/ncovr/NAT.shp&#39; 
+##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 3085 features and 69 fields
 ## Geometry type: MULTIPOLYGON
 ## Dimension:     XY
@@ -831,18 +832,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## New names:
 ## Rows: 32162 Columns: 15
 ## ── Column specification
-## ───────────────────────────────────────────────── Delimiter: &quot;,&quot; chr
-## (8): Month, Reported.by, Falls.within, Location, LSOA.code, LSOA.name,
-## C... dbl (4): ...1, X, Longitude, Latitude lgl (3): Crime.ID,
-## Last.outcome.category, Context
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this
-## message.
+## ──────────────────────────────────────────── Delimiter: &quot;,&quot; chr
+## (8): Month, Reported.by, Falls.within, Location, LSOA.code,
+## LSOA.name, C... dbl (4): ...1, X, Longitude, Latitude lgl (3):
+## Crime.ID, Last.outcome.category, Context
+## ℹ Use `spec()` to retrieve the full column specification for this
+## data. ℹ Specify the column types or set `show_col_types = FALSE` to
+## quiet this message.
 ## • `` -&gt; `...1`</code></pre>
 <p>We’ll also need our boundary data. Read in the city centre LSOAs geojson (also on Blackboard) <code>cc_lsoas.geojson</code>.</p>
 <div class="sourceCode" id="cb501"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb501-1"><a href="spatial-regression-models.html#cb501-1" aria-hidden="true" tabindex="-1"></a>cc_lsoas <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/cc_lsoas.geojson&quot;</span>)</span></code></pre></div>
 <pre><code>## Reading layer `cc_lsoas&#39; from data source 
-##   `/Users/eonkim/Desktop/R/CM_book/data/cc_lsoas.geojson&#39; using driver `GeoJSON&#39;
+##   `/Users/EonKim/Desktop/R/CM_book/cm_book/data/cc_lsoas.geojson&#39; 
+##   using driver `GeoJSON&#39;
 ## Simple feature collection with 23 features and 3 fields
 ## Geometry type: POLYGON
 ## Dimension:     XY
@@ -949,7 +951,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Now, finally, we can animate this graph. Take the object of the static graph (anim) and add a form of transition, which will be used to animate the graph. In this case, we can use <code>transition_states()</code>. This transition splits your data into multiple states based on the levels in a given column, much like how faceting splits up the data in multiple panels. It then shifts between the defined states and pauses at each state. Layers with data without the specified column will be kept constant during the animation (again, mimicking facet_wrap). States are the unquoted name of the column holding the state levels in the data. You can then use the <code>closest_state</code> to dynamically label the graph:</p>
 <div class="sourceCode" id="cb517"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb517-1"><a href="spatial-regression-models.html#cb517-1" aria-hidden="true" tabindex="-1"></a>anim <span class="sc">+</span> <span class="fu">transition_states</span>(date_month, <span class="at">transition_length =</span> <span class="dv">1</span>, <span class="at">state_length =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
 <span id="cb517-2"><a href="spatial-regression-models.html#cb517-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Month: {closest_state}&quot;</span>)</span></code></pre></div>
-<p><img src="crime_mapping_textbook_files/figure-html/unnamed-chunk-308-1.gif" /><!-- --></p>
+<pre><code>## Warning: No renderer available. Please install the gifski, av, or magick package
+## to create animated output</code></pre>
+<pre><code>## NULL</code></pre>
 <p>How cool is that!?</p>
 <p>You can now make animations about transition over time to impress your friends, family, future employers, and so on. What a way to end this course!</p>
 </div>

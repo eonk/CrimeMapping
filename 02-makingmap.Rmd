@@ -4,15 +4,13 @@ This week we will start making some maps in R, and learn about how we can take r
 
 Today we will use the following packages, so make sure you have them installed:
 
-```{r, warnings=FALSE, message=FALSE, eval=FALSE}
-install.packages(readr)
-install.packages(tibble)
-install.packages(janitor)
-install.packages(sf)
-install.packages(ggplot2)
-install.packages(ggspatial)
-install.packages(dplyr)
-```
+- `readr`
+- `tibble`
+- `janitor`
+- `sf`
+- `ggplot2`
+- `ggspatial`
+- `dplyr`
 
 ## A quick introduction of terms
 
@@ -50,6 +48,7 @@ In spatial analysis it is customary to refer to places as objects. These objects
 Objects can also be **raster data**. Raster data is made up of pixels (or cells), and each pixel has an associated value. Simplifying slightly, a digital photograph is an example of a raster dataset where each pixel value corresponds to a particular colour. In GIS, the pixel values may represent elevation above sea level, or chemical concentrations, or rainfall etc. The key point is that all of this data is represented as a grid of (usually square) cells. You can find more on raster data [here](https://datacarpentry.org/organization-geospatial/01-intro-raster-data/)
 
 ![](img/raster_concept.png)
+
 #### Networks
 
 We already mentioned lines that constitute objects of spatial data, such as streets, roads, railroads, etc. Networks constitute one-dimensional structures embedded in two or three dimensions. Discrete point objects may be distributed on the network, representing phenomena such as landmarks, or observation points. Mathematically, a network forms a graph, and many techniques developed for graphs have application to networks. These include various ways of measuring a network's connectivity, or of finding the shortest path between pairs of points on a network. You can have a look at the [lesson on network analysis in the QGIS documentation](https://docs.qgis.org/2.18/en/docs/training_manual/vector_analysis/network_analysis.html)
@@ -123,7 +122,7 @@ To do acquire the police recorded crime data in the UK, you can use [data.police
 - Finally click on `Generate File` button.
 
 
-Because the latest data of GMP is June 2019, we should download data from `Archive` tab, not `Custom download` tab. If you scroll down, you will find `June 2021` folder which contains crime data from July 2018 to June 2021. I know!!😩 it's a huge file as it has 'crime' and 'stop and search' data of all police forces from July 2018 to June 2021. You can download the folder as a practice or use the data that we already have downloaded for you. You can go back to this week’s learning materials to download from Blackboard.
+As you may notice, the data is available from Jan 2020 under `Custom download` tab. Because the latest data of GMP is June 2019, we should download GMP data from `Archive` tab, not `Custom download` tab. If you scroll down, you will find `June 2021` folder which contains crime data from July 2018 to June 2021. I know!!😩 it's a huge file as it has 'crime' and 'stop and search' data of all police forces from July 2018 to June 2021. You could download the data folder as a practice or use the data that we already have downloaded for you. You can go to this week’s learning materials to download from Blackboard or download the data from a website where we keep the data.
 
 Before we can use this data we need to read it or import it into R and turn it into a dataframe object. To read in the .csv file, which is the format we just downloaded, the command is `read_csv()` from the `readr` package. You'll need to load this package first. 
 
@@ -174,7 +173,6 @@ crimes <- clean_names(crimes)
 ```
 
 Now the names are much neater. You can print them all for a view using the `names()` function: 
-
 ```{r printnames}
 names(crimes)
 ```
@@ -199,7 +197,17 @@ First, and possibly most obvious, are the coordinates provided with each crime i
 head(crimes, n = 1)
 ```
 
-You can see that the values are `r print(crimes$longitude[1])` for Longitude and `r print(crimes$latitude[1])` for Latitude. These two numbers allow us to put this point on a map. 
+```{r echo=FALSE, results='hide'}
+inlinecode1 <- print(crimes$longitude[1])
+inlinecode2 <- print(crimes$latitude[1])
+inlinecode3 <- print(crimes$location[1])
+inlinecode4 <- print(crimes$location[nrow(crimes)])
+inlinecode5 <- print(gsub("On or near ","",crimes$location[nrow(crimes)]))
+inlinecode6 <- print(crimes$lsoa_name[1])
+```
+
+
+You can see that the values are **`r inlinecode1``r print(crimes$longitude[1])`** for Longitude and **`r inlinecode2``r print(crimes$latitude[1])`** for Latitude. These two numbers allow us to put this point on a map. 
 
 ### The line
 
@@ -209,12 +217,13 @@ Another column which contains information about *where* the crime happened is th
 head(crimes, n = 1)
 ```
 
-You can see that the value is `r print(crimes$location[1])` this isn't great, as we might struggle to identify *which* parking area... Some other ones are more useful, let's look at the last entry for example with the `tail()` function.
+You can see that the value is **`r inlinecode3``r print(crimes$location[1])`** this isn't great, as we might struggle to identify *which* parking area... Some other ones are more useful, let's look at the last entry for example with the `tail()` function.
 
 ```{r}
 tail(crimes, n = 1)
 ```
-You can see that the value is `r print(crimes$location[nrow(crimes)])`. This makes our crime much easier to find, we just need to locate where is `r print(gsub("On or near ","",crimes$location[nrow(crimes)]))`. We might have a shapefile of lines of all the roads of Manchester, and if we did, we can link the crime to that particular road, in order to map it. 
+
+You can see that the value is **`r inlinecode4``r print(crimes$location[nrow(crimes)])`**. This makes our crime much easier to find, we just need to locate where is **`r inlinecode5``r print(gsub("On or near ","",crimes$location[nrow(crimes)]))`**. We might have a shapefile of lines of all the roads of Manchester, and if we did, we can link the crime to that particular road, in order to map it. 
 
 ### The polygon 
 
@@ -224,7 +233,7 @@ What more? You may also have seen the column `lsao_name` seems to have some spat
 head(crimes, n = 1)
 ```
 
-You see the value for LSOA name is `r print(crimes$lsoa_name[1])` - Bolton we know is a Borough of Greater Manchester, but what is the 001 for ?
+You see the value for LSOA name is **`r inlinecode6``r print(crimes$lsoa_name[1])`** - Bolton we know is a Borough of Greater Manchester, but what is the 001 for ?
 
 Well it denotes a sparticular geographical sub-unit within Bolton called a **Lower Layer Super Output Area**. This is a unit of [UK Census Geography](https://www.ons.gov.uk/methodology/geography/ukgeographies/censusgeography). The basic unit for Census Geography is an 'Outout area' - this is the resolution at which we can access data from the UK Census. We will be making use of census data later in the course. The Ourput Area (OA) is therefore the smallest unit we could use. Normally, in this module, we will be using a slightly larger version - the Lower Super Output Area (LSOA). 
 
@@ -512,7 +521,8 @@ To read in your data, you will need to know the path to where you have saved it.
 Let's create an object and assign it our shapefile's name:
 
 ```{r}
-# Remember to use the appropriate pathfile in your case
+# Remember to use the appropriate pathfile in your case 
+# alt, manchester_lsoa <- st_read(file.choose())
 shp_name <- "data/BoundaryData/england_lsoa_2011.shp"
 ```
 

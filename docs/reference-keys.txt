@@ -28,6 +28,7 @@ geospatial-perspective---the-basics
 place
 attributes
 objects-1
+networks
 maps-reference-and-thematic-maps
 map-projections-and-geographic-coordinate-systems
 density-estimation
