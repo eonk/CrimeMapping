@@ -15,6 +15,14 @@ We will also introduce faceting and **small multiples**, which is a format for c
 - `tmap`
 - `shinyjs`
 
+```{r, warnings=FALSE, message=FALSE, echo=FALSE}
+library(readr)
+library(sf)
+library(janitor)
+library(tmap)
+library(dplyr)
+```
+
 You may not remember all of what you did to generate that file so let's not waste time and just cut and paste from below (but try to remember what each of the lines of code is doing and if you are not clear look at the notes from last week). Imagine you had to do all of this again by pointing and clicking in a graphical user interface rather than just sending the code to the console! As you will see time and time again, code in the end is a much more efficient way of talking to a computer.
 
 ```{r, eval=FALSE}
@@ -28,8 +36,10 @@ shp_name <- "data/BoundaryData/england_lsoa_2011.shp"
 manchester_lsoa <- st_read(shp_name)
 
 #Alternatively, you can download the LSOA shapefile from where we saved the data. 
-#Important!! note that we store it in on my Data folder You HAVE TO change that if needed.
-download.file("https://www.dropbox.com/s/h5c1okn4m6t3rqe/BoundaryData.zip?dl=1" , destfile="/data/BoundaryData.zip")
+#Important! note that I store it in on my Data folder You HAVE TO change that if needed.
+download.file("https://www.dropbox.com/s/h5c1okn4m6t3rqe/BoundaryData.zip?dl=1" , 
+              destfile="/data/BoundaryData.zip")
+#Important! note that I extract file to the data/BoundaryData folder. you HATE TO change exdir (the directory to extract files to)
 unzip("/data/BoundaryData.zip", exdir = "/data/BoundaryData")
 manchester_lsoa <- st_read("data/BoundaryData/england_lsoa_2011.shp")
 ```
@@ -45,7 +55,7 @@ crimes_per_lsoa <- crimes %>%
 
 manchester_lsoa <- left_join(manchester_lsoa, crimes_per_lsoa, by = c("code"="lsoa_code"))
 
-#any LSOA units with 0 crime are treated as missing so replace the missings as 0
+#any LSOA units with 0 crime are treated as missing so replace the missing as 0
 manchester_lsoa$count[is.na(manchester_lsoa$count)] <- 0
 ```
 
@@ -63,7 +73,7 @@ If you wanted to bring this shapefile back into R at any future point, you would
 manchester_crime_lsoa <- st_read("data/BoundaryData/manchester_crime_lsoa.shp")
 ```
 
-#### Activity 1: Spot the difference
+### Activity 1: Spot the difference
 
 Before we carry on, can you tell what is different between *manchester_lsoa.shp* and *manchester_crime_lsoa.shp* that you now have saved for working with? Discuss in your groups. 
 
@@ -131,7 +141,6 @@ current_style <- tmap_style("col_blind")
 See how the map changes.
 
 ```{r}
-
 tm_shape(manchester_crime_lsoa) + 
   tm_fill("count", title = "Crime counts") +
   tm_borders(alpha = 0.1) +
@@ -372,7 +381,8 @@ What do you think about these three maps? How do you think this might be differe
 <!-- *Reproduce the map below, you will need to include the code you used as part of your homework submission. Discuss the results. What are the most notable differences? Which denominator do you think is more appropriate (you will need to think about this quite carefully). Are you comparing like with like? Why? Why not? Could you make these comparisons more equivalent if you think you are not comparing like with like?*  -->
 
 Once you have completed this activity, let's explore your map with the crime rate using the usual residents as the denominator using the interactive way. Assuming you want to display 'crime_rate_map' we just created, you could use the following code.
-```{r, eval = FALS, error = TRUE}
+
+```{r, eval = FALSE, warning = FALSE, include=FALSE}
 tmap_mode("view")
 crime_rate_map
 ```
