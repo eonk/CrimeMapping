@@ -645,8 +645,6 @@ And by doing so, we produce a final table that contains all values, lined up *co
 
 This is all we are doing, when merging tables, is we are making use that we line up the correct value for all the variables, for all our observations. 
 
-
-
 Why are we using *left* join though? There is a [whole family of join functions as part of dplyr](http://stat545.com/bit001_dplyr-cheatsheet.html) which join data sets. There is also a right_join, and an inner_join and an outer_join and a full_join. But here we use left join, because that way we keep all the rows in x (the left-hand side dataframe), and join to it all the matched columns in y (the right-hand side dataframe). 
 
 So let's join the crimes data to the spatial data, using left_join():
