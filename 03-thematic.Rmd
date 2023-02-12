@@ -69,7 +69,7 @@ Notice how four files have appeared in your working directory, in your "Boundary
 
 If you wanted to bring this shapefile back into R at any future point, you would only need to use the `st_read()` function.
 
-```{r}
+```{r, eval=FALSE}
 manchester_crime_lsoa <- st_read("data/BoundaryData/manchester_crime_lsoa.shp")
 ```
 
@@ -381,8 +381,12 @@ What do you think about these three maps? How do you think this might be differe
 <!-- *Reproduce the map below, you will need to include the code you used as part of your homework submission. Discuss the results. What are the most notable differences? Which denominator do you think is more appropriate (you will need to think about this quite carefully). Are you comparing like with like? Why? Why not? Could you make these comparisons more equivalent if you think you are not comparing like with like?*  -->
 
 Once you have completed this activity, let's explore your map with the crime rate using the usual residents as the denominator using the interactive way. Assuming you want to display 'crime_rate_map' we just created, you could use the following code.
+<<<<<<< HEAD
 
 ```{r, eval = FALSE, warning = FALSE, include=FALSE}
+=======
+```{r, eval = FALSE}
+>>>>>>> c6e1474d8e34967b24185f11c2b7955b37dcd210
 tmap_mode("view")
 crime_rate_map
 ```
