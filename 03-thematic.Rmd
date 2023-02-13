@@ -25,9 +25,9 @@ library(dplyr)
 
 You may not remember all of what you did to generate that file so let's not waste time and just cut and paste from below (but try to remember what each of the lines of code is doing and if you are not clear look at the notes from last week). Imagine you had to do all of this again by pointing and clicking in a graphical user interface rather than just sending the code to the console! As you will see time and time again, code in the end is a much more efficient way of talking to a computer.
 
-```{r, eval=FALSE}
+```{r}
 urlfile <- "https://raw.githubusercontent.com/eonk/cm_book/main/data/2019-06-greater-manchester-street.csv"
-crimes <- read_csv(url(urlfile))
+crimes <- read_csv(urlfile)
 ```
 
 ```{r, eval=FALSE}
@@ -47,29 +47,30 @@ manchester_lsoa <- st_read("data/BoundaryData/england_lsoa_2011.shp")
 Once you import the data, let's count the number of crimes in each LSOA units like what we did in the week 2!
 
 ```{r, eval=FALSE, message=FALSE}
+#count the number of crimes in each LSOA
 crimes_per_lsoa <- crimes %>%
   clean_names() %>% 
   select(lsoa_code) %>%
   group_by(lsoa_code) %>%
   summarise(count=n())
-
-manchester_lsoa <- left_join(manchester_lsoa, crimes_per_lsoa, by = c("code"="lsoa_code"))
+#merge the crime count with the LSOA file
+manchester_crime_lsoa <- left_join(manchester_lsoa, crimes_per_lsoa, by = c("code"="lsoa_code"))
 
 #any LSOA units with 0 crime are treated as missing so replace the missing as 0
-manchester_lsoa$count[is.na(manchester_lsoa$count)] <- 0
+manchester_crime_lsoa$count[is.na(manchester_crime_lsoa$count)] <- 0
 ```
 
 You may not want to have to go through this process all the time. One thing you could do is to save the *manchester_lsoa* object as a physical file in your machine. You can use the `st_write()` function from the `sf` package to do this. If we want to write into a shapefile format we would do as shown below:
 
 ```{r, eval=FALSE}
-st_write(manchester_lsoa, "data/BoundaryData/manchester_crime_lsoa.shp")
+st_write(manchester_crime_lsoa, "data/BoundaryData/manchester_crime_lsoa.shp")
 ```
 
 Notice how four files have appeared in your working directory, in your "BoundaryData"" subdirectory or whatever you called it. Remember what we said last week about shapefiles, there are a collection of files that need to be kept together.
 
 If you wanted to bring this shapefile back into R at any future point, you would only need to use the `st_read()` function.
 
-```{r, eval=FALSE}
+```{r}
 manchester_crime_lsoa <- st_read("data/BoundaryData/manchester_crime_lsoa.shp")
 ```
 
@@ -81,7 +82,7 @@ Before we carry on, can you tell what is different between *manchester_lsoa.shp*
 
 Today we are going to introduce the `tmap` package. This package was developed to easily produce thematic maps. It is inspired by the `ggplot2` package and the layered grammar of graphics. It was written by Martjin Tennekes a Dutch data scientist. There are a number of [vignettes in the CRAN repository](https://cran.r-project.org/web/packages/tmap/index.html) and the [GitHub repo for this package](https://github.com/mtennekes/tmap) that you can explore. GitHub is a collaborative website used by software developers and data scientist, also contains a useful *readme* section with additional resources to familiarise yourself with this package. Each map can be plotted as a static map (*plot mode*) and shown interactively (*view mode*) as we briefly saw last week. We will start by focusing on static maps.
 
-Every time you use this package you will need a line of code that specifies the spatial object you will be using. Although originally developed to handle `sp` objects only, it now also has support for `sf` objects. For specifying the spatial object we use the `tm_shape()` function and inside we specify the name of the spatial object we are using. On its own, this will do nothing apparent. No map will be created. We need to add additional functions to specify what we are doing with that spatial object. If you try to run this line on its own, you'll get an error telling you you must "Specify at least one layer after each tm_shape". 
+Every time you use this package you will need a line of code that specifies the spatial object you will be using. Although originally developed to handle `sp` objects only, it now also has support for `sf` objects. For specifying the spatial object we use the `tm_shape()` function and inside we specify the name of the spatial object we are using. On its own, this will do nothing apparent. No map will be created. We need to add additional functions to specify what we are doing with that spatial object. If you try to run this line on its own, you'll get an error telling you you must "Error: no layer elements defined after tm_shape". 
 
 ```{r, eval=FALSE}
 library(tmap)
@@ -128,7 +129,7 @@ Notice as well that the legend in this map is (a) not very informative and (b) l
 tm_shape(manchester_crime_lsoa) + 
   tm_fill("count", title = "Crime counts") +
   tm_borders(alpha = 0.1) +
-  tm_layout(main.title = "Crime in Manchester City, Nov/2017", main.title.size = 0.7 ,
+  tm_layout(main.title = "Crime in Manchester City, June/2019", main.title.size = 0.7 ,
             legend.position = c("right", "bottom"), legend.title.size = 0.8)
 ```
 
@@ -144,7 +145,7 @@ See how the map changes.
 tm_shape(manchester_crime_lsoa) + 
   tm_fill("count", title = "Crime counts") +
   tm_borders(alpha = 0.1) +
-  tm_layout(main.title = "Crime in Manchester City, Nov/2017", main.title.size = 0.7 ,
+  tm_layout(main.title = "Crime in Manchester City, June/2019", main.title.size = 0.7 ,
             legend.position = c("right", "bottom"), legend.title.size = 0.8)
 ```
 
@@ -381,12 +382,8 @@ What do you think about these three maps? How do you think this might be differe
 <!-- *Reproduce the map below, you will need to include the code you used as part of your homework submission. Discuss the results. What are the most notable differences? Which denominator do you think is more appropriate (you will need to think about this quite carefully). Are you comparing like with like? Why? Why not? Could you make these comparisons more equivalent if you think you are not comparing like with like?*  -->
 
 Once you have completed this activity, let's explore your map with the crime rate using the usual residents as the denominator using the interactive way. Assuming you want to display 'crime_rate_map' we just created, you could use the following code.
-<<<<<<< HEAD
 
 ```{r, eval = FALSE, warning = FALSE, include=FALSE}
-=======
-```{r, eval = FALSE}
->>>>>>> c6e1474d8e34967b24185f11c2b7955b37dcd210
 tmap_mode("view")
 crime_rate_map
 ```
