@@ -67,8 +67,7 @@ activity-5-mapping-crime-rates
 summary-2
 performing-spatial-operations-in-r
 getting-some-more-data
-activity-1-reading-data-in-from-the-web
-subsetting-using-pattern-matching
+activity-1-subsetting-using-pattern-matching
 activity-2-pattern-matching-to-find-city-centre-premises
 geocoding-from-an-address
 activity-3-getting-address-from-post-code-using-an-api
@@ -82,7 +81,7 @@ meet-a-new-format-of-shapefile-geojson
 activity-5-subset-points-to-those-within-a-polygon
 activity-6-building-buffers
 activity-7-counting-points-in-polygon
-recap
+summary-3
 more-on-thematic-maps
 introduction-1
 pro-tip-do-i-need-to-install-this-package
@@ -126,7 +125,7 @@ activity-3-density-maps
 activity-4-adding-some-context
 spatial-point-patterns-along-networks
 activity-5-spatial-point-pattern-processes-along-networks
-recap-1
+recap
 global-and-local-spatial-autocorrelation
 get-data
 what-is-a-neighbour
@@ -185,4 +184,4 @@ activity-6-spatial-error-model
 time-matters
 activity-7-small-multiples
 activity-8-animations
-recap-2
+recap-1

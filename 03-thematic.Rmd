@@ -15,7 +15,6 @@ We will also introduce faceting and **small multiples**, which is a format for c
 - `shinyjs`
 - `tmap`
 
-
 ```{r, warnings=FALSE, message=FALSE, echo=FALSE}
 library(readr)
 library(sf)
@@ -26,14 +25,8 @@ library(dplyr)
 
 You may not remember all of what you did to generate that file so let's not waste time and just cut and paste from below (but try to remember what each of the lines of code is doing and if you are not clear look at the notes from last week). Imagine you had to do all of this again by pointing and clicking in a graphical user interface rather than just sending the code to the console! As you will see time and time again, code in the end is a much more efficient way of talking to a computer.
 
-<<<<<<< Updated upstream
 ```{r}
-urlfile <- "https://raw.githubusercontent.com/eonk/cm_book/main/data/2019-06-greater-manchester-street.csv"
-crimes <- read_csv(urlfile)
-=======
-```{r, eval=FALSE}
 crimes <- read_csv("https://raw.githubusercontent.com/eonk/cm_book/main/data/2019-06-greater-manchester-street.csv")
->>>>>>> Stashed changes
 ```
 
 ```{r, eval=FALSE}
@@ -183,9 +176,8 @@ For each map, instead of visualising them one by one, just assign them to a new 
 
 So let's make *map1*. This will create a thematic map using equal intervals:
 
-
 ```{r}
-map1 <- tm_shape(manchester_crime_lsoa) +                   #use tm_shape function to specify spatial object
+map1 <- tm_shape(manchester_crime_lsoa) +             #use tm_shape function to specify spatial object
   tm_fill("count", style="equal", title = "Equal") +  #use tm_fill to specify variable, classification method, and give the map a title
   tm_layout(legend.position = c("right", "bottom"),   #use tm_layout to make the legend look nice
             legend.title.size = 0.8,
@@ -214,7 +206,6 @@ map3 <- tm_shape(manchester_crime_lsoa) +
 
 And finally make *map4*, standard deviation map, which maps the values of our variable to distance to the mean value.
 
-
 ```{r}
 map4 <- tm_shape(manchester_crime_lsoa) + 
   tm_fill("count", style="sd", title = "Standard Deviation") +
@@ -240,7 +231,6 @@ tmap_arrange(map1, map2, map3, map4)
 ```
 
 There are some other classification methods built into tmap which you can experiment with if you'd like. Your discrete gradient options are "cat", "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", "jenks", "dpih", "headtails", and "log10_pretty". A numeric variable is processed as a categorical variable when using "cat", i.e. each unique value will correspond to a distinct category.
-
 
 Taken from the help file we can find more information about these, for example the "kmeans" style uses kmeans clustering technique (a form of unsupervised statistical learning) to generate the breaks. The "hclust" style uses hclust to generate the breaks using hierarchical clustering and the "bclust" style uses bclust to generate the breaks using bagged clustering. These approaches are outisde the scope of what we cover, but just keep in mind that there are many different ways to classify your data, and you must think carefully about the choice you make, as it may affect your readers' conclusions from your map. 
 
@@ -294,7 +284,6 @@ Now you will need to practice navigating the Infuse system to generate a data ta
 Once you have those fields click next to get the data and download the file. Unzip them and see you have your .csv file. Save this into your data subfolder in your project directory. Use `read_csv()` function from the `readr` package to import this data.
 
 ```{r, message=FALSE, warnings=FALSE, echo=FALSE}
-library(readr)
 census_lsoa_m <- read_csv("https://raw.githubusercontent.com/eonk/cm_book/main/data/Data_AGE_APPSOCG_DAYPOP_UNIT_URESPOP.csv")
 ```
 
