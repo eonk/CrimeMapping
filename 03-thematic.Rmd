@@ -8,12 +8,13 @@ This week we will get to know how to think about thematic maps, and how to apply
 
 We will also introduce faceting and **small multiples**, which is a format for comparing the geographical distribution of different social phenomena. For this session we will be using the spatial object that you created last week and complement it with additional information from the census. So first of all you will have to rerun the code you used to create the *manchester_lsoa* `sf` object. Apart from doing so, you want to start your session loading the libraries you know for sure you will need:
 
-- `readr`
-- `janitor`
-- `sf`
 - `dplyr`
-- `tmap`
+- `janitor`
+- `readr`
+- `sf`
 - `shinyjs`
+- `tmap`
+
 
 ```{r, warnings=FALSE, message=FALSE, echo=FALSE}
 library(readr)
@@ -25,9 +26,14 @@ library(dplyr)
 
 You may not remember all of what you did to generate that file so let's not waste time and just cut and paste from below (but try to remember what each of the lines of code is doing and if you are not clear look at the notes from last week). Imagine you had to do all of this again by pointing and clicking in a graphical user interface rather than just sending the code to the console! As you will see time and time again, code in the end is a much more efficient way of talking to a computer.
 
+<<<<<<< Updated upstream
 ```{r}
 urlfile <- "https://raw.githubusercontent.com/eonk/cm_book/main/data/2019-06-greater-manchester-street.csv"
 crimes <- read_csv(urlfile)
+=======
+```{r, eval=FALSE}
+crimes <- read_csv("https://raw.githubusercontent.com/eonk/cm_book/main/data/2019-06-greater-manchester-street.csv")
+>>>>>>> Stashed changes
 ```
 
 ```{r, eval=FALSE}
