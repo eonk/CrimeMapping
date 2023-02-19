@@ -62,7 +62,7 @@ In any case, what we want to do is to examine whether certain outlets have more 
 
 ## Getting some (more) data
 
-Manchester City Council have an [Open Data Catalogue](http://open.manchester.gov.uk/open/homepage/3/manchester_open_data_catalogue) on their website, which you can use to browse through what sorts of data they release to the public. There are a some more and some less interesting data sets made available here. It's not quite as impressive as the open data from some of the cities in the US such as [New York](https://opendata.cityofnewyork.us/) or [Dallas ](https://www.dallasopendata.com/) but we'll take it. 
+Manchester City Council have an [Open Data Catalogue](http://open.manchester.gov.uk/open/homepage/3/manchester_open_data_catalogue) on their website, which you can use to browse through what sorts of data they release to the public. There are some more and some less interesting data sets made available here. It's not quite as impressive as the open data from some of the cities in the US such as [New York](https://opendata.cityofnewyork.us/) or [Dallas ](https://www.dallasopendata.com/) but we'll take it. 
 
 One interesting data set, especially for our questions about the different alcohol outlets is the [Licensed Premises](http://www.manchester.gov.uk/open/downloads/file/169/licensed_premises) data set. This details all the currently active licenced premises in Manchester. You can see there is a link to download now. 
 
@@ -148,7 +148,7 @@ Postcodes can be entered at area, district, sector, and unit level - see Postcod
 
 What is an API? I once gave an hour long demo on using APIs, if you would like to watch you can see here: [APIs demo](https://vimeo.com/438506088). 
 
-But essentially, the way we use it here, an API is a way for us to query data from the web using an url. In this case, we will use the Open Postcode Geo API (detailed above), and give it an address. In the URL. Then, it will return to us the coordinates of that address. 
+But essentially, the way we use it here, an API is a way for us to query data from the web using an url. In this case, we will use the Open Postcode Geo API (detailed above), and give it an address in the URL. Then, it will return to us the coordinates of that address. 
 
 Try this in a browser. Open up chrome, or firefox, or whatever you use and type "http://api.getthedata.com/postcode/" plus your post code, but instead of the space add a plus sign. 
 
@@ -573,7 +573,7 @@ leaflet(crimes_per_prem) %>%
               weight = 1, opacity = 1, color = "black",
               label = ~as.character(PREMISESNAME)) %>% 
   addLegend(pal = pal, values = ~n, opacity = 0.7, 
-            title = 'Violend crimes', position = "bottomleft") 
+            title = 'Violent crimes', position = "bottomleft") 
 ```
 
 It's not the neatest of maps, with all these overlaps, but we can talk about prettifying maps another day. You've done enough today. 
