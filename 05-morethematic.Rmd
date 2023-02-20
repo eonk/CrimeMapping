@@ -6,7 +6,22 @@ In this session we are going to discuss some additional features around thematic
 
 Before we do any of this, we need to load the libraries we will use today:
 
-```{r, warning=FALSE, message=FALSE}
+- `sf`
+- `tmap`
+- `sp`
+- `spdep`
+- `DCluster`
+- `cartogram`
+- `ggplot2`
+- `dplyr`
+- `readxl`
+- `readr`
+- `janitor`
+- `hexbin`
+- `ggspatial`
+- `geogrid`
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 library(sf)
 library(tmap)
 library(sp)
@@ -61,7 +76,7 @@ So far, we've really been spoilt by using neat and easy-to-access data typical o
 * A shapefile of India (including boundaries of 'states' and 'districts')
 * District-level data on households and crop yields
 
-First of all, a number of the big universities in the US have repositories (online collections) of GIS data (like shapefiles). There are a few of them that have India shapefiles ([Harvard](https://gis2.harvard.edu/resources/data/india-gis-data), [Stanford](https://geodata.mit.edu/?f%5Bdc_format_s%5D%5B%5D=Shapefile&f%5Bdct_provenance_s%5D%5B%5D=Stanford&per_page=50&q=india)) but you need to request access to them for research purposes. If you're doing your own research and need the shapefile of a country, it's worth looking on these repositories for it. You can then email them to request access and usually they'll give access no problem if you're using it for research. But for now, I've already requested access and downloaded the India shapefiles, but please note that these shapefiles are for the purposes of this workshop only. Here's the link to download the shapefiles: [https://www.dropbox.com/sh/6b1wiz3k7v1nl80/AABjYJdC0ETcCNVdbOqbcZxPa?dl=0](https://www.dropbox.com/sh/6b1wiz3k7v1nl80/AABjYJdC0ETcCNVdbOqbcZxPa?dl=0). 
+First of all, a number of the big universities in the US have repositories (online collections) of GIS data (like shapefiles). There are a few of them that have India shapefiles ([Harvard](https://gis2.harvard.edu/resources/data/india-gis-data), [Stanford](https://geodata.mit.edu/?f%5Bdc_format_s%5D%5B%5D=Shapefile&f%5Bdct_provenance_s%5D%5B%5D=Stanford&per_page=50&q=india)) but you need to request access to them for research purposes. If you're doing your own research and need the shapefile of a country, it's worth looking on these repositories for it. You can then email them to request access and usually they'll give access no problem if you're using it for research. But for now, I've already requested access and downloaded the India shapefiles, but please note that these shapefiles are for the purposes of this workshop only. Here's the link to download the [shapefiles](https://www.dropbox.com/scl/fo/5y9ru2a5ycr097w7uivl9/h?dl=0&rlkey=o440r4caf38orvfufjf4wtp6b)
 
 TIP: Use this button to select all files at once, then just hit 'Download'!
 ![](img/select_all.png)
@@ -70,26 +85,31 @@ TIP: Use this button to select all files at once, then just hit 'Download'!
 
 You'll notice that there are different shapefiles there, download them all for now. We will use them to demonstrate a good example of the problems you encounter when researching countries with less infrastructure. The UK has these 'LSOA's we covered previously, which are areas that don't change over time. In India, districts (like counties) are merged and split quite frequently and entire states (collections of districts) can merge and split too! So each shapefile we've downloaded will have different boundaries and different names for districts - so which one do we use?!
 
-
 #### Activity 2: Getting some crop data (attributes)
 
-You may be in a situation like the one described above, and you might want to consider for yourself - how can you decide what is the best shapefile to use? Well the answer will really depend on your data set! WHat is it that you want to represent, and what is the best matched shapefile for the job?
-
+You may be in a situation like the one described above, and you might want to consider for yourself - how can you decide what is the best shapefile to use? Well the answer will really depend on your data set! What is it that you want to represent, and what is the best matched shapefile for the job?
 
 One way of deciding is to match each shapefile up with our data (like we did for crime in Manchester before) and checking which shapefile has the most matching district and state names with the dataset. So we'll start by downloading the dataset.
 
-There's an amazing dataset called VDSA (Village Dynamics in South Asia) which covers much of India, containing both agricultural and socio-economic information. Unfortunately, the website interface isn't great and downloading the data requires you to make a free account and download individual files for each state, which is a massive faff. So instead, I've already downloaded the crop production data for just one state, **Bihar**, and you can download it here: [https://www.dropbox.com/sh/mdwuut7mtqafnyt/AAAiqzYm9eK2A8KAwlU4F93-a?dl=0](https://www.dropbox.com/sh/mdwuut7mtqafnyt/AAAiqzYm9eK2A8KAwlU4F93-a?dl=0) (this too is also on BlackBoard)
+There's an amazing dataset called VDSA (Village Dynamics in South Asia) which covers much of India, containing both agricultural and socio-economic information. Unfortunately, the website interface isn't great and downloading the data requires you to make a free account and download individual files for each state, which is a massive faff. So instead, I've already downloaded the crop production data for just one state, **Bihar**, and you can download it [here](https://www.dropbox.com/s/jr9w7ejdqrft59p/Bihar.xlsx?dl=1) (this too is also on BlackBoard)
 
 Great, now let's read that data into R and have a look!
 
 Just like we read '.csv' files with read.csv, we can read '.xlsx' (Excel) files with the `read_xlsx()` function from the `readxl` package:
 
-
 ```{r}
 yield_data <- read_xlsx('data/Bihar.xlsx')
-
 glimpse(yield_data)
+```
 
+```{r, eval=FALSE}
+#Alternatively, you can download Bihar.xles from where we saved the data
+#Important! note that I store it in on my Data folder You HAVE TO change that if needed.
+download.file("https://www.dropbox.com/s/dddf1tjqg0l51gp/Bihar.zip?dl=1" , 
+              destfile="/data/Bihar.zip")
+#Important! note that I extract file to the data folder. you HATE TO change exdir (the directory to extract files to)
+unzip("/data/Bihar.zip", exdir = "/data/")
+yield_data <- read_xlsx("data/Bihar.xlsx")
 ```
 
 After looking at the yield data, you can see it's quite massive! Each column represents the production in weight ('_TQ' columns) and the area farmed ('_TA' columns) for each crop, per district, per year. That's too much information for us! We just want rice production and area, so we'll use the 'select' function to just pick the columns we want: names of states and districts, the year, and the rice information.
@@ -97,7 +117,6 @@ After looking at the yield data, you can see it's quite massive! Each column rep
 ```{r}
 yield_data <- yield_data %>%
   dplyr::select(STNAME, DISTNAME, YEAR, RICE_TA, RICE_TQ)
-
 ```
 
 #### Activity 3: Comparing shapefiles
@@ -270,17 +289,11 @@ What does this mean? Essentially, we compute a weighted average between the raw 
 
 Here we are going to introduce the approach implemented in `DCluster`, a package developed for epidemiological research and detection of [clusters of disease](https://www.r-project.org/conferences/DSC-2003/Proceedings/GomezRubioEtAl.pdf).
 
-
 Specifically, we use the `empbaysmooth(Observed, Expected)` function, where we specify two values, the **expected** value (the global average) and the **observed** value (the rate we actually see). 
 
-
-
 ```{r}
-
-
 res <- empbaysmooth(bihar_1971$rice_yield, bihar_1971$RICE_TA*(sum(bihar_1971$rice_yield)/sum(bihar_1971$RICE_TA)))
 ```
-
 
 In the new object we generate, which is a list, you have an element which contains the computed rates. We can add those to our dataset:
 
@@ -288,14 +301,10 @@ In the new object we generate, which is a list, you have an element which contai
 bihar_1971$rice_yieldEBS <- res$smthrr
 ```
 
-
-
 **Alternatively** instead of shrinking to the global rate, we can shrink to a rate based on the neighbours of each county. In this case, instead of shrinking to a global rate, we shrink to a *local rate*. We then may be able to take unobserved heterogeneity into account. For this we need the list of neighbours (*we will discuss this code in a later session, so for now just trust us we are computing the rate of the areas that surround each counry*):
 
 ```{r}
-
 bihar_1971 <- bihar_1971 %>% mutate(INTERSECT = st_intersects(.))
-
 
 as.nb.sgbp <- function(x, ...) {
   attrs <- attributes(x)
@@ -306,26 +315,19 @@ as.nb.sgbp <- function(x, ...) {
   } 
 
 w_sf <- as.nb.sgbp(bihar_1971$INTERSECT)
-
 ```
-
 
 And now that we have the list of neighbours, we can use the `EBlocal()` function, and here specofy the count of cases (observed), the population at risk (or rice_TA in the case of our crop yields) and then finally the neighbours list we just created above (`w_sf`):
 
 ```{r}
-
 eb2 <- EBlocal(bihar_1971$rice_yield, bihar_1971$RICE_TA, w_sf)
 bihar_1971$rice_yieldEBSL <- eb2$est 
 bihar_1971$INTERSECT <- NULL
-
 ```
 
 We can now plot the maps and compare them :
 
 ```{r}
-
-
-
 current_style <- tmap_style("col_blind")
 
 map1 <- tm_shape(bihar_1971) + 
@@ -353,14 +355,11 @@ Notice that the quantiles are not the same, so that will make your comparison di
 
 ## Binning points
 
-
 We're going to move away from area-level data now, and go back to point-level data. 
-
 
 In GIS it is often difficult to present point-based data because in many instances there are several different points and data symbologies that need to be shown. As the number of different data points grows they can become complicated to interpret and manage which can result in convoluted and sometimes inaccurate maps. This becomes an even larger problem in web maps that are able to be depicted at different scales because smaller scale maps need to show more area and more data. This makes the maps convoluted if multiple data points are included.
 
 In many maps there are so many data points included that little can be interpreted from them. In order to reduce congestion on maps many GIS users and cartographers have turned to a process known as binning. 
-
 
 > **Binning** is defined as the process of grouping pairs of locations based on their distance from one another. These points can then be grouped as categories to make less complex and more meaningful maps.
 
@@ -368,9 +367,7 @@ Researchers and practitioners often require a way to systematically divide a reg
 
 This approach to binning generates an array of repeating shapes over a user-specified area. These shapes can be hexagons, squares, rectangles, triangles, circles or points, and they can be generated with any directional orientation.
 
-
 ![](img/shape_patterns_manual.jpg)
-
 
 ### The Binning Process
 
@@ -380,21 +377,15 @@ Spatial binning (also called *spatial discretization*) discretizes the location 
  - Using the coordinates of the point to identify which "bin" it belongs to. 
  - Using a common variable in the attribute table of the bin and the point layers.
 
-
 ### Different Binning Techniques
 
-
 Binning itself is a general term used to describe the grouping of a dataset's values into smaller groups [(Johnson, 2011)](http://indiemaps.com/blog/2011/10/hexbins/). The bins can be based on a variety of factors and attributes such as spatial and temporal and can thus be used for many different projects. 
-
 
 #### Choropleth maps 
 
 You might be thinkging, "grouping points into a larger spatial unit, haven't we already done this when making choropleth maps?". In a way you are right. Choropleth maps are another type of map to that uses binning. Proportional symbol and choropleth maps group similar data points together to show a range of data instead of many individual points. We've covered this extensively, and is generally the best approch to consider spatial grouping of your point variables, because the polygons (shapes) to which you are aggregating your points are *meaningful*. You can group into LSOAs because you want to show variation in neighbourhoods. Or you can group into police force areas because you want to look at differences between those units of analysis. But sometimes there is just not a geography present to meet your needs. 
 
-
 Let's say you are conducting some days of action in Manchester city centre, focusing on antisocial behaviour. You are going to put up some information booths and staff them with officers to engage with the local population about antiscoail behaviour. For these to be most effective, as an analyst you decide that they should go into the areas with the highest *count* of antisocial beaviour. You want to be very specific about where you put these as well, and so LSOA level would be too broad, you want to zoom in more. One approach can be to split central Manchester into some smaller polygons, and just calculate the number of antisocial behaviour incidents recorded in each. That way you can then decide to put your information booths somewhere inside the top 5 highest count bins. 
-
-
 
 #### Rectangular binning 
 
@@ -402,40 +393,28 @@ The aggregation of incident point data to regularly shaped grids is used for man
 
 Rectangular binning is the simplest binning method and as such it heavily used. However, there are some reasons why rectangular bins are less preferable over hexagonal bins. Before we cover this, let's have a look at hexagonal bins.
 
-
 #### Hexagonal binning 
 
 In many applications binning is done using a technique called **hexagonal binning**. This technique uses hexagon shapes to create a grid of points and develops a spatial histogram that shows different data points as a range or group of pairs with common distances and directions. In hexagonal binning the number of points falling within a particular rectangular or hexagon in a gridded surface is what makes the different colors to easily visualize data [(Smith, 2012)](https://www.mapbox.com/blog/binning-alternative-point-maps/). Hexagonnal binning was first developed in 1987 and today “hexbinning” is conducted by laying a hexagonal grid on top of 2-dimensional data [(Johnson, 2011)](http://indiemaps.com/blog/2011/10/hexbins/). Once this is done users can conduct data point counts to determine the number of points for each hexagon [(Johnson, 2011)](http://indiemaps.com/blog/2011/10/hexbins/). The bins are then symbolized differently to show meaningful patterns in the data.
 
-
 #### Activity 6: Hexbinning
-
 
 So how can we use hexbinning to solve our antisocial behaviour days of action task? Well let's say we split Manchester city centre into hexagons, and count the number of antisocial behaviour instances in these. We can then identify the top hexagons, and locate our booths somewhere within these. 
 
-
-
-
 Also let's get some data. You could go and get this data yourself from police.uk, we've been through all the steps for downloading data from there a few times now. But for now, I have a tidied set of data ready for you. This data is one year's worth of antisocial behaviour from the [police.uk](data.police.uk) data, from May 2016 to May 2017, for the borough of Manchester. 
-
 
 We can take our GMP crimes data, and select only the cases from ASB using the crime.type variable. If you want, however, I have already done this, so you can also download from my dropbox using the link here, (or get it from Blackboard): 
 
-
 ```{r}
-
-manchester_asb <- read_csv("https://www.dropbox.com/s/4tk0aps3jfd9nh4/manchester_asb.csv?dl=1")
+manchester_asb <- read_csv("https://www.dropbox.com/s/93a0ovgcxz6pgiz/manchester_asb.csv?dl=1")
 ```
 
-
 This is currently just a text dataframe, so we need to let R know that actually this is a spatial object, who's geometry can be find in its longitude and latitude coordinates. As we have long/lat we can assure it's in WGS 84 projection. 
-
 
 ```{r}
 ma_spatial <- st_as_sf(manchester_asb, coords = c("Longitude", "Latitude"), 
                  crs = 4326, agr = "constant")
 ```
-
 
 Now one thing that this does is it consumes our Long and Lat columns into a geometry attribute. This is generally OK, but for the binning we will do, we would like to have them as separate coordinates. To do this, we can use a bespoke function, `sfc_as_cols()` created by [Josh M. London](https://github.com/jmlondon) in response to this [issue opened on github for the sf package](https://github.com/r-spatial/sf/issues/231). To create this function here, run the below code: 
 
@@ -450,58 +429,38 @@ sfc_as_cols <- function(x, names = c("x","y")) {
   ret <- setNames(ret,names)
   dplyr::bind_cols(x,ret)
 }
-
 ```
-
 
 As we are not covering making your own function much here, don't worry too much about the above code, but if you're curious, raise your hand in the labs and we can come around and talk through it. 
 
-
 Now finally, let's use this function we just created to extract the coords to some columns. So in this function, we have to pass as parameters the name of the dataframe, ma_spatial in our case, and also what we want the columnd to be called in a concatenated list (created with the `c()` function). Let's call these "lng" and "lat":
-
 
 ```{r}
 ma_spatial <- sfc_as_cols(ma_spatial, c("lng", "lat"))
-
 ```
-
 
 As a first step, we can plot asb in the borough of Manchester using simple ggplot! Remember the data visualisation session from weeks ago? We discussed how ggplot is such a great tool for building visualisations, because you can apply whatever geometry best suits your data. So for us to just have a look at the hexbinned version of our point data of antisocial behaviour, we can use the `stat_binhex()` function. We can also recreate the thematic map element, as we can use the frequency of points in each hex to shade each hexbin from white (least number of incidents) to red (most nuber of incidents). 
 
-
 So let's have a go: 
 
-
 ```{r}
-
 ggplot(ma_spatial, aes(lng, lat)) +                        #define data and variables for x and y axes
   stat_binhex() +                                                         #add binhex layer (hexbin)
   scale_fill_gradientn(colours = c("white","red"), name = "Frequency")    #add shading based on number of ASB incidents
-
 ```
-
 
 Neat, but doesn't quite tell us *where* that really dark hexbon actually is. So it would be much better if we could do this with a basemap as the backrgound, rather than our grey ggplot theme.
 
-
 Now, we can apply the same code as we used above, for the ggplot, to this ggmap, to add our hexbins on top of this basemap: 
 
-
 ```{r}
-
-
 ggplot(ma_spatial, aes(x = lng, y = lat)) +
   annotation_map_tile() + 
   stat_binhex(alpha=0.7) +                                                         #add binhex layer (hexbin)
   scale_fill_gradientn(colours = c("white","red"), name = "Frequency")    #add shading based on number of ASB incidents 
-  
-
 ```
 
-
 Now this should give you some more context! Woo!
-
-
 
 So I mentioned we'd go over some reasons why you should consider aggregating into a hexagon grid rather than other shape: 
 
@@ -513,44 +472,36 @@ So I mentioned we'd go over some reasons why you should consider aggregating int
 - Finding neighbors is more straightforward with a hexagon grid. Since the edge or length of contact is the same on each side, the centroid of each neighbor is equidistant. However, with a fishnet grid, the Queen's Case (above/below/right/left) neighbor's centroids are N units away, while the centroids of the diagonal (Rook) neighbors are farther away (exactly the square root of 2 times N units away).
 - Since the distance between centroids is the same in all six directions with hexagons, if you are using a distance band to find neighbors or are using the Optimized Hot Spot Analysis, Optimized Outlier Analysis or Create Space Time Cube By Aggregating Points tools, you will have more neighbors included in the calculations for each feature if you are using hexagonal grid as opposed to a fishnet grid.
 
-
 ![](img/EE17F7E03F82-web.png)
 
 #### Activity 6: Rectangular binning
-
 
 Now, to again illustrate the differences of different approaches, let's see what this map would look like with: 
 
 a) rectangular binning: 
 
 ```{r}
-
 ggplot(ma_spatial, aes(x = lng, y = lat)) + 
   annotation_map_tile() + 
   stat_bin2d(alpha=0.7) + 
   scale_fill_gradientn(colours = c("white","red"), 
                        name = "Frequency") 
-
 ```
 
 
 b) hexagonal binning: 
 
 ```{r}
-
 ggplot(ma_spatial, aes(x = lng, y = lat)) + 
   annotation_map_tile() + 
   stat_binhex(alpha=0.7) + 
   scale_fill_gradientn(colours = c("white","red"), 
                        name = "Frequency")
-
 ```
-
 
 c) a simple "heatmap" (we will discuss these more thoroughly next week):
 
 ```{r}
-
 ggplot(ma_spatial, aes(x = lng, y = lat)) + 
   annotation_map_tile() + 
   stat_density2d(aes(fill = ..level.., # value corresponding to discretized density estimates 
@@ -559,15 +510,11 @@ ggplot(ma_spatial, aes(x = lng, y = lat)) +
   ## Configure the colors, transparency and panel
   scale_fill_gradientn(colours = c("white","red"), 
                        name = "Frequency") 
-
 ```
-
 
 Look at the difference between the three maps (hex, rectangle, and density). How would your conclusions change if you were given these maps? Would you make different decisions about where to place your booths for the days of action? Why or why not? Discuss.
 
-
 ### Multivariate binning 
-
 
 Multivariate binning is another binning method that lets you visualise slightly more complex data. In this method there can be many different variables consisting of different types of data. Like other binning methods the data is typically grouped with the sum or average of the data. Different types of symbology (such as size, shape and color) can also be used to represent this data as well.
 
@@ -583,16 +530,13 @@ By using binning to create categories of data maps are easier to understand, mor
 
 Hexbin plots can be viewed as an alternative to scatter plots. The hexagon-shaped bins were introduced to plot densely packed sunflower plots. They can be used to plot scatter plots with high-density data.
 
-
 ## A note of caution: MAUP
 
 Now that we've shown you how to do a lot of spatial crime analysis, we wanted to close with some words of caution. Remember that everything you've learned here are just tools that you will be applying to data you are working with, but it's up to you, the researcher, the analyst, the domain expert, to apply and use these with careful consideration and cautions. This discussion is very much part of spatial crime analysis, and an important field of thought. 
 
-
 I borrow here from George Renghert and Brian Lockwood: 
 
 > When spatial analysis of crime is conducted, the analyst should not ignore the spatial units that data are aggregated into and the impact of this choice on the interpretation of findings. Just as several independent variables are considered to determine whether they have statistical significance, a consideration of multiple spatial units of analysis should be made as well, in order to determine whether the choice of aggregation level used in a spatial analysis can result in biased findings.
-
 
 In particular, they highlight four main issues inherent in most studies of space:
 
@@ -602,7 +546,6 @@ In particular, they highlight four main issues inherent in most studies of space
 - and ways in which the results of statistical analyses can be manipulated by changes in the level of
 aggregation. 
 
-
 In this lab we will focus on **MAUP**, but if you are interested in this kind of work, you should definitely read their paper to consider the other issues as well. There are techniques that can be used to alleviate each of the methodological difficulties, and they are described in accessible detail in their paper: [Rengert, George F., and Brian Lockwood. "Geographical units of analysis and the analysis of crime." Putting crime in its place. Springer, New York, NY, 2009. 109-122.](https://link.springer.com/chapter/10.1007/978-0-387-09688-9_5)
 
 ### What is MAUP?
@@ -611,11 +554,9 @@ The Modifiable Areal Unit Problem (MAUP) is an important issue for those who con
 
 The MAUP is "a problem arising from the imposition of artificial units of spatial reporting on continuous geographical phenomena, leading to artifacts or errors are created when one groups data into units for analysis. 
 
-
 The classic text on MAUP is the 1983 paper [Openshaw, Stan. "The modifiable areal unit problem. CATMOG (Concepts and techniques in modern geography) 38." Geo Abstracts, Norwich. 1984.](https://www.uio.no/studier/emner/sv/iss/SGO9010/openshaw1983.pdf).
 
 There are two distinct types of MAUP: Scale (i.e. determining the appropriate size of units for aggregation) and zone (i.e. drawing boundaries or grouping).
-
 
 #### Scale 
 
@@ -628,18 +569,13 @@ The scale problem has moved to the forefront of geographical criminology as a re
 
 The zonal problem involves keeping the same scale of research (say, at the state level) but changing the actual shape and size of those areas.
 
-
 The basic issue with the MAUP is that aggregate units of analysis are often arbitrarily produced by whom ever is in charge of creating the aggregate units. A classic example of this problem is known as Gerrymandering. Gerrymandering involves shaping and re-shaping voting districts based on the political affiliations of the resident citizenry. 
-
 
 The inherent problem with the MAUP and with situations such as Gerrymandering is that units of analysis are not based on geographic principles, and instead are based on political and social biases. For researchers and practitioners the MAUP has very important implications for research findings because it is possible that as arbitrarily defined units of analysis change shape findings based on these units will change as well.
 
-
 When spatial data are derived from counting or averaging data within areal units, the form of those areal units affects the data recorded, and any statistical measures derived from the data. Modifying the areal units therefore changes the data. Two effects are involved: a zoning effect arising from the particular choice of areas at a given scale; and an aggregation effect arising from the extent to which data are aggregated over smaller or larger areas. The modifiable areal unit problem arises in part from edge effect.
 
-
 If you're interested, in particular about politics and voting, you can read this interesting piece to learn [more about gerrymandering](https://projects.fivethirtyeight.com/redistricting-maps/)
-
 
 ### Why does MAUP matter?
 
@@ -652,20 +588,15 @@ All studies based on geographical areas are susceptible to MAUP. The implication
 - The choice of boundaries for reporting mortality ratios is not without consequences: when the areas are too small, the values estimated are unstable, while when the areas are too large, the values reported may be over-smoothed, i.e. meaningful variation may be lost .
 - [Gerell, Manne. "Smallest is better? The spatial distribution of arson and the modifiable areal unit problem." Journal of quantitative criminology 33.2 (2017): 293-318.](https://link.springer.com/article/10.1007/s10940-016-9297-6)
 
-
-
 ### What can we do?
 
 Most often you will just have to remain aware of the MAUP and it's possible effects. There are some techniques, that can help you address these issues, and the chapter pointed out at the beginning of this section is a great place to start to explore these. It is possible to use also an alternative, zone-free approach to mapping these crime patterns, perhaps by using kernel density estimation. Here we model the relative density of the points as a density surface - essentially a function of location (x,y) representing the relative likelihood of occurrence of an event at that point. We have covered KDE elsewhere in this course. 
 
-
 For the purposes of this course, it's enough that you know of, and understand the MAUP and its implications. Always be smart when choosing your appropriate spatial unit of analysis, and when you use binning of any form, make sure you consider how and if your conclusions might change compared to another possible approach. 
-
 
 ### Activity 7: Considering MAUP
 
 This is a theoretical activity, think about your answers carefully, discuss if you are in a chatty room, and any questions, do ask! Look at the question for homework 5.1 about the three maps of binning and the hotspot map. Answer this question again, but now in light of what you have learned about MAUP. 
-
 
 ##  Transforming polygons
 
@@ -679,20 +610,15 @@ Broadly, the options are:
 - hexmap
 - grid
 
-Selecting the appropriate method might depend on the research question being posed (e.g. clustering) and the data itself. Even once a method has been selected, there are different ways of operationalising them. 
+Selecting the appropriate method might depend on the research question being posed (e.g. clustering) and the data itself. Even once a method has been selected, there are different ways of operationalising them.
 
 Let's explore this using the example of the results of the 2016 EU referendum at Local Authority level, where remain areas clustered in London. A simple thematic map does not necessarily communicate this well because Local Authorities are both small and densely populated in London. 
 
-
 You can download the full set of EU referendum result data as a csv from [the Electoral Commission webside](https://www.electoralcommission.org.uk/find-information-by-subject/elections-and-referendums/past-elections-and-referendums/eu-referendum/eu-referendum-result-visualisations). Let's read it straight into R: 
 
-
 ```{r}
-
 eu_ref <- read_csv("https://www.electoralcommission.org.uk/sites/default/files/2019-07/EU-referendum-result-data.csv")
-
 ```
-
 
 OKAY, now we need a shapefile to join it to. Remember when we got the Manchester lsoa shapefile with the [boundary selector](https://borders.ukdataservice.ac.uk/bds.html)? Let's go back, and this time get *Local Authority Districts* for *England*. 
 
@@ -700,26 +626,18 @@ In this case that means select "English Districts, UAs and London Boroughs, 2011
 
 ![](img/la_shp_dl.png)
 
-
 Once you have the file, download, extract (unzip) and put the folder in your working directory. Mine is in a subfolder in my working directory called data, so I point R inside that folder to find my shape file. 
 
 ```{r}
-
 las <- st_read("data/England_lad_2011_gen/england_lad_2011_gen.shp")
-
 ```
 
 We can now join the EU referendum data, as we have learned in the past weeks: 
 
 
 ```{r}
-
 eu_sf <- left_join(las, eu_ref, by = c("name" = "Area"))
-
 ```
-
-
-
 
 Now we can have a look at these data: 
 
@@ -728,10 +646,7 @@ ggplot() +
   geom_sf(data = eu_sf, aes(fill = Pct_Leave)) 
 ```
 
-
 We can see that in smaller LAs we don't even really see the result, as the boundary lines pretty much cover everything. Hmm. Now what we can do is transform the shapes. 
-
-
 
 #### Activity 8: Cartograms
 
@@ -746,7 +661,6 @@ Density-equalizing (contiguous) cartograms are your traditional cartograms. In d
 Now we can make our own as well, using the cartogram package. 
 
 ```{r}
-
 library(cartogram)
 ```
 
@@ -755,40 +669,29 @@ Within that there is the `cartogram()` function, which takes 2 arguments, 1 - th
 In our data set we have a variable "electorate" which refers to the total number of registered electors
 
 ```{r, eval = FALSE}
-
 # construct a cartogram using the percentage voting leave
 eu_cartogram <- cartogram(eu_sf, "Electorate")
- 
 ```
 
-
 Again this is some labour intensive work, much like the grid making, you have some time to chill now. Maybe read up on the maths behind this tranformation as well, in the paper [Dougenik, J. A., Chrisman, N. R., & Niemeyer, D. R. (1985). An Algorithm To Construct Continuous Area Cartograms. In The Professional Geographer, 37(1), 75-81.](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.0033-0124.1985.00075.x). 
-
 
 I do have a tip for you if you want to make sure the process does not take too long. You can set a parameter in the cartogram function which is the "itermax" parameter. This specifies the maximum number of iterations we are happy with. If you don't specify it's set to 15. Let's set to 5 for the sake of speed: 
 
 ```{r}
-
 # construct a cartogram using the percentage voting leave
 eu_cartogram <- cartogram_cont(eu_sf, "Electorate", itermax = 5)
- 
 ```
 
 And if your cartogram has been created, you can now plot again the referendum results, but using the electorate to change the size of the locad authority: 
-
 
 ```{r}
 ggplot() +
   geom_sf(data = eu_cartogram, aes(fill = Pct_Leave)) 
 ```
 
-
 We can now see London much better, and see that darker coloured cluster where much smaller percentage of people voted leave. 
 
-
 Okay that's probably enough for the day. Nice work crime mappers!
-
-
 
 ## References and further reading
 
@@ -806,10 +709,7 @@ Okay that's probably enough for the day. Nice work crime mappers!
 - [Openshaw, Stan. "The modifiable areal unit problem. CATMOG (Concepts and techniques in modern geography) 38." Geo Abstracts, Norwich. 1984.](https://www.uio.no/studier/emner/sv/iss/SGO9010/openshaw1983.pdf).
 - [Rengert, George F., and Brian Lockwood. "Geographical units of analysis and the analysis of crime." Putting crime in its place. Springer, New York, NY, 2009. 109-122.](https://link.springer.com/chapter/10.1007/978-0-387-09688-9_5)
 
-
 ### Transforming polygons
 
 - [Waldo Tobler (2004) Thirty Five Years of Computer Cartograms, Annals of the Association of American Geographers, 94:1, 58-73, DOI: 10.1111/j.1467-8306.2004.09401004.x](https://www.tandfonline.com/doi/full/10.1111/j.1467-8306.2004.09401004.x)
 - [Langton, S.H. & Solymosi, R. (2018) 'Visualising geographic information: examining methods of improving the thematic map.' RPubs. Available: https://rpubs.com/langton_/visual_geography_study](https://rpubs.com/langton_/visual_geography_study)
-
-

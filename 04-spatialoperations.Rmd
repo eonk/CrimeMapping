@@ -98,7 +98,7 @@ grepl("a", some_text)
 You can see this returns TRUE, because there is at least one occurrence of the letter a. If there wasn't, we'd get FALSE: 
 
 ```{r}
-some_text <- "this is some text tht hs some letters"
+some_text <- "this is some text tht h_s some letter '_'s"
 grepl("a", some_text)
 ```
 
@@ -106,12 +106,9 @@ grepl("a", some_text)
 
 So we can use this, to select all the cases where we find the pattern "M1 " in the postcode. *NOTICE* the space in our search pattern. It's not "M1" it's "M1 ". Can you guess why?
 
-
 Well, M1 will be found in M1 but also in M13, which is the University of Manchester's postcode, and not the part of city centre in which we are interested. 
 
-
 So let's subset our data by creating a new object `city_centre_prems`, and using the piping (`%>%`) and `filter()` functions from the `dplyr` package:
-
 
 ```{r}
 #create the city_centre_prems object:
@@ -119,9 +116,7 @@ city_centre_prems <- lic_prem %>%
   filter(grepl("M1 ", POSTCODE) )
 ```
 
-
 Now we only have `r I(nrow(city_centre_prems))` observations (see your global environment), which is a much more manageable number. 
-
 
 ### Geocoding from an address
 Great OK so we have this list of licensed premises, and we have their address, which is clearly *some* sort of spatial information, but how would you put this on a map? 
@@ -140,7 +135,7 @@ Now the centroid of the post code area represents the central point of the shape
 
 This is not quite as precise as geocoding the actual address, but let's just stick with this approach for now.
 
-So we need something that will help us get the coordinates for the relevant post code centroid. For this we can use the [Open postcode](https://data.gov.uk/dataset/091feb1c-aea6-45c9-82bf-768a15c65307/open-postcode-geo) geo from [data.gov.uk](data.gov.uk). Open Postcode Geo is a postcode dataset and API optimised for geocoding applications. You can use Open Postcode Geo to geocode a dataset, geocode user input, and therefore build a proximity search. Data is derived from the Office for National Statistics postcode database and is free to use, **subject to including attributions to ONS, OS (Ordinance Survey) and Royal Mail**.
+So we need something that will help us get the coordinates for the relevant post code centroid. For this we can use the [Open postcode](https://data.gov.uk/dataset/091feb1c-aea6-45c9-82bf-768a15c65307/open-postcode-geo) geo from [data.gov.uk](https://www.data.gov.uk/). Open Postcode Geo is a postcode dataset and API optimised for geocoding applications. You can use Open Postcode Geo to geocode a dataset, geocode user input, and therefore build a proximity search. Data is derived from the Office for National Statistics postcode database and is free to use, **subject to including attributions to ONS, OS (Ordinance Survey) and Royal Mail**.
 
 Postcodes can be entered at area, district, sector, and unit level - see Postcode map for the geographical relationship between these. We can use the Application Programme Interface (API) to query postcodes and read them directly into R, attaching a latitude and a longitude to our dataframe. 
 
@@ -166,7 +161,7 @@ It's all very well seeing this in a browser, but how can we get this into R? Wel
 geocode_result <- fromJSON(readLines("http://api.getthedata.com/postcode/M13+9PL"))
 ```
 
-We get a warning about an incomplete final line. For now ignore this, as it seems we get our data anyway. So what do we get? Well let's see this geocode_result object: 
+We get a warning about an incomplete final line. For now ignore this, as it seems we get our data anyway. So what do we get? Well let's see this `geocode_result` object: 
 
 ```{r}
 geocode_result
@@ -176,7 +171,7 @@ Ahh it contains all the information we saw earlier in the browser. How nice!
 
 This is great for one postcode at a time, but remember what I said about being lazy, and automating. We want the computer to do the work for us. To do this, we need to set up our query (the url) in a way that lets us give many postcodes in, and get many results out.  For that we can use the `paste0()` function and the `gsub()` function. `paste0()` can be used to paste together different bits of text, while `gsub()` substitutes certain characters (in this case spaces) for other characters (in this case +). So to get from M13 9PL to M13+9PL we use `gsub(" ", "+", "M13 9PL")`, first saying what to replace, then what to replace it with, and finally in what object (or character string). 
 
-So let's say we assign our postcode to an object called "address": 
+So let's say we assign our postcode to an object called "address":
 
 ```{r}
 address <- "M13 9PL"
@@ -200,16 +195,15 @@ So how can we apply this to a whole dataframe? Well here I build two functions `
 ```{r}
 geocode_addys_getlng <- function(x){
   
-  geocode_result <- fromJSON(readLines(paste0("http://api.getthedata.com/postcode/",gsub(" ", "", x))))
+  geocode_result <- fromJSON(readLines(paste0("http://api.getthedata.com/postcode/", gsub(" ", "", x))))
   return(ifelse(!is.null(geocode_result$data$longitude), geocode_result$data$longitude, NA))
 }
 
 geocode_addys_getlat <- function(x){
   
-  geocode_result <- fromJSON(readLines(paste0("http://api.getthedata.com/postcode/",gsub(" ", "", x))))
+  geocode_result <- fromJSON(readLines(paste0("http://api.getthedata.com/postcode/", gsub(" ", "", x))))
   return(ifelse(!is.null(geocode_result$data$latitude), geocode_result$data$latitude, NA))
 }
-
 ```
 
 Now to apply these functions to the whole dataframe, we will use the `mutate()` function to create a new column for longitue and one for latitude, and for each one apply the relevant function with the `map_chr` function from the purr package. 
@@ -363,7 +357,7 @@ We can now see that we have this coordinate system as WGS 84. We need to then ma
 
 Geometries are shapes. All simple geometries in GeoJSON consist of a type and a collection of coordinates. The features include points (therefore addresses and locations), line strings (therefore streets, highways and boundaries), polygons (countries, provinces, tracts of land), and multi-part collections of these types. GeoJSON features need not represent entities of the physical world only; mobile routing and navigation apps, for example, might describe their service coverage using GeoJSON.
 
-To tinker with GeoJSON and see how it relates to geographical features, try [geojson.io](geojson.io), a tool that shows code and visual representation in two panes.
+To tinker with GeoJSON and see how it relates to geographical features, try [geojson.io](https://geojson.io/), a tool that shows code and visual representation in two panes.
 
 Let's read in a geoJSON spatial file, again from the web. This particular geojson represents the wards of Greater Manchester. 
 
@@ -488,7 +482,7 @@ Next, we should find a way to link each crime to the licenced premise which we m
 
 One approach is to build a buffer around our licensed premises, and say that we will count all the crimes which fall within a specific radius of this licensed premise. What should this radius be? Well this is where your domain knowledge as criminologist comes in. How far away would you consdier a crime to still be related to this pub? 400 meters? 500 meters? 900 meters? 1 km? What do you think? This is again one of them *it depends* questions. Whatever buffer you choose you should justify, and make sure that you can defend when someone might ask about it, as the further your reach obviously the more crimes you will include, and these might alter your results. 
 
-So, let's say we are interested in all crimes that occur within 400 meters of each licensed premise. We chose 400m here as this is the recommended distance for accessible bus stop guidance, so basically as far as people should walk to get to a bus stop ([TfL, 2008](http://content.tfl.gov.uk/accessibile-bus-stop-design-guidance.pdf)). So in this case, we want to take our points, which represent the licensed premises, and build buffers of 400 meters around them. 
+So, let's say we are interested in all crimes that occur within 400 meters of each licensed premise. We chose 400m here as this is the recommended distance for accessible bus stop guidance, so basically as far as people should walk to get to a bus stop ([TfL, 2008](https://content.tfl.gov.uk/bus-stop-design-guidance.pdf)). So in this case, we want to take our points, which represent the licensed premises, and build buffers of 400 meters around them. 
 
 You can do with the `st_buffer()` function: 
 
@@ -496,7 +490,7 @@ You can do with the `st_buffer()` function:
 prem_buffer <- st_buffer(cc_intersects, 1)
 ```
 
-You should get a warning here, like I did above. This message indicates that sf assumes a distance value is given in degrees. This is because we have lat/long data (WSG 48)
+You should get a warning here. This message indicates that sf assumes a distance value is given in degrees. This is because we have lat/long data (WSG 48)
 
 One quick fix to avoid this message, is to convert to BNG:
 

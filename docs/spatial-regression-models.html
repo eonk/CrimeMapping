@@ -23,7 +23,7 @@
 <meta name="author" content="Eon Kim and Joanna Hill (based on material developed with Reka Solymosi and Juanjo Medina)" />
 
 
-<meta name="date" content="2023-02-15" />
+<meta name="date" content="2023-02-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -456,7 +456,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb460-3"><a href="spatial-regression-models.html#cb460-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
 <span id="cb460-4"><a href="spatial-regression-models.html#cb460-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">&quot;Homicide Rate across US Counties, 1990&quot;</span>, <span class="at">main.title.size =</span> <span class="fl">0.7</span> ,</span>
 <span id="cb460-5"><a href="spatial-regression-models.html#cb460-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>), <span class="at">legend.title.size =</span> <span class="fl">0.8</span>)</span></code></pre></div>
-<p><img src="crime_mapping_textbook_files/figure-html/unnamed-chunk-272-1.png" width="672" /></p>
+<p><img src="crime_mapping_textbook_files/figure-html/unnamed-chunk-273-1.png" width="672" /></p>
 <p>Do you think there is spatial patterning for homicide?</p>
 </div>
 <div id="looking-at-the-residuals-and-testing-for-spatial-autocorrelation-in-regression" class="section level2 hasAnchor" number="9.2">
@@ -491,7 +491,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb466-6"><a href="spatial-regression-models.html#cb466-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">&quot;Residuals&quot;</span>, <span class="at">main.title.size =</span> <span class="fl">0.7</span> ,</span>
 <span id="cb466-7"><a href="spatial-regression-models.html#cb466-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>), <span class="at">legend.title.size =</span> <span class="fl">0.8</span>)</span></code></pre></div>
 <pre><code>## Variable(s) &quot;sd_breaks&quot; contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.</code></pre>
-<p><img src="crime_mapping_textbook_files/figure-html/unnamed-chunk-277-1.png" width="672" /></p>
+<p><img src="crime_mapping_textbook_files/figure-html/unnamed-chunk-278-1.png" width="672" /></p>
 <p>Notice the spatial patterning of areas of over-prediction (negative residuals, or blue tones) and under-prediction (positive residuals, or brown tones). This visual inspection of the residuals is telling you that spatial autocorrelation may be present here. This, however, would require a more formal test.</p>
 </div>
 <div id="activity-2-spatial-autocorrelation-again" class="section level3 hasAnchor" number="9.2.2">
@@ -560,7 +560,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb473-2"><a href="spatial-regression-models.html#cb473-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb473-3"><a href="spatial-regression-models.html#cb473-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ncovr_sf, <span class="fu">aes</span>(<span class="at">x =</span> res_fit1, <span class="at">colour =</span> <span class="fu">as.factor</span>(SOUTH))) <span class="sc">+</span> </span>
 <span id="cb473-4"><a href="spatial-regression-models.html#cb473-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() </span></code></pre></div>
-<p><img src="crime_mapping_textbook_files/figure-html/unnamed-chunk-281-1.png" width="672" /></p>
+<p><img src="crime_mapping_textbook_files/figure-html/unnamed-chunk-282-1.png" width="672" /></p>
 <p>What do you see in this plot? And, critically, what does it mean? What is this telling you about the predicted values that result from our model? (Remember what a residual is: the difference between the observed values and the predicted values).</p>
 <p>There are formal tests that one can use to further explore these issues. The paper by Bollen et al. (2001) mentions them (Chow tests). But those are beyond the scope of this course. Sufficient to say that, as Bollen et al. (2001), we are going to split our analysis and run them separately for the Southern and the Northern states. We have covered the <code>filter()</code> function from <code>dplyr</code> to split datasets based on values of a variable. But to split <code>sf</code> objects it is better to rely on the more generic subset function, since <code>filter()</code> doesn’t accommodate well the column with the geographic information that <code>sf</code> provides.</p>
 <div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="spatial-regression-models.html#cb474-1" aria-hidden="true" tabindex="-1"></a>ncovr_s_sf <span class="ot">&lt;-</span> <span class="fu">subset</span>(ncovr_sf, SOUTH <span class="sc">==</span> <span class="dv">1</span>)</span>
@@ -842,13 +842,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## New names:
 ## Rows: 32162 Columns: 15
 ## ── Column specification
-## ────────────────────────────────────── Delimiter: &quot;,&quot; chr
+## ─────────────────────────────────────────── Delimiter: &quot;,&quot; chr
 ## (8): Month, Reported.by, Falls.within, Location, LSOA.code,
-## LSOA.name, C... dbl (4): ...1, X, Longitude, Latitude lgl
-## (3): Crime.ID, Last.outcome.category, Context
-## ℹ Use `spec()` to retrieve the full column specification for
-## this data. ℹ Specify the column types or set `show_col_types
-## = FALSE` to quiet this message.
+## LSOA.name, C... dbl (4): ...1, X, Longitude, Latitude lgl (3):
+## Crime.ID, Last.outcome.category, Context
+## ℹ Use `spec()` to retrieve the full column specification for this
+## data. ℹ Specify the column types or set `show_col_types = FALSE`
+## to quiet this message.
 ## • `` -&gt; `...1`</code></pre>
 <p>We’ll also need our boundary data. Read in the city centre LSOAs geojson (also on Blackboard) <code>cc_lsoas.geojson</code>.</p>
 <div class="sourceCode" id="cb493"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb493-1"><a href="spatial-regression-models.html#cb493-1" aria-hidden="true" tabindex="-1"></a>cc_lsoas <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/cc_lsoas.geojson&quot;</span>)</span></code></pre></div>
@@ -940,7 +940,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb505-2"><a href="spatial-regression-models.html#cb505-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">&quot;n&quot;</span>) <span class="sc">+</span></span>
 <span id="cb505-3"><a href="spatial-regression-models.html#cb505-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>() <span class="sc">+</span></span>
 <span id="cb505-4"><a href="spatial-regression-models.html#cb505-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_facets</span>(<span class="st">&quot;month&quot;</span>, <span class="at">free.coords=</span><span class="cn">FALSE</span>)</span></code></pre></div>
-<p><img src="crime_mapping_textbook_files/figure-html/unnamed-chunk-301-1.png" width="672" /></p>
+<p><img src="crime_mapping_textbook_files/figure-html/unnamed-chunk-302-1.png" width="672" /></p>
 <p>We can now see how ASB varies across the months, and start to think about how this might change over seasons for example with seasonal patterns in routine activities!</p>
 <p><em>PS: you can also use the <code>facet_wrap()</code> and <code>facet_grid()</code> functions in <code>ggplot2</code> package if you prefer - remember there are always many ways to solve the same problem in R!</em></p>
 <p>Pretty cool though, eh? Well just wait until the next section…!</p>
