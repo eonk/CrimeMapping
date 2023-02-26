@@ -231,7 +231,7 @@ saharsa <- subset(district_yields, district == "saharsa")
 
 Well, we can see from the output above that this happened in 1971 in Saharsa, so let's map out the yields of all districts in Bihar in 1971 to investigate:
 
-(note for the next part iwht neighbours to work we have to remove the one polygon with the empty geometry with `st_is_empty()`
+(note for the next part with neighbours to work we have to remove the one polygon with the empty geometry with `st_is_empty()`
 
 ```{r}
 
@@ -317,7 +317,7 @@ as.nb.sgbp <- function(x, ...) {
 w_sf <- as.nb.sgbp(bihar_1971$INTERSECT)
 ```
 
-And now that we have the list of neighbours, we can use the `EBlocal()` function, and here specofy the count of cases (observed), the population at risk (or rice_TA in the case of our crop yields) and then finally the neighbours list we just created above (`w_sf`):
+And now that we have the list of neighbours, we can use the `EBlocal()` function, and here specify the count of cases (observed), the population at risk (or rice_TA in the case of our crop yields) and then finally the neighbours list we just created above (`w_sf`):
 
 ```{r}
 eb2 <- EBlocal(bihar_1971$rice_yield, bihar_1971$RICE_TA, w_sf)
@@ -383,9 +383,9 @@ Binning itself is a general term used to describe the grouping of a dataset's va
 
 #### Choropleth maps 
 
-You might be thinkging, "grouping points into a larger spatial unit, haven't we already done this when making choropleth maps?". In a way you are right. Choropleth maps are another type of map to that uses binning. Proportional symbol and choropleth maps group similar data points together to show a range of data instead of many individual points. We've covered this extensively, and is generally the best approch to consider spatial grouping of your point variables, because the polygons (shapes) to which you are aggregating your points are *meaningful*. You can group into LSOAs because you want to show variation in neighbourhoods. Or you can group into police force areas because you want to look at differences between those units of analysis. But sometimes there is just not a geography present to meet your needs. 
+You might be thinking, "grouping points into a larger spatial unit, haven't we already done this when making choropleth maps?". In a way you are right. Choropleth maps are another type of map to that uses binning. Proportional symbol and choropleth maps group similar data points together to show a range of data instead of many individual points. We've covered this extensively, and is generally the best approch to consider spatial grouping of your point variables, because the polygons (shapes) to which you are aggregating your points are *meaningful*. You can group into LSOAs because you want to show variation in neighbourhoods. Or you can group into police force areas because you want to look at differences between those units of analysis. But sometimes there is just not a geography present to meet your needs. 
 
-Let's say you are conducting some days of action in Manchester city centre, focusing on antisocial behaviour. You are going to put up some information booths and staff them with officers to engage with the local population about antiscoail behaviour. For these to be most effective, as an analyst you decide that they should go into the areas with the highest *count* of antisocial beaviour. You want to be very specific about where you put these as well, and so LSOA level would be too broad, you want to zoom in more. One approach can be to split central Manchester into some smaller polygons, and just calculate the number of antisocial behaviour incidents recorded in each. That way you can then decide to put your information booths somewhere inside the top 5 highest count bins. 
+Let's say you are conducting some days of action in Manchester city centre, focusing on antisocial behaviour. You are going to put up some information booths and staff them with officers to engage with the local population about antisocial behaviour. For these to be most effective, as an analyst you decide that they should go into the areas with the highest *count* of antisocial beaviour. You want to be very specific about where you put these as well, and so LSOA level would be too broad, you want to zoom in more. One approach can be to split central Manchester into some smaller polygons, and just calculate the number of antisocial behaviour incidents recorded in each. That way you can then decide to put your information booths somewhere inside the top 5 highest count bins. 
 
 #### Rectangular binning 
 
@@ -433,7 +433,7 @@ sfc_as_cols <- function(x, names = c("x","y")) {
 
 As we are not covering making your own function much here, don't worry too much about the above code, but if you're curious, raise your hand in the labs and we can come around and talk through it. 
 
-Now finally, let's use this function we just created to extract the coords to some columns. So in this function, we have to pass as parameters the name of the dataframe, ma_spatial in our case, and also what we want the columnd to be called in a concatenated list (created with the `c()` function). Let's call these "lng" and "lat":
+Now finally, let's use this function we just created to extract the coords to some columns. So in this function, we have to pass as parameters the name of the dataframe, ma_spatial in our case, and also what we want the column to be called in a concatenated list (created with the `c()` function). Let's call these "lng" and "lat":
 
 ```{r}
 ma_spatial <- sfc_as_cols(ma_spatial, c("lng", "lat"))
@@ -449,7 +449,7 @@ ggplot(ma_spatial, aes(lng, lat)) +                        #define data and vari
   scale_fill_gradientn(colours = c("white","red"), name = "Frequency")    #add shading based on number of ASB incidents
 ```
 
-Neat, but doesn't quite tell us *where* that really dark hexbon actually is. So it would be much better if we could do this with a basemap as the backrgound, rather than our grey ggplot theme.
+Neat, but doesn't quite tell us *where* that really dark hexbon actually is. So it would be much better if we could do this with a basemap as the background, rather than our grey ggplot theme.
 
 Now, we can apply the same code as we used above, for the ggplot, to this ggmap, to add our hexbins on top of this basemap: 
 
