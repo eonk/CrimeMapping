@@ -55,7 +55,8 @@ crimes_per_lsoa <- crimes %>%
 #merge the crime count with the LSOA file
 manchester_crime_lsoa <- left_join(manchester_lsoa, crimes_per_lsoa, by = c("code"="lsoa_code"))
 
-#any LSOA units with 0 crime are treated as missing so replace the missing as 0
+#Any LSOA units with no crime counted (E01005248 and E01005278) are treated as NA, so replace this as 0
+#However, this process you need to carefully proceed. In some context, you could consider 'unknown' or 'missing' not 0
 manchester_crime_lsoa$count[is.na(manchester_crime_lsoa$count)] <- 0
 ```
 

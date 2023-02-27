@@ -23,7 +23,7 @@
 <meta name="author" content="Eon Kim and Joanna Hill (based on material developed with Reka Solymosi and Juanjo Medina)" />
 
 
-<meta name="date" content="2023-02-20" />
+<meta name="date" content="2023-02-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -432,7 +432,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>You may not remember all of what you did to generate that file so let’s not waste time and just cut and paste from below (but try to remember what each of the lines of code is doing and if you are not clear look at the notes from last week). Imagine you had to do all of this again by pointing and clicking in a graphical user interface rather than just sending the code to the console! As you will see time and time again, code in the end is a much more efficient way of talking to a computer.</p>
 <div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="thematic-maps-in-r.html#cb108-1" aria-hidden="true" tabindex="-1"></a>crimes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/eonk/cm_book/main/data/2019-06-greater-manchester-street.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 32058 Columns: 12
-## ── Column specification ───────────────────────────────────────────
+## ── Column specification ─────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (9): Crime ID, Month, Reported by, Falls within, Location, LSOA code, LS...
 ## dbl (2): Longitude, Latitude
@@ -461,8 +461,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb111-7"><a href="thematic-maps-in-r.html#cb111-7" aria-hidden="true" tabindex="-1"></a><span class="co">#merge the crime count with the LSOA file</span></span>
 <span id="cb111-8"><a href="thematic-maps-in-r.html#cb111-8" aria-hidden="true" tabindex="-1"></a>manchester_crime_lsoa <span class="ot">&lt;-</span> <span class="fu">left_join</span>(manchester_lsoa, crimes_per_lsoa, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;code&quot;</span><span class="ot">=</span><span class="st">&quot;lsoa_code&quot;</span>))</span>
 <span id="cb111-9"><a href="thematic-maps-in-r.html#cb111-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb111-10"><a href="thematic-maps-in-r.html#cb111-10" aria-hidden="true" tabindex="-1"></a><span class="co">#any LSOA units with 0 crime are treated as missing so replace the missing as 0</span></span>
-<span id="cb111-11"><a href="thematic-maps-in-r.html#cb111-11" aria-hidden="true" tabindex="-1"></a>manchester_crime_lsoa<span class="sc">$</span>count[<span class="fu">is.na</span>(manchester_crime_lsoa<span class="sc">$</span>count)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code></pre></div>
+<span id="cb111-10"><a href="thematic-maps-in-r.html#cb111-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Any LSOA units with no crime counted (E01005248 and E01005278) are treated as NA, so replace this as 0</span></span>
+<span id="cb111-11"><a href="thematic-maps-in-r.html#cb111-11" aria-hidden="true" tabindex="-1"></a><span class="co">#However, this process you need to carefully proceed. In some context, you could consider &#39;unknown&#39; or &#39;missing&#39; not 0</span></span>
+<span id="cb111-12"><a href="thematic-maps-in-r.html#cb111-12" aria-hidden="true" tabindex="-1"></a>manchester_crime_lsoa<span class="sc">$</span>count[<span class="fu">is.na</span>(manchester_crime_lsoa<span class="sc">$</span>count)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code></pre></div>
 <p>You may not want to have to go through this process all the time. One thing you could do is to save the <em>manchester_lsoa</em> object as a physical file in your machine. You can use the <code>st_write()</code> function from the <code>sf</code> package to do this. If we want to write into a shapefile format we would do as shown below:</p>
 <div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="thematic-maps-in-r.html#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_write</span>(manchester_crime_lsoa, <span class="st">&quot;data/BoundaryData/manchester_crime_lsoa.shp&quot;</span>)</span></code></pre></div>
 <p>Notice how four files have appeared in your working directory, in your “BoundaryData”” subdirectory or whatever you called it. Remember what we said last week about shapefiles, there are a collection of files that need to be kept together.</p>

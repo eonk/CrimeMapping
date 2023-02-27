@@ -98,11 +98,13 @@ Great, now let's read that data into R and have a look!
 Just like we read '.csv' files with read.csv, we can read '.xlsx' (Excel) files with the `read_xlsx()` function from the `readxl` package:
 
 ```{r}
+#option 1: to import data
 yield_data <- read_xlsx('data/Bihar.xlsx')
 glimpse(yield_data)
 ```
 
 ```{r, eval=FALSE}
+#option 2: to import data
 #Alternatively, you can download Bihar.xles from where we saved the data
 #Important! note that I store it in on my Data folder You HAVE TO change that if needed.
 download.file("https://www.dropbox.com/s/dddf1tjqg0l51gp/Bihar.zip?dl=1" , 
@@ -115,8 +117,9 @@ yield_data <- read_xlsx("data/Bihar.xlsx")
 After looking at the yield data, you can see it's quite massive! Each column represents the production in weight ('_TQ' columns) and the area farmed ('_TA' columns) for each crop, per district, per year. That's too much information for us! We just want rice production and area, so we'll use the 'select' function to just pick the columns we want: names of states and districts, the year, and the rice information.
 
 ```{r}
+yield_data <- clean_names(yield_data)
 yield_data <- yield_data %>%
-  dplyr::select(STNAME, DISTNAME, YEAR, RICE_TA, RICE_TQ)
+  dplyr::select(stname, distname, year, rice_ta, rice_tq)
 ```
 
 #### Activity 3: Comparing shapefiles
@@ -129,7 +132,7 @@ Now we've read in our rice yield data, we can test which shapefile will work bes
 shapefile_years <- lapply(seq(1951, 2001, 10), as.character)
 
 # Get a list of district names in the yield data to compare to each shapefile
-yield_dist_names <- make_clean_names(unique(yield_data$DISTNAME))
+yield_dist_names <- make_clean_names(unique(yield_data$distname))
 
 # Prepare an output variable
 district_match_results <- tibble(shapefile_year = character(),
@@ -155,23 +158,19 @@ for (each_year in shapefile_years){
                                                                      district_match_percent = dist_match))
   
 }
-
 ```
 
 And now to check the output to see which shapefile has the highest proportion of district name matches:
 
 ```{r}
-
 print(district_match_results)
 
 # And plot it with ggplot
 ggplot(district_match_results) +
   geom_bar(aes(x = shapefile_year, y = district_match_percent), stat = 'identity')
-
 ```
 
 So, before continuing you should look at the table and graph you've just made and decide which shapefile we should use now. Which one will be the best for representing your attribute table? 
-
 
 #### Activity 4: Joining datasets
 
@@ -182,21 +181,22 @@ One last thing before we can continue mapping - joining our yield and shapefile 
 shapefile <- st_read('data/IndiaBoundaryData/1971.shp')
 
 # Clean the shapefile state and district names
-shapefile$NAME <- make_clean_names(shapefile$NAME)
-shapefile$STATE_UT <- tolower(shapefile$STATE_UT)
+shapefile <- janitor::clean_names(shapefile)
+shapefile$name <- make_clean_names(shapefile$name)
+shapefile$state_ut <- tolower(shapefile$state_ut)
 
 # Clean the yield data's state and district names in the same way
-yield_data$DISTNAME <- gsub(' ', '_', tolower(yield_data$DISTNAME))
-yield_data$STNAME <- tolower(yield_data$STNAME)
+yield_data$distname <- gsub(' ', '_', tolower(yield_data$distname))
+yield_data$stname <- tolower(yield_data$stname)
 
 # Join the two datasets together, the 'by' argument in right_join describes which columns
 # are equivalent in each dataset
 district_yields <- shapefile %>%
-  right_join(yield_data, by = c('NAME' = 'DISTNAME', 'STATE_UT' = 'STNAME')) %>%
-  dplyr::select(YEAR, NAME, STATE_UT, RICE_TA, RICE_TQ) %>% # 'select' only selects the columns we're interested in (specify select from dplyr!)
-  mutate(rice_yield = RICE_TQ/RICE_TA) %>%
-  rename(district = NAME,
-         state = STATE_UT)
+  right_join(yield_data, by = c('name' = 'distname', 'state_ut' = 'stname')) %>%
+  dplyr::select(year, name, state_ut, rice_ta, rice_tq) %>% # 'select' only selects the columns we're interested in (specify select from dplyr!)
+  mutate(rice_yield = rice_tq/rice_ta) %>%
+  rename(district = name,
+         state = state_ut)
 
 # Check output
 head(district_yields)
@@ -206,14 +206,12 @@ head(district_yields)
 
 In previous sessions we discussed how to map rates. It seems a fairly straightforward issue, you calculate a rate by dividing your numerator (eg: number of crimes or rice production) by your denominator (eg: daytime population or farming area). You get your variable with the relevant rate and you map it using a choropleth map. However, things are not always that simple. Rates are funny animals. This popped up in your preparation material as the problem "insensitivity to sample size" and we will demonstrate in the next activity. 
 
-
 ### Activity 4: The case of Saharsa
 
 Let's look at our yield data, here yield means the amount of rice produced (in tonnes, 1 tonne = 1000kg) per hectare (a square of land with 100 metre-long sides) of rice farmland. 
 
 ```{r}
 summary(district_yields$rice_yield)
-
 ```
 
 We can see that the district with the highest rice production rate in 1971 had a rate of 55,423 tonnes of rice per 100,000 individuals. That's really high, over 500kg of rice per person! Where is that place? I can tell you it's a place call Saharsa. Check it out:
@@ -224,7 +222,6 @@ district_yields %>% filter(rice_yield == max(rice_yield))
 
 # Subset the 'Saharsa' district data
 saharsa <- subset(district_yields, district == "saharsa")
-
 ```
 
 [Saharsa district](https://en.wikipedia.org/wiki/Saharsa_district) in Bihar, India is known for high quality corn, much of which is exported out here to the UK! But Saharsa isn't particularly known for its great rice production. So, what’s going on here? Why do we have a high production rate (yield) in Saharsa that makes it look like the rice capital of India?
@@ -234,11 +231,10 @@ Well, we can see from the output above that this happened in 1971 in Saharsa, so
 (note for the next part with neighbours to work we have to remove the one polygon with the empty geometry with `st_is_empty()`
 
 ```{r}
-
 # remove district with empty geometry
 district_yields <- district_yields %>% filter(!st_is_empty(.))
 
-bihar_1971 <- filter(district_yields, YEAR == '1971')
+bihar_1971 <- filter(district_yields, year == '1971')
 
 tm_shape(bihar_1971)+
   tm_fill('rice_yield')
@@ -247,7 +243,7 @@ tm_shape(bihar_1971)+
 Saharsa is the darkly-shaded district in the top-right, it stands out massively from all other districts! Let's plot the following year, 1972, for comparison:
 
 ```{r}
-bihar_1972 <- filter(district_yields, YEAR == '1972')
+bihar_1972 <- filter(district_yields, year == '1972')
 
 tm_shape(bihar_1972)+
   tm_fill('rice_yield')
@@ -256,28 +252,25 @@ tm_shape(bihar_1972)+
 Now Saharsa is in the lowest yield bracket - 0.2 to 0.4, pretty far off 5.5! Why does its yield value swing so far?
 
 ```{r}
-print(filter(district_yields, district == 'saharsa', YEAR == '1971') %>% pull(RICE_TA))
+print(filter(district_yields, district == 'saharsa', year == '1971') %>% pull(rice_ta))
 
 area_comparison <- district_yields %>%
   group_by(district) %>%
-  summarise(mean_area = mean(RICE_TA)) %>%
+  summarise(mean_area = mean(rice_ta)) %>%
   dplyr::select(district, mean_area)
 
 print(area_comparison)
-
 ```
 
 Although it doesn't have the smallest rice farmland area, Saharsa's rice land is pretty small. Remember that the rate is simply dividing the number of relevant events (rice production) by the exposure variable (in this case area of rice farmland). Most times Saharsa has very low yields ( < 1 tonne per hectare):
 
 ```{r}
 print(filter(district_yields, district == 'saharsa'))
-
 ```
 
 Saharsa's rice production is around 130 tonnes in most years. But it only takes one good year of rice growth and, bang, it goes to the top of the league. So a standard map of rates is bound to be noisy. There is the instability that is introduced by virtue of having areas that may be sparsely populated and in which one single event, like in this case a bumper crop, will produce a very noticeable change in the rate. In fact, if you look at the counties with the highest yields in the yield dataset you will notice all of them are places like Saharsa, areas that have small areas of rice farmland (RICE_TA). So they have high yields not because they produce massive amounts of rice, but because of the instability of rates.
 
 This is a problem that was first noted by epidemiologists doing disease mapping. But a number of other disciplines have now noted this and used some of the approaches developed by public health researchers that confronted this problem when producing maps of disease (techniques and approaches used by spatial epidemiologists are very similar to those used by criminologists -in case you ever think of changing careers or need inspiration for how to solve a crime analysis problem).
-
 
 ### Activity 5: Smoothing as a way to address insensitivity to sample size
 
@@ -292,7 +285,7 @@ Here we are going to introduce the approach implemented in `DCluster`, a package
 Specifically, we use the `empbaysmooth(Observed, Expected)` function, where we specify two values, the **expected** value (the global average) and the **observed** value (the rate we actually see). 
 
 ```{r}
-res <- empbaysmooth(bihar_1971$rice_yield, bihar_1971$RICE_TA*(sum(bihar_1971$rice_yield)/sum(bihar_1971$RICE_TA)))
+res <- empbaysmooth(bihar_1971$rice_yield, bihar_1971$rice_ta*(sum(bihar_1971$rice_yield)/sum(bihar_1971$rice_ta)))
 ```
 
 In the new object we generate, which is a list, you have an element which contains the computed rates. We can add those to our dataset:
@@ -301,11 +294,21 @@ In the new object we generate, which is a list, you have an element which contai
 bihar_1971$rice_yieldEBS <- res$smthrr
 ```
 
-**Alternatively** instead of shrinking to the global rate, we can shrink to a rate based on the neighbours of each county. In this case, instead of shrinking to a global rate, we shrink to a *local rate*. We then may be able to take unobserved heterogeneity into account. For this we need the list of neighbours (*we will discuss this code in a later session, so for now just trust us we are computing the rate of the areas that surround each counry*):
+**Alternatively** instead of shrinking to the global rate, we can shrink to a rate based on the neighbours of each county. In this case, instead of shrinking to a global rate, we shrink to a *local rate*. We then may be able to take unobserved heterogeneity into account. For this we need the list of neighbours, therefore we can compute the rate of the areas that surround each county:
 
 ```{r}
-bihar_1971 <- bihar_1971 %>% mutate(INTERSECT = st_intersects(.))
+bihar_1971 <- bihar_1971 %>% mutate(neighbour = st_intersects(.))
 
+#create the list of neighbours
+w_sf <- list()
+w_sf <- bihar_1971$neighbour
+class(w_sf) <- "nb"
+```
+
+```{r, echo=FALSE}
+bihar_1971 <- bihar_1971 %>% mutate(neighbour = st_intersects(.))
+
+#option 2: to create the list of neighbours
 as.nb.sgbp <- function(x, ...) {
   attrs <- attributes(x)
   x <- lapply(x, function(i) { if(length(i) == 0L) 0L else i } )
@@ -313,35 +316,34 @@ as.nb.sgbp <- function(x, ...) {
   class(x) <- "nb"
   x
   } 
-
-w_sf <- as.nb.sgbp(bihar_1971$INTERSECT)
+w_sf <- as.nb.sgbp(bihar_1971$neighbour)
 ```
 
 And now that we have the list of neighbours, we can use the `EBlocal()` function, and here specify the count of cases (observed), the population at risk (or rice_TA in the case of our crop yields) and then finally the neighbours list we just created above (`w_sf`):
 
 ```{r}
-eb2 <- EBlocal(bihar_1971$rice_yield, bihar_1971$RICE_TA, w_sf)
+eb2 <- EBlocal(bihar_1971$rice_yield, bihar_1971$rice_ta, w_sf)
 bihar_1971$rice_yieldEBSL <- eb2$est 
-bihar_1971$INTERSECT <- NULL
+bihar_1971$neighbour <- NULL
 ```
 
 We can now plot the maps and compare them :
 
 ```{r}
 current_style <- tmap_style("col_blind")
-
+#map1: rice_yield, raw value
 map1 <- tm_shape(bihar_1971) + 
   tm_fill("rice_yield", style="quantile", title = "Raw rate", palette = "Reds") +
   tm_layout(legend.position = c("left", "bottom"), 
             legend.title.size = 0.8,
             legend.text.size = 0.5)
-
+#map2: rice_yieldEBS, global
 map2<- tm_shape(bihar_1971) + 
   tm_fill("rice_yieldEBS", style="quantile", title = "EB Smooth", palette = "Reds") +
   tm_layout(legend.position = c("left", "bottom"), 
             legend.title.size = 0.8,
             legend.text.size = 0.5)
-
+#map3: rice_yieldEBSL, local
 map3<- tm_shape(bihar_1971) + 
   tm_fill("rice_yieldEBSL", style="quantile", title = "Local Smooth", palette = "Reds") +
   tm_layout(legend.position = c("left", "bottom"), 
@@ -383,7 +385,7 @@ Binning itself is a general term used to describe the grouping of a dataset's va
 
 #### Choropleth maps 
 
-You might be thinking, "grouping points into a larger spatial unit, haven't we already done this when making choropleth maps?". In a way you are right. Choropleth maps are another type of map to that uses binning. Proportional symbol and choropleth maps group similar data points together to show a range of data instead of many individual points. We've covered this extensively, and is generally the best approch to consider spatial grouping of your point variables, because the polygons (shapes) to which you are aggregating your points are *meaningful*. You can group into LSOAs because you want to show variation in neighbourhoods. Or you can group into police force areas because you want to look at differences between those units of analysis. But sometimes there is just not a geography present to meet your needs. 
+You might be thinking, "grouping points into a larger spatial unit, haven't we already done this when making choropleth maps?". In a way you are right. Choropleth maps are another type of map to that uses binning. Proportional symbol and choropleth maps group similar data points together to show a range of data instead of many individual points. We've covered this extensively, and is generally the best approch to consider spatial grouping of your point variables, because the polygons (shapes) to which you are aggregating your points are *meaningful*. You can group into LSOAs because you want to show variation in neighbourhoods. Or you can group into police force areas because you want to look at differences between those units of analysis. But sometimes there is just not a geography present to meet your needs.
 
 Let's say you are conducting some days of action in Manchester city centre, focusing on antisocial behaviour. You are going to put up some information booths and staff them with officers to engage with the local population about antisocial behaviour. For these to be most effective, as an analyst you decide that they should go into the areas with the highest *count* of antisocial beaviour. You want to be very specific about where you put these as well, and so LSOA level would be too broad, you want to zoom in more. One approach can be to split central Manchester into some smaller polygons, and just calculate the number of antisocial behaviour incidents recorded in each. That way you can then decide to put your information booths somewhere inside the top 5 highest count bins. 
 
@@ -406,20 +408,28 @@ Also let's get some data. You could go and get this data yourself from police.uk
 We can take our GMP crimes data, and select only the cases from ASB using the crime.type variable. If you want, however, I have already done this, so you can also download from my dropbox using the link here, (or get it from Blackboard): 
 
 ```{r}
-manchester_asb <- read_csv("https://www.dropbox.com/s/93a0ovgcxz6pgiz/manchester_asb.csv?dl=1")
+mcr_asb <- read_csv("https://www.dropbox.com/s/93a0ovgcxz6pgiz/manchester_asb.csv?dl=1")
 ```
 
 This is currently just a text dataframe, so we need to let R know that actually this is a spatial object, who's geometry can be find in its longitude and latitude coordinates. As we have long/lat we can assure it's in WGS 84 projection. 
 
 ```{r}
-ma_spatial <- st_as_sf(manchester_asb, coords = c("Longitude", "Latitude"), 
+sf_mcr_asb <- st_as_sf(mcr_asb, coords = c("Longitude", "Latitude"), 
                  crs = 4326, agr = "constant")
 ```
 
-Now one thing that this does is it consumes our Long and Lat columns into a geometry attribute. This is generally OK, but for the binning we will do, we would like to have them as separate coordinates. To do this, we can use a bespoke function, `sfc_as_cols()` created by [Josh M. London](https://github.com/jmlondon) in response to this [issue opened on github for the sf package](https://github.com/r-spatial/sf/issues/231). To create this function here, run the below code: 
+Now one thing that this does is it consumes our lng and lat columns into a geometry attribute. This is generally OK, but for the binning we will do, we would like to have them as separate coordinates. 
 
+```{r, warning=FALSE}
+#extract the coords to some columns, "lng" and "lat"
+sf_mcr_asb <- 
+  bind_cols(sf_mcr_asb, (do.call(rbind, st_geometry(sf_mcr_asb))) %>% 
+              as_tibble() %>% 
+              setNames(c("lng","lat")))
+```
 
-```{r}
+```{r, echo=FALSE}
+#To do this, we can use a bespoke function, `sfc_as_cols()` created by [Josh M. London](https://github.com/jmlondon) in response to this [issue opened on github for the sf package](https://github.com/r-spatial/sf/issues/231). 
 sfc_as_cols <- function(x, names = c("x","y")) {
   stopifnot(inherits(x,"sf") && inherits(sf::st_geometry(x),"sfc_POINT"))
   ret <- sf::st_coordinates(x)
@@ -429,14 +439,9 @@ sfc_as_cols <- function(x, names = c("x","y")) {
   ret <- setNames(ret,names)
   dplyr::bind_cols(x,ret)
 }
-```
-
-As we are not covering making your own function much here, don't worry too much about the above code, but if you're curious, raise your hand in the labs and we can come around and talk through it. 
-
-Now finally, let's use this function we just created to extract the coords to some columns. So in this function, we have to pass as parameters the name of the dataframe, ma_spatial in our case, and also what we want the column to be called in a concatenated list (created with the `c()` function). Let's call these "lng" and "lat":
-
-```{r}
-ma_spatial <- sfc_as_cols(ma_spatial, c("lng", "lat"))
+#To do this, we can use a bespoke function, `sfc_as_cols()` created by [Josh M. London](https://github.com/jmlondon) in response to this [issue opened on github for the sf package](https://github.com/r-spatial/sf/issues/231). 
+#Now finally, let's use this function we just created to extract the coords to some columns. So in this function, we have to pass as parameters the name of the dataframe, ma_spatial in our case, and also what we want the column to be called in a concatenated list (created with the `c()` function). Let's call these "lng" and "lat":
+#ma_spatial <- sfc_as_cols(ma_spatial, c("lng", "lat"))
 ```
 
 As a first step, we can plot asb in the borough of Manchester using simple ggplot! Remember the data visualisation session from weeks ago? We discussed how ggplot is such a great tool for building visualisations, because you can apply whatever geometry best suits your data. So for us to just have a look at the hexbinned version of our point data of antisocial behaviour, we can use the `stat_binhex()` function. We can also recreate the thematic map element, as we can use the frequency of points in each hex to shade each hexbin from white (least number of incidents) to red (most nuber of incidents). 
@@ -444,7 +449,7 @@ As a first step, we can plot asb in the borough of Manchester using simple ggplo
 So let's have a go: 
 
 ```{r}
-ggplot(ma_spatial, aes(lng, lat)) +                        #define data and variables for x and y axes
+ggplot(sf_mcr_asb, aes(lng, lat)) +                        #define data and variables for x and y axes
   stat_binhex() +                                                         #add binhex layer (hexbin)
   scale_fill_gradientn(colours = c("white","red"), name = "Frequency")    #add shading based on number of ASB incidents
 ```
@@ -454,10 +459,10 @@ Neat, but doesn't quite tell us *where* that really dark hexbon actually is. So 
 Now, we can apply the same code as we used above, for the ggplot, to this ggmap, to add our hexbins on top of this basemap: 
 
 ```{r}
-ggplot(ma_spatial, aes(x = lng, y = lat)) +
+ggplot(sf_mcr_asb, aes(x = lng, y = lat)) +
   annotation_map_tile() + 
-  stat_binhex(alpha=0.7) +                                                         #add binhex layer (hexbin)
-  scale_fill_gradientn(colours = c("white","red"), name = "Frequency")    #add shading based on number of ASB incidents 
+  stat_binhex(alpha=0.7) +                                                #add binhex layer (hexbin)
+  scale_fill_gradientn(colours = c("white","red"), name = "Frequency")    #add shading based on number of ASB incidents
 ```
 
 Now this should give you some more context! Woo!
@@ -481,7 +486,7 @@ Now, to again illustrate the differences of different approaches, let's see what
 a) rectangular binning: 
 
 ```{r}
-ggplot(ma_spatial, aes(x = lng, y = lat)) + 
+ggplot(sf_mcr_asb, aes(x = lng, y = lat)) + 
   annotation_map_tile() + 
   stat_bin2d(alpha=0.7) + 
   scale_fill_gradientn(colours = c("white","red"), 
@@ -492,7 +497,7 @@ ggplot(ma_spatial, aes(x = lng, y = lat)) +
 b) hexagonal binning: 
 
 ```{r}
-ggplot(ma_spatial, aes(x = lng, y = lat)) + 
+ggplot(sf_mcr_asb, aes(x = lng, y = lat)) + 
   annotation_map_tile() + 
   stat_binhex(alpha=0.7) + 
   scale_fill_gradientn(colours = c("white","red"), 
@@ -502,7 +507,7 @@ ggplot(ma_spatial, aes(x = lng, y = lat)) +
 c) a simple "heatmap" (we will discuss these more thoroughly next week):
 
 ```{r}
-ggplot(ma_spatial, aes(x = lng, y = lat)) + 
+ggplot(sf_mcr_asb, aes(x = lng, y = lat)) + 
   annotation_map_tile() + 
   stat_density2d(aes(fill = ..level.., # value corresponding to discretized density estimates 
                      alpha = ..level..), 
@@ -518,7 +523,7 @@ Look at the difference between the three maps (hex, rectangle, and density). How
 
 Multivariate binning is another binning method that lets you visualise slightly more complex data. In this method there can be many different variables consisting of different types of data. Like other binning methods the data is typically grouped with the sum or average of the data. Different types of symbology (such as size, shape and color) can also be used to represent this data as well.
 
-We won't be covering this here but just so you can have a look at some examples [here](https://mgimond.github.io/Spatial/data-manipulation-in-r.html). 
+We won't be covering this here but just so you can have a look at some examples [here](http://www.geo.hunter.cuny.edu/~ssun/R-Spatial/spatialops.html). 
 
 ### Benefits of Binning
 
@@ -596,11 +601,9 @@ For the purposes of this course, it's enough that you know of, and understand th
 
 ### Activity 7: Considering MAUP
 
-This is a theoretical activity, think about your answers carefully, discuss if you are in a chatty room, and any questions, do ask! Look at the question for homework 5.1 about the three maps of binning and the hotspot map. Answer this question again, but now in light of what you have learned about MAUP. 
-
 ##  Transforming polygons
 
-When you have meaningful spatial units of analysis in your polygons, for example you are interested specifically in Local Autorities, it might make sense to stick with what we did last week, and aggregate the points into these polygons to cheare thematic maps. However, while thematic maps are an accessible and visually appealing method for displaying spatial information,  they can also be highly misleading. Irregularly shaped polygons and large differences in the size of areas being mapped can introduce misrepresentation. The message researchers want to get across might be lost, or even worse, misdirect the viewers to erroneous conclusions. [This article](https://www.tandfonline.com/eprint/q9w7iUhFJwzvBR84GkT9/full) provides a helpful discussion of the problem illustrating the case with UK election maps. It is worth reading.
+When you have meaningful spatial units of analysis in your polygons, for example you are interested specifically in Local Autorities, it might make sense to stick with what we did last week, and aggregate the points into these polygons to create thematic maps. However, while thematic maps are an accessible and visually appealing method for displaying spatial information,  they can also be highly misleading. Irregularly shaped polygons and large differences in the size of areas being mapped can introduce misrepresentation. The message researchers want to get across might be lost, or even worse, misdirect the viewers to erroneous conclusions. [This article](https://www.tandfonline.com/eprint/q9w7iUhFJwzvBR84GkT9/full) provides a helpful discussion of the problem illustrating the case with UK election maps. It is worth reading.
 
 Fortunately, there are many methods in R to enhance the legibility of geographic information and the interpretability of what it is trying to be communicated. 
 
@@ -654,7 +657,7 @@ The last thing we will do today is make some cartograms! Cartogram types of maps
 
 There are different types of cartograms. 
 
-Density-equalizing (contiguous) cartograms are your traditional cartograms. In density-equalizing cartograms, map features bulge out a specific variable. Even though it distorts each feature, it remains connected during its creation. On the other hand, you can have Non-Contiguous Cartograms, where features in non-contiguous cartograms don’t have to stay connected. Finally, Dorling Cartogram (named after professor [Danny Dorling](https://www.geog.ox.ac.uk/staff/ddorling.html)) uses shapes like circles and rectangles to depict area. These types of cartograms make it easy to recognize patterns. For example, here is a Dorling Cartogram I made of [FixMyStreet](www.fixmystreet.org) reports in London: 
+Density-equalizing (contiguous) cartograms are your traditional cartograms. In density-equalizing cartograms, map features bulge out a specific variable. Even though it distorts each feature, it remains connected during its creation. On the other hand, you can have Non-Contiguous Cartograms, where features in non-contiguous cartograms don’t have to stay connected. Finally, Dorling Cartogram (named after professor [Danny Dorling](https://www.geog.ox.ac.uk/staff/ddorling.html)) uses shapes like circles and rectangles to depict area. These types of cartograms make it easy to recognize patterns!
 
 ![](img/notNaAll3CartogramNewFrame.png)
 
