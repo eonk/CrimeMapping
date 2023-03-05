@@ -98,14 +98,14 @@ Great, now let's read that data into R and have a look!
 Just like we read '.csv' files with read.csv, we can read '.xlsx' (Excel) files with the `read_xlsx()` function from the `readxl` package:
 
 ```{r}
-#option 1: to import data
+#option 1: import data
 yield_data <- read_xlsx('data/Bihar.xlsx')
 glimpse(yield_data)
 ```
 
 ```{r, eval=FALSE}
-#option 2: to import data
-#Alternatively, you can download Bihar.xles from where we saved the data
+#option 2: import data
+#Alternatively, you can download Bihar.xlsx from where we saved the data
 #Important! note that I store it in on my Data folder You HAVE TO change that if needed.
 download.file("https://www.dropbox.com/s/dddf1tjqg0l51gp/Bihar.zip?dl=1" , 
               destfile="/data/Bihar.zip")
