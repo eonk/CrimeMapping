@@ -177,6 +177,8 @@ This is due to the way in which spatial anonymisation of police.uk data is carri
 
 What to do about duplicates in spatial point pattern analysis is not always clear. You could simply delete the duplicates, but of course that may ignore issues such as repeat victimisation. You could also use jittering, which will add a small perturbation to the duplicate points so that they do not occupy the exact same space. Which again, may ignore things like repeat victimisation. Another alternative is to make each point "unique" and then attach the multiplicites of the points to the patterns as *marks*, as attributes of the points. Then you would need analytical techniques that take into account these marks.
 
+If you were to be doing this for real you would want access to the real thing, not this public version of the data and then go for the latter solution suggested above. We don’t have access to the source data, so for the sake of simplicity, so that we can illustrate how `spatstat` works we will instead add some jittering to the data. The first argument for the function is the object (bur_ppp), 'retry' asks whether we want the algorithm to have another go if the jittering places a point outside the window (we want this so that we don’t loose points), and the 'drop' argument is used to ensure we get a ppp object as a result of running this function (which we do).
+
 ```{r}
 jitter_bur <- rjitter(bur_ppp, retry=TRUE, nsim=1, drop=TRUE)
 plot(jitter_bur)
