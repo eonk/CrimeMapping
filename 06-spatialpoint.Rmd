@@ -50,7 +50,7 @@ You can get both the geojson file of wards and the excel file of crimes from Bla
 #Read a geojson file with Manchester wards (remember we learned about geojson files in week 4).
 manchester_ward <- st_read("https://raw.githubusercontent.com/eonk/cm_book/main/data/wards.geojson")
 
-#step 1: create a new object that only has the 'fallowfield' ward
+#step1: create a new object that only has the 'fallowfield' ward
 df1 <- manchester_ward %>%
   filter(wd16nm == "Fallowfield")
 
@@ -62,7 +62,7 @@ rm(manchester_ward, df1)
 
 #step4: Read Greater Manchester police data
 #or you can use this link:"https://www.dropbox.com/s/rs43mg8equy1zu5/gmp_crimes_2021.zip?dl=1"
-#(see week5: Activity 2, if you forget how to do!)
+#(see week5, 5.1.1.2. Activity 2, if you forget how to do!)
 crimes <- read_xlsx("data/gmp_crimes_2021.xlsx") %>% clean_names()
 
 #step5: filter Burglary
