@@ -1,5 +1,3 @@
-introduction
-disclaimer
 a-first-lesson-about-r
 install-r-r-studio
 activity-1-identifying-your-operating-system
@@ -83,7 +81,7 @@ activity-6-building-buffers
 activity-7-counting-points-in-polygon
 summary-3
 more-on-thematic-maps
-introduction-1
+introduction
 pro-tip-do-i-need-to-install-this-package
 activity-1-getting-some-messy-data
 activity-2-getting-some-crop-data-attributes
@@ -145,7 +143,7 @@ local-spatial-autocorrelation
 activity-9-get-data-and-weights-for-all-manchester
 activity-10-exploring-a-local-indicator-of-spatial-association-local-morans-i.
 regression-analysis-a-refresher
-introduction-2
+introduction-1
 activity-1-getting-some-homicide-data
 activity-2-familiarise-yourself-with-the-data
 motivating-regression
@@ -168,7 +166,7 @@ activity-9-interaction-effects
 model-building-and-variable-selection
 regression-assumptions
 spatial-regression-models
-introduction-3
+introduction-2
 looking-at-the-residuals-and-testing-for-spatial-autocorrelation-in-regression
 activity-1-a-non-spatial-regression-on-spatial-data---listen-to-the-residuals
 activity-2-spatial-autocorrelation-again
