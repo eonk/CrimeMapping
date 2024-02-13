@@ -16,8 +16,13 @@ This lab note is a work in process. If you have any suggestions or find any erro
 <div style="margin-top: 50px;"></div>
 
 **Note for students**<br>
+
 - While this material briefly covers some concepts, students are expected to engage in weekly reading,  attend lab sessions, and participate in lectures for a comprehensive course experience. These notes are not intended to be a stand-alone reference or textbook, rather a set of exercises to gain hands-on practice with the concepts introduced during the course. <br>
+
 - This material is designed for Criminology students at the University of Manchester. They are meant to introduce students to the concept of spatial data analysis, and cover descriptive statistics and the key concepts required to build an understanding of quantitative data analysis in crime research. <br>
-- The handouts utilize various datasets, including data from the UK data service such as the Crime Survey for England and Wales that is available under a Open Government Licence. These datasets are designed to be a learning resource and should not be used for research purposes or the production of summary statistics. 
+
+- The handouts utilise various datasets, including data from the UK data service such as the Crime Survey for England and Wales and police.co.uk that is available under a Open Government Licence. These datasets are designed to be a learning resource and should not be used for research purposes or the production of summary statistics. 
+
+- The prerequisit 
 
 ![](img/mybear.jpg)

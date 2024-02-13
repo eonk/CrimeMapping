@@ -1,16 +1,16 @@
 # Making Maps in R
 
-This week we will start making some maps in R, and learn about how we can take regular crime data, and assign the appropriate geometry for our chosen unit of analysis. We will produce some maps, using possibly familiar ggplot notation, and learn some key terms around projectsion and coordinate reference systems which will be essential for your work in the coming weeks. 
+This week we will start making some maps in R, and learn about how we can take regular crime data, and assign the appropriate geometry for our chosen unit of analysis. We will produce some maps, using possibly familiar `ggplot` notation, and learn some key terms around projection and coordinate reference systems which will be essential for your work in the coming weeks. 
 
 Today we will use the following packages, so make sure you have them installed:
 
-- `readr`
-- `tibble`
-- `janitor`
-- `sf`
+- `dplyr`
 - `ggplot2`
 - `ggspatial`
-- `dplyr`
+- `janitor`
+- `readr`
+- `sf`
+- `tibble`
 
 ## A quick introduction of terms
 
@@ -34,14 +34,14 @@ Attribute has become the preferred term for any recorded characteristic or prope
 
 #### Objects
 
-In spatial analysis it is customary to refer to places as objects. These objects can be a whole country, or a road. In forestry, the objects of interest might be trees, and their location will be represented as points. On the other hand, studies of social or economic patterns may need to consider the two-dimensional extent of places, which will therefore be represented as areas. These representations of the world are part of what is called the **vector data model**: A representation of the world using points, lines, and polygons. Vector models are useful for storing data that have discrete boundaries, such as country borders, land parcels, and streets. This is made up of points, lines, and areas (polygons): 
+In spatial analysis it is customary to refer to places as objects. These objects can be a whole country, or a road. In forestry, the objects of interest might be trees, and their location will be represented as points. On the other hand, studies of social or economic patterns may need to consider the two-dimensional extent of places, which will therefore be represented as areas. These representations of the world are part of what is called the **vector data model**: A representation of the world using points, lines, and polygons. Vector models are useful for storing data that have discrete boundaries, such as country borders, land parcels, and streets. This is made up of pointsn (e.g., coordinates), lines (e.g., roads, rivers), and polygons (e.g., regions, areas): 
 
 - Points
     + Points are pairs of coordinates, in latitude/longitude or some other standard system
 - Lines
     + Lines are ordered sequences of points connected by straight lines
-- Areas (polygons)
-    + Areas are ordered rings of points, also connected by straight lines to form polygons. It can contain holes, or be linked with separate islands. 
+- Polygons
+    + Polygons are ordered rings of points, also connected by straight lines to form polygons. It can contain holes, or be linked with separate islands. 
     
 ![](img/ptlinepoly.png)
 
@@ -51,7 +51,7 @@ Objects can also be **raster data**. Raster data is made up of pixels (or cells)
 
 #### Networks
 
-We already mentioned lines that constitute objects of spatial data, such as streets, roads, railroads, etc. Networks constitute one-dimensional structures embedded in two or three dimensions. Discrete point objects may be distributed on the network, representing phenomena such as landmarks, or observation points. Mathematically, a network forms a graph, and many techniques developed for graphs have application to networks. These include various ways of measuring a network's connectivity, or of finding the shortest path between pairs of points on a network. You can have a look at the [lesson on network analysis in the QGIS documentation](https://docs.qgis.org/2.18/en/docs/training_manual/vector_analysis/network_analysis.html)
+We already mentioned lines that constitute objects of spatial data, such as streets, roads, railroads, etc. Networks constitute one-dimensional structures embedded in two or three dimensions (e.g., . Discrete point objects may be distributed on the network, representing phenomena such as landmarks, or observation points. Mathematically, a network forms a graph, and many techniques developed for graphs have application to networks. These include various ways of measuring a network's connectivity, or of finding the shortest path between pairs of points on a network. You can have a look at the [lesson on network analysis in the QGIS documentation](https://docs.qgis.org/2.18/en/docs/training_manual/vector_analysis/network_analysis.html)
 
 ![](img/topology_fromgransportgeopraphy.png)
 
@@ -262,8 +262,6 @@ For more detailed insight I recommend reading the paper [Simple Features for R: 
 ### Mapping points with sf
 
 Let's get started with making some maps using `sf`. First, make sure you install the package, and then load with `library()` function. 
-
-**On Mac and Linux a few requirements must be met to install sf. These are described in the package’s README at [github.com/r-spatial/sf](github.com/r-spatial/sf).**
 
 ```{r loadsf}
 library(sf)
