@@ -9,7 +9,7 @@ description: "This is a study material for Criminology students at the Universit
 ---
 # Preface {-}
 
-This study material is designed to introduce Criminology students at the University of Manchester to the use of data science in crime research and practice. This is an improved version of [the material](https://maczokni.github.io/crime_mapping_textbook/) originally developed by Juanjo Medina and Reka Solymosi, and is currently being updated and maintained by Eon Kim. For students interested in a more in-depth exploration, consider [the book](https://www.routledge.com/Crime-Mapping-and-Spatial-Data-Analysis-using-R/Medina-Ariza-Solymosi/p/book/9780367724696) authored by Juan Medina Ariza and Reka Solymosi.
+This study material is designed to introduce Criminology students at the University of Manchester to the use of data science in crime research and practice. This is an improved version of [the material](https://maczokni.github.io/crime_mapping_textbook/) originally developed by Juanjo Medina and Reka Solymosi, and is currently being updated and maintained by Eon Kim and Thomas Cunningham. For students interested in a more in-depth study, consider [the book](https://www.routledge.com/Crime-Mapping-and-Spatial-Data-Analysis-using-R/Medina-Ariza-Solymosi/p/book/9780367724696) authored by Juan Medina and Reka Solymosi.
 
 This lab note is a work in process. If you have any suggestions or find any errors, please don't hesitate to contact me by submitting an issue to the the [GitHub repository](https://github.com/eonk/CrimeMapping) or via email on eon.kim@manchester.ac.uk.
 

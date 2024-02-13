@@ -415,16 +415,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="making-maps-in-r" class="section level1 hasAnchor" number="2">
 <h1><span class="header-section-number">Chapter 2</span> Making Maps in R<a href="making-maps-in-r.html#making-maps-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This week we will start making some maps in R, and learn about how we can take regular crime data, and assign the appropriate geometry for our chosen unit of analysis. We will produce some maps, using possibly familiar ggplot notation, and learn some key terms around projectsion and coordinate reference systems which will be essential for your work in the coming weeks.</p>
+<p>This week we will start making some maps in R, and learn about how we can take regular crime data, and assign the appropriate geometry for our chosen unit of analysis. We will produce some maps, using possibly familiar <code>ggplot</code> notation, and learn some key terms around projection and coordinate reference systems which will be essential for your work in the coming weeks.</p>
 <p>Today we will use the following packages, so make sure you have them installed:</p>
 <ul>
-<li><code>readr</code></li>
-<li><code>tibble</code></li>
-<li><code>janitor</code></li>
-<li><code>sf</code></li>
+<li><code>dplyr</code></li>
 <li><code>ggplot2</code></li>
 <li><code>ggspatial</code></li>
-<li><code>dplyr</code></li>
+<li><code>janitor</code></li>
+<li><code>readr</code></li>
+<li><code>sf</code></li>
+<li><code>tibble</code></li>
 </ul>
 <div id="a-quick-introduction-of-terms" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> A quick introduction of terms<a href="making-maps-in-r.html#a-quick-introduction-of-terms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -447,7 +447,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="objects-1" class="section level4 hasAnchor" number="2.1.1.3">
 <h4><span class="header-section-number">2.1.1.3</span> Objects<a href="making-maps-in-r.html#objects-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>In spatial analysis it is customary to refer to places as objects. These objects can be a whole country, or a road. In forestry, the objects of interest might be trees, and their location will be represented as points. On the other hand, studies of social or economic patterns may need to consider the two-dimensional extent of places, which will therefore be represented as areas. These representations of the world are part of what is called the <strong>vector data model</strong>: A representation of the world using points, lines, and polygons. Vector models are useful for storing data that have discrete boundaries, such as country borders, land parcels, and streets. This is made up of points, lines, and areas (polygons):</p>
+<p>In spatial analysis it is customary to refer to places as objects. These objects can be a whole country, or a road. In forestry, the objects of interest might be trees, and their location will be represented as points. On the other hand, studies of social or economic patterns may need to consider the two-dimensional extent of places, which will therefore be represented as areas. These representations of the world are part of what is called the <strong>vector data model</strong>: A representation of the world using points, lines, and polygons. Vector models are useful for storing data that have discrete boundaries, such as country borders, land parcels, and streets. This is made up of pointsn (e.g., coordinates), lines (e.g., roads, rivers), and polygons (e.g., regions, areas):</p>
 <ul>
 <li>Points
 <ul>
@@ -457,9 +457,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>Lines are ordered sequences of points connected by straight lines</li>
 </ul></li>
-<li>Areas (polygons)
+<li>Polygons
 <ul>
-<li>Areas are ordered rings of points, also connected by straight lines to form polygons. It can contain holes, or be linked with separate islands.</li>
+<li>Polygons are ordered rings of points, also connected by straight lines to form polygons. It can contain holes, or be linked with separate islands.</li>
 </ul></li>
 </ul>
 <p><img src="img/ptlinepoly.png" /></p>
@@ -468,7 +468,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="networks" class="section level4 hasAnchor" number="2.1.1.4">
 <h4><span class="header-section-number">2.1.1.4</span> Networks<a href="making-maps-in-r.html#networks" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>We already mentioned lines that constitute objects of spatial data, such as streets, roads, railroads, etc. Networks constitute one-dimensional structures embedded in two or three dimensions. Discrete point objects may be distributed on the network, representing phenomena such as landmarks, or observation points. Mathematically, a network forms a graph, and many techniques developed for graphs have application to networks. These include various ways of measuring a network’s connectivity, or of finding the shortest path between pairs of points on a network. You can have a look at the <a href="https://docs.qgis.org/2.18/en/docs/training_manual/vector_analysis/network_analysis.html">lesson on network analysis in the QGIS documentation</a></p>
+<p>We already mentioned lines that constitute objects of spatial data, such as streets, roads, railroads, etc. Networks constitute one-dimensional structures embedded in two or three dimensions (e.g., . Discrete point objects may be distributed on the network, representing phenomena such as landmarks, or observation points. Mathematically, a network forms a graph, and many techniques developed for graphs have application to networks. These include various ways of measuring a network’s connectivity, or of finding the shortest path between pairs of points on a network. You can have a look at the <a href="https://docs.qgis.org/2.18/en/docs/training_manual/vector_analysis/network_analysis.html">lesson on network analysis in the QGIS documentation</a></p>
 <p><img src="img/topology_fromgransportgeopraphy.png" /></p>
 </div>
 <div id="maps-reference-and-thematic-maps" class="section level4 hasAnchor" number="2.1.1.5">
@@ -536,7 +536,7 @@ This will be important later on when we are linking data from different projecti
 <p>Or, if you know the path to your file, you can code it in there, within quotation marks:</p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="making-maps-in-r.html#cb56-1" tabindex="-1"></a>crimes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/2019-06-greater-manchester-street.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 32058 Columns: 12
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (9): Crime ID, Month, Reported by, Falls within, Location, LSOA code, LS...
 ## dbl (2): Longitude, Latitude
@@ -657,7 +657,6 @@ This will be important later on when we are linking data from different projecti
 <div id="mapping-points-with-sf" class="section level3 hasAnchor" number="2.4.1">
 <h3><span class="header-section-number">2.4.1</span> Mapping points with sf<a href="making-maps-in-r.html#mapping-points-with-sf" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Let’s get started with making some maps using <code>sf</code>. First, make sure you install the package, and then load with <code>library()</code> function.</p>
-<p><strong>On Mac and Linux a few requirements must be met to install sf. These are described in the package’s README at <a href="github.com/r-spatial/sf">github.com/r-spatial/sf</a>.</strong></p>
 <div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="making-maps-in-r.html#cb76-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code></pre></div>
 <pre><code>## Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE</code></pre>
 <p>Now we can use the functions of sf in order to introduce geometries. Let’s start with the points</p>
@@ -816,7 +815,7 @@ Contains OS data © Crown copyright [and database right] (year)”</p>
 <p>Now use the <code>st_read()</code> function to read in the shapefile:</p>
 <div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="making-maps-in-r.html#cb92-1" tabindex="-1"></a>manchester_lsoa <span class="ot">&lt;-</span> <span class="fu">st_read</span>(shp_name)</span></code></pre></div>
 <pre><code>## Reading layer `england_lsoa_2011&#39; from data source 
-##   `/Users/eonkim/Desktop/R/CM_book/data/BoundaryData/england_lsoa_2011.shp&#39; 
+##   `/Users/eonkim/Desktop/R/CrimeMapping/data/BoundaryData/england_lsoa_2011.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 282 features and 3 fields
 ## Geometry type: POLYGON
