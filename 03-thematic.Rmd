@@ -37,10 +37,13 @@ manchester_lsoa <- st_read(shp_name)
 #Alternatively, you can download the LSOA shapefile from where we saved the data. 
 #Important! note that I store it in on my Data folder You HAVE TO change that if needed.
 download.file("https://www.dropbox.com/s/h5c1okn4m6t3rqe/BoundaryData.zip?dl=1" , 
-              destfile="/data/BoundaryData.zip")
-#Important! note that I extract file to the data/BoundaryData folder. you HATE TO change exdir (the directory to extract files to)
-unzip("/data/BoundaryData.zip", exdir = "/data/BoundaryData")
-manchester_lsoa <- st_read("data/BoundaryData/england_lsoa_2011.shp")
+              destfile="data/BoundaryData.zip",
+              mode = "wb")
+
+#Important! note that I extract file to the data/BoundaryData folder. You HAVE TO change exdir (the directory to extract files to)
+unzip("data/BoundaryData.zip", exdir = "data/BoundaryData")
+
+manchester_lsoa <- st_read("data/BoundaryData/BoundaryData/england_lsoa_2011.shp")
 ```
 
 Once you import the data, let's count the number of crimes in each LSOA units like what we did in the week 2!
@@ -290,7 +293,7 @@ census_lsoa_m <- read_csv("https://raw.githubusercontent.com/eonk/cm_book/main/d
 
 Notice that even all the variables that begin with "f" are numbers they have been read into R as characters. This is to do with the fact the first two lines do not represent cases and do have characters. R is coercing everything into character vectors. Let's clean this a bit.
 
-First we will get rid of the first two rows. In particular we will use the *slice()* function from *dplyr*. We can use slice to select cases based on row number. We don't need the first two rows so we can select rows 3 to 284.
+First we will get rid of some of the first rows which are blank. Depending on how you have downloaded the data, the number of blank rows you have may vary - just use the `head()` function to look at the first rows of your data. Our data has two blank rows, so we will use the `slice()` function from `dplyr` to remove the first two rows. We can use slice to select cases based on row number. We don't need the first two rows so we can select rows 3 to 284.
 
 ```{r}
 census_lsoa_m <- slice(census_lsoa_m, 3:284)
@@ -365,7 +368,7 @@ res_pop_map <- tm_shape(manchester_crime_lsoa) +
 
 crime_rate_map <- tm_shape(manchester_crime_lsoa) + 
   tm_fill("crimr1", style="quantile", palette= "Reds", title = "Crime rate") +
-  tm_layout(panel.labels = "Crime per 100,00 population", legend.position = c("right", "bottom"),
+  tm_layout(panel.labels = "Crime per 100,000 population", legend.position = c("right", "bottom"),
             legend.title.size = 0.8, legend.text.size = 0.5)
 
 tmap_arrange(crime_count_map, res_pop_map, crime_rate_map)
@@ -379,7 +382,7 @@ What do you think about these three maps? How do you think this might be differe
 
 Once you have completed this activity, let's explore your map with the crime rate using the usual residents as the denominator using the interactive way. Assuming you want to display 'crime_rate_map' we just created, you could use the following code.
 
-```{r, eval = FALSE, warning = FALSE, include=FALSE}
+```{r, eval = FALSE, warning = FALSE, echo = TRUE}
 tmap_mode("view")
 crime_rate_map
 ```
