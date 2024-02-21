@@ -852,11 +852,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## New names:
 ## Rows: 32162 Columns: 15
 ## ── Column specification
-## ─────────────────────────────────────────────────────────────────────────────────── Delimiter: &quot;,&quot; chr
-## (8): Month, Reported.by, Falls.within, Location, LSOA.code, LSOA.name, C... dbl (4): ...1, X, Longitude,
-## Latitude lgl (3): Crime.ID, Last.outcome.category, Context
-## ℹ Use `spec()` to retrieve the full column specification for this data. ℹ Specify the column types or set
-## `show_col_types = FALSE` to quiet this message.
+## ───────────────────────────────────────────────────── Delimiter: &quot;,&quot; chr
+## (8): Month, Reported.by, Falls.within, Location, LSOA.code, LSOA.name, C...
+## dbl (4): ...1, X, Longitude, Latitude lgl (3): Crime.ID,
+## Last.outcome.category, Context
+## ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
+## Specify the column types or set `show_col_types = FALSE` to quiet this
+## message.
 ## • `` -&gt; `...1`</code></pre>
 <p>We’ll also need our boundary data. Read in the city centre LSOAs geojson (also on Blackboard) <code>cc_lsoas.geojson</code>.</p>
 <div class="sourceCode" id="cb488"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb488-1"><a href="spatial-regression-models.html#cb488-1" tabindex="-1"></a>cc_lsoas <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">&quot;data/cc_lsoas.geojson&quot;</span>)</span></code></pre></div>

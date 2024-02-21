@@ -262,7 +262,7 @@ Or many points manually, with some popup text as well:
 
 latitudes = c(53.464987, 53.472726, 53.466649) 
 longitudes = c(-2.230899, -2.245481, -2.243421) 
-popups = c("burglary", "violent", "stop and search")
+popups = c("burglary", "robbery", "stop and search")
 df = data.frame(latitudes, longitudes, popups)      
 
 map_practice <- leaflet(data = df) %>%
