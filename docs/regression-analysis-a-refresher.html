@@ -454,7 +454,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We will use a dataset that includes information about homicides in the US, as well as information in a number of sociodemographic variables that are often thought of as associated with the geographical distribution of homicides. As always, you can download the data from the webpage or it is available on blackboard under the data tab for this week’s learning materials. Is is the file <code>NAT.csv</code> inside the <code>ncovr.zip</code> file (remember you’ll have to extract the zip folder first!).</p>
 <div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="regression-analysis-a-refresher.html#cb385-1" tabindex="-1"></a>ncovr <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://www.dropbox.com/s/zhn66q5y46dontn/NAT.csv?dl=1&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 3085 Columns: 69
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (5): NAME, STATE_NAME, STATE_FIPS, CNTY_FIPS, FIPS
 ## dbl (64): STFIPS, COFIPS, FIPSNO, SOUTH, HR60, HR70, HR80, HR90, HC60, HC70,...
@@ -464,7 +464,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="regression-analysis-a-refresher.html#cb387-1" tabindex="-1"></a><span class="co">#or, use your local path</span></span>
 <span id="cb387-2"><a href="regression-analysis-a-refresher.html#cb387-2" tabindex="-1"></a>ncovr <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&#39;data/ncovr/NAT.csv&#39;</span>)</span></code></pre></div>
 <pre><code>## Rows: 3085 Columns: 69
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (5): NAME, STATE_NAME, STATE_FIPS, CNTY_FIPS, FIPS
 ## dbl (64): STFIPS, COFIPS, FIPSNO, SOUTH, HR60, HR70, HR80, HR90, HC60, HC70,...

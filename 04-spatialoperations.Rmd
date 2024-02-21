@@ -101,7 +101,7 @@ grepl("a", some_text)
 
 ### Activity 2: Pattern matching to find city centre premises
 
-So we can use `grepl()`, to select all the cases where we find the pattern "M1 " in the postcode. *NOTICE* the space in our search pattern. It's not "M1" it's "M1 ". Can you guess why?
+So we can use `grepl()`, to select all the cases where we find the pattern "M1 " in the postcode. *NOTICE* the space in our search pattern. It's not "M1" it's "M1&nbsp;". Can you guess why?
 
 Well, M1 will be found in M1 but also in M13, which is the University of Manchester's postcode, and not the part of city centre in which we are interested. 
 
@@ -187,27 +187,27 @@ So how can we apply this to a whole dataframe? Well here I build two functions `
 
 ```{r}
 #function 1: longitudes
-geocode_addys_getlng <- function(x){
-  geocode_result <- fromJSON(readLines(paste0("http://api.getthedata.com/postcode/", gsub(" ", "", x))))
-  return(ifelse(!is.null(geocode_result$data$longitude), geocode_result$data$longitude, NA))}
+geocode_getlng <- function(x){
+  geocode_result <- fromJSON(readLines(paste0("http://api.getthedata.com/postcode/",gsub(" ", "+", x))))
+  if (!is.null(geocode_result$data$longitude)) {return(geocode_result$data$longitude)} 
+  else {return(NA)}}
 
-#function 2: latitudes
-geocode_addys_getlat <- function(x){
-  geocode_result <- fromJSON(readLines(paste0("http://api.getthedata.com/postcode/", gsub(" ", "", x))))
-  return(ifelse(!is.null(geocode_result$data$latitude), geocode_result$data$latitude, NA))}
+#function 2:  latitudes
+geocode_getlat <- function(x){
+  geocode_result <- fromJSON(readLines(paste0("http://api.getthedata.com/postcode/",gsub(" ", "+", x))))
+  if (!is.null(geocode_result$data$latitude)) {return(geocode_result$data$latitude)} 
+  else {return(NA)}}
 ```
 
 Now to apply these functions to the whole dataframe, we will use the `mutate()` function to create a new column for longitude and one for latitude, and for each one apply the relevant function with the `map_chr` function from the purr package. 
 
 ```{r, warning=FALSE, message=FALSE}
 city_centre_prems <- city_centre_prems %>% 
-  mutate(longitude = map_chr(POSTCODE, geocode_addys_getlng),
-         latitude = map_chr(POSTCODE, geocode_addys_getlat))
+  mutate(longitude = map_chr(POSTCODE, geocode_getlng),
+         latitude = map_chr(POSTCODE, geocode_getlat))
 ```
 
-Be patient, this will take a while, each postcode has to be referenced against their database and the relevant  coordinates extracted. For each point you will see a note appear in red, and while R is working you will see the red stop sign on the top right corner of the Console window:
-
-![](img/r_is_working.png)
+Be patient, this will take a while, each postcode has to be referenced against their database and the relevant  coordinates extracted. For each point you will see a note appear in red, and while R is working you will see the red stop sign on the top right corner of the Console window.
 
 Also think about how incredibly fast and easy this actually is, if you consider a potential alternative where you have to manualy find some coordinates for each address. That sounds pretty awful, doesn't it? Compared to that, setting the above functions running, and stepping away to make a cup of tea is really a pretty excellent alternative, no?
 
@@ -252,7 +252,7 @@ You can add a point manually:
 ```{r}
 m <- leaflet() %>%
   addTiles()  %>% 
-  addMarkers(lng=-2.230899, lat=53.464987, popup="You are here")
+  addMarkers(lng=-2.230899, lat=53.464987, popup="burglary")
 m  
 ```
 
@@ -262,13 +262,13 @@ Or many points manually, with some popup text as well:
 
 latitudes = c(53.464987, 53.472726, 53.466649) 
 longitudes = c(-2.230899, -2.245481, -2.243421) 
-popups = c("You are here", "Here is another point", "Here is another point") 
+popups = c("burglary", "violent", "stop and search")
 df = data.frame(latitudes, longitudes, popups)      
 
 map_practice <- leaflet(data = df) %>%
   addTiles()  %>%  
   addMarkers(lng=~longitudes, lat=~latitudes, popup=~popups)
-map_practice  
+map_practice
 ```
 
 #### Adding data
@@ -556,73 +556,4 @@ leaflet(crimes_per_prem) %>%
             title = 'Violent crimes', position = "bottomleft") 
 ```
 
-It's not the neatest of maps, with all these overlaps, but we can talk about prettifying maps another day. You've done enough today. 
-
-
-
-
-
-<!-- ## Homework -->
-
-<!-- In the homework you will now apply your learning to a new problem. To do so, please complete the following tasks:  -->
-
-<!-- ### **Geocode the addresses:**  -->
-<!-- Use the geocode function to geocode, but this time pass the actual address values, rather than just the post code.  -->
-
-<!-- You can geocode from addresses. For example, if we want to geocode the location of [Shoryu ramen](https://www.shoryuramen.com/stores/76-manchester), we could use the address to do so: -->
-
-<!-- ```{r} -->
-<!-- geocode("1 Piccadilly, Manchester M1 1RG", source = "dsk") -->
-<!-- ``` -->
-
-<!-- You can see that this is slightly different than the postcode centroid:  -->
-
-<!-- ```{r} -->
-<!-- geocode("M1 1RG", source = 'dsk') -->
-<!-- ``` -->
-
-
-<!-- - **1) Discuss why you think the geocode for the address is different than the geocode for the postcode** -->
-<!-- - **2) Geocode the address for all the city centre licensed premises** -->
-<!-- - **3) Did this work OK? Do you have any geocoded to weird locations? Why do you think this might be?** -->
-<!-- - **4) Fix (or at describe how you would fix) any issues with geocoding that you identified above** -->
-
-
-<!-- Make sure you think a little bit about this. Not only do you have to consider what variable to pass to the `geocode()` function, but also whether that's enough information to get the relevant coordinates.  -->
-
-
-
-<!-- ```{r, echo=FALSE, eval=FALSE, message=FALSE, warning=FALSE} -->
-
-<!-- city_centre_prems$postcode_coords2 <- geocode(paste(city_centre_prems$LOCATIONTEXT, ", UK", sep=""), source = 'dsk') -->
-
-<!-- city_centre_prems$longitude2 <- city_centre_prems$postcode_coords2$lon -->
-<!-- city_centre_prems$latitude2 <- city_centre_prems$postcode_coords2$lat -->
-
-<!-- m <- leaflet(data = city_centre_prems) %>% -->
-<!--   addProviderTiles("Stamen.Toner") %>%  -->
-<!--   addCircleMarkers(lng=~longitude, lat=~latitude, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME), radius = 2, color = "red") %>%  -->
-<!--   addCircleMarkers(lng=~longitude2, lat=~latitude2, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME), radius = 2, color = "blue") -->
-<!-- m   -->
-
-<!-- city_centre_prems$postcode_coords3 <- geocode(paste(city_centre_prems$LOCATIONTEXT, ", ", city_centre_prems$POSTCODE, ", UK", sep=""), source = 'dsk') -->
-
-<!-- city_centre_prems$longitude3 <- city_centre_prems$postcode_coords3$lon -->
-<!-- city_centre_prems$latitude3 <- city_centre_prems$postcode_coords3$lat -->
-
-<!-- m <- leaflet(data = city_centre_prems) %>% -->
-<!--   addProviderTiles("Stamen.Toner") %>%  -->
-<!--   addCircleMarkers(lng=~longitude, lat=~latitude, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME), radius = 2, color = "#a6cee3") %>% -->
-<!--   addCircleMarkers(lng=~longitude2, lat=~latitude2, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME), radius = 2, color = "#1f78b4")%>% -->
-<!--   addCircleMarkers(lng=~longitude3, lat=~latitude3, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME), radius = 2, color = "#b2df8a") %>%  -->
-<!--   addLegend("topleft",  -->
-<!--   colors =c("#a6cee3",  "#1f78b4", "#b2df8a"), -->
-<!--   labels= c("postcode", "address","both"), -->
-<!--   title= "Geocoding approach", -->
-<!--   opacity = 1) -->
-<!-- m   -->
-
-<!-- ``` -->
-
-
-
+It's not the neatest of maps, with all these overlaps, but we can talk about prettifying maps another day. You've done enough today."m1
