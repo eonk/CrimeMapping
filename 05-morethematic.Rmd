@@ -73,7 +73,7 @@ As you can see if you read through the comments there, this bit of code checks e
 
 We also want to introduce `pacmac`, developed by Dason Kurkiewicz, to make your life a lot easier in the realm of R packages. While the `library()` function does its job, but could be the tedious task, installing and loading each package one by one. The `p_load()` function, a single line code will automatically checks for missing missing packages and installs/loads all libraries into you R. So, try! 
 
-```{r}
+```{r eval = FALSE}
 library(pacman)
 p_load(cartogram, DCluster, dplyr, geogrid, ggplot2,  ggspatial, hexbin, janitor, sf, sp, spdep, tmap, readxl, readr)
 ```
