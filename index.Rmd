@@ -17,7 +17,7 @@ This lab note is a work in process. If you have any suggestions or find any erro
 
 **Note for students**<br>
 
-- While this material briefly covers some concepts, students are expected to engage in weekly reading,  attend lab sessions, and participate in lectures for a comprehensive course experience. These notes are not intended to be a stand-alone reference or textbook, rather a set of exercises to gain hands-on practice with the concepts introduced during the course. <br>
+- While this material briefly covers some concepts, students are expected to engage in weekly reading,  attend lab sessions, and participate in tutorial sessions for a comprehensive course experience. These notes are not intended to be a stand-alone reference or textbook, rather a set of exercises to gain hands-on practice with the concepts introduced during the course. <br>
 
 - This material is designed for Criminology students at the University of Manchester. They are meant to introduce students to the concept of spatial data analysis, and cover descriptive statistics and the key concepts required to build an understanding of quantitative data analysis in crime research. <br>
 
