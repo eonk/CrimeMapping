@@ -4,20 +4,20 @@ In this session we are going to discuss some additional features around thematic
 
 Before we do any of this, we need to load the libraries we will use today:
 
+- `cartogram`
+- `DCluster`
+- `dplyr`
+- `geogrid`
+- `ggplot2`
+- `ggspatial`
+- `hexbin`
+- `janitor`
 - `sf`
-- `tmap`
 - `sp`
 - `spdep`
-- `DCluster`
-- `cartogram`
-- `ggplot2`
-- `dplyr`
+- `tmap`
 - `readxl`
 - `readr`
-- `janitor`
-- `hexbin`
-- `ggspatial`
-- `geogrid`
 
 ```{r, warning=FALSE, message=FALSE, echo=FALSE}
 library(sf)
@@ -71,9 +71,16 @@ for (x in libs) {
 
 As you can see if you read through the comments there, this bit of code checks each package in the list you pass to tbe `libs` object when you create it, and if it is not installed it installs for you, and if it is, it just loads it for you. It can be a handy bit of code to keep around. 
 
+We also want to introduce `pacmac`, developed by Dason Kurkiewicz, to make your life a lot easier in the realm of R packages. While the `library()` function does its job, but could be the tedious task, installing and loading each package one by one. The `p_load()` function, a single line code will automatically checks for missing missing packages and installs/loads all libraries into you R. So, try! 
+
+```{r}
+library(pacman)
+p_load(cartogram, DCluster, dplyr, geogrid, ggplot2,  ggspatial, hexbin, janitor, sf, sp, spdep, tmap, readxl, readr)
+```
+
 ### Activity 1: Getting some messy data
 
-So far, we've really been spoilt by using neat and easy-to-access data typical of 'western' countries. This week we will have a little exercise in using data when there may not be such clear ways to access neat and tidy data. Specifically,  we're going to look at some data from India! We'll be using two datasets:
+So far, we've really been spoilt by using neat and easy-to-access data typical of 'western' countries. This week we will have a little exercise in using data when there may not be such clear ways to access neat and tidy data. Specifically, we're going to look at some data from India! We'll be using two datasets:
 
 * A shapefile of India (including boundaries of 'states' and 'districts')
 * District-level data on households and crop yields
