@@ -327,10 +327,10 @@ as.nb.sgbp <- function(x, ...) {
 w_sf <- as.nb.sgbp(bihar_1971$neighbour)
 ```
 
-And now that we have the list of neighbours, we can use the `EBlocal()` function, and here specify the count of cases (observed), the population at risk (or rice_TA in the case of our crop yields) and then finally the neighbours list we just created above (`w_sf`):
+And now that we have the list of neighbours, we can use the `EBlocal()` function, and here specify the count of cases (observed), the population at risk (or rice_TA in the case of our crop yields) and then finally the neighbours list we just created above (`w_sf`). The object produced (`eb2`) consists of two columns - the raw rates (equivalent to the `rice_yield` we already calculated) and the newly estimated rates:
 
 ```{r}
-eb2 <- EBlocal(bihar_1971$rice_yield, bihar_1971$rice_ta, w_sf)
+eb2 <- EBlocal(bihar_1971$rice_tq, bihar_1971$rice_ta, w_sf)
 bihar_1971$rice_yieldEBSL <- eb2$est 
 bihar_1971$neighbour <- NULL
 ```
