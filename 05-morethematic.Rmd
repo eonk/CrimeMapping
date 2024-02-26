@@ -186,7 +186,9 @@ shapefile$name <- make_clean_names(shapefile$name)
 shapefile$state_ut <- tolower(shapefile$state_ut)
 
 # Clean the yield data's state and district names in the same way
-yield_data$distname <- gsub(' ', '_', tolower(yield_data$distname))
+# Using allow_dupes = TRUE means that repeated district names are not made into unique names
+yield_data$distname <- make_clean_names(yield_data$distname, 
+                                        allow_dupes = TRUE)
 yield_data$stname <- tolower(yield_data$stname)
 
 # Join the two datasets together, the 'by' argument in right_join describes which columns
@@ -214,7 +216,7 @@ Let's look at our yield data, here yield means the amount of rice produced (in t
 summary(district_yields$rice_yield)
 ```
 
-We can see that the district with the highest rice production rate in 1971 had a rate of 55,423 tonnes of rice per 100,000 individuals. That's really high, over 500kg of rice per person! Where is that place? I can tell you it's a place call Saharsa. Check it out:
+We can see that the district with the highest rice production rate in 1971 had a rate of 55,423 kilograms of rice for each 100,000m$^2$ area. That's really high! Where is that place? I can tell you it's a place call Saharsa. Check it out:
 
 ```{r}
 # This will show us the row with the highest yield
