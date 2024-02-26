@@ -615,11 +615,9 @@ Most often you will just have to remain aware of the MAUP and it's possible effe
 
 For the purposes of this course, it's enough that you know of, and understand the MAUP and its implications. Always be smart when choosing your appropriate spatial unit of analysis, and when you use binning of any form, make sure you consider how and if your conclusions might change compared to another possible approach. 
 
-### Activity 9: Consider the MAUP
-
 ##  Transforming polygons
 
-When you have meaningful spatial units of analysis in your polygons, for example you are interested specifically in Local Autorities, it might make sense to stick with what we did last week, and aggregate the points into these polygons to create thematic maps. However, while thematic maps are an accessible and visually appealing method for displaying spatial information,  they can also be highly misleading. Irregularly shaped polygons and large differences in the size of areas being mapped can introduce misrepresentation. The message researchers want to get across might be lost, or even worse, misdirect the viewers to erroneous conclusions. [This article](https://www.tandfonline.com/eprint/q9w7iUhFJwzvBR84GkT9/full) provides a helpful discussion of the problem illustrating the case with UK election maps. It is worth reading.
+When you have meaningful spatial units of analysis in your polygons, for example you are interested specifically in Local Authorities, it might make sense to stick with what we did last week, and aggregate the points into these polygons to create thematic maps. However, while thematic maps are an accessible and visually appealing method for displaying spatial information,  they can also be highly misleading. Irregularly shaped polygons and large differences in the size of areas being mapped can introduce misrepresentation. The message researchers want to get across might be lost, or even worse, misdirect the viewers to erroneous conclusions. [This article](https://www.tandfonline.com/eprint/q9w7iUhFJwzvBR84GkT9/full) provides a helpful discussion of the problem illustrating the case with UK election maps. It is worth reading.
 
 Fortunately, there are many methods in R to enhance the legibility of geographic information and the interpretability of what it is trying to be communicated. 
 
@@ -667,7 +665,7 @@ ggplot() +
 
 We can see that in smaller LAs we don't even really see the result, as the boundary lines pretty much cover everything. Hmm. Now what we can do is transform the shapes. 
 
-### Activity 10: Cartograms
+### Activity 9: Cartograms
 
 The last thing we will do today is make some cartograms! Cartogram types of maps distort reality to convey information. They resize and exaggerate any variable on an attribute value.
 
@@ -685,10 +683,10 @@ library(cartogram)
 
 Within that there is the `cartogram()` function, which takes 2 arguments, 1 - the shape file (it can be a SpatialPolygonDataFrame or an sf object), and 2 - the variable which it should use to distort the polygon by. 
 
-In our data set we have a variable "electorate" which refers to the total number of registered electors
+In our data set we have a variable "electorate" which refers to the total number of registered electors, which we will use to distort the polygons:
 
 ```{r, eval = FALSE}
-# construct a cartogram using the percentage voting leave
+# construct a cartogram using the size of the electorate in each LA
 eu_cartogram <- cartogram(eu_sf, "Electorate")
 ```
 
@@ -697,13 +695,14 @@ Again this is some labour intensive work, much like the grid making, you have so
 I do have a tip for you if you want to make sure the process does not take too long. You can set a parameter in the cartogram function which is the "itermax" parameter. This specifies the maximum number of iterations we are happy with. If you don't specify it's set to 15. Let's set to 5 for the sake of speed: 
 
 ```{r}
-# construct a cartogram using the percentage voting leave
+# construct a cartogram using the size of the electorate in each LA
 eu_cartogram <- cartogram_cont(eu_sf, "Electorate", itermax = 5)
 ```
 
-And if your cartogram has been created, you can now plot again the referendum results, but using the electorate to change the size of the locad authority: 
+And if your cartogram has been created, you can now plot again the referendum results, but using the electorate to change the size of the local authority: 
 
 ```{r}
+# plot the percentage voting leave onto our cartogram
 ggplot() +
   geom_sf(data = eu_cartogram, aes(fill = Pct_Leave)) 
 ```
