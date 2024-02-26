@@ -435,14 +435,14 @@ sf_mcr_asb <- st_as_sf(mcr_asb, coords = c("Longitude", "Latitude"),
                  crs = 4326, agr = "constant")
 ```
 
-Now one thing that this does is it consumes our lng and lat columns into a geometry attribute. This is generally OK, but for the binning we will do, we would like to have them as separate coordinates. 
+Now one thing that this does is it consumes our lng and lat columns into a geometry attribute. This is generally OK, but for the binning we will do, we would like to have them as separate coordinates. We can do this by adding the argument `remove = FALSE` to our `st_as_sf` function. We will also rename these coordinate columns to be `lng` and `lat`.
 
 ```{r, warning=FALSE}
 #extract the coords to some columns, "lng" and "lat"
-sf_mcr_asb <- 
-  bind_cols(sf_mcr_asb, (do.call(rbind, st_geometry(sf_mcr_asb))) %>% 
-              as_tibble() %>% 
-              setNames(c("lng","lat")))
+sf_mcr_asb<- st_as_sf(mcr_asb, coords = c("Longitude", "Latitude"), 
+                       crs = 4326, agr = "constant", remove = FALSE) %>% 
+  rename(lng = Longitude,
+         lat = Latitude)
 ```
 
 ```{r, echo=FALSE}
@@ -615,7 +615,7 @@ Most often you will just have to remain aware of the MAUP and it's possible effe
 
 For the purposes of this course, it's enough that you know of, and understand the MAUP and its implications. Always be smart when choosing your appropriate spatial unit of analysis, and when you use binning of any form, make sure you consider how and if your conclusions might change compared to another possible approach. 
 
-### Activity 9: Considering MAUP
+### Activity 9: Consider the MAUP
 
 ##  Transforming polygons
 
