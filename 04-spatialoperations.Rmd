@@ -1,23 +1,19 @@
----
-always_allow_html: true
----
-
 # Performing spatial operations in R
 
 By now you have come a long way in terms of taking your spatial data, and visualising it using maps, and being able to present the values of a variable using thematic maps. You have had some practice in taking data which has a spatial component, and joining it to a shapefile, using the common column, in order to be able to visually demonstrate variation on something, such as the crime rate, across space. 
 
-I hope that you are finding this to be really exciting stuff, and an opportunity to get yourselves accustomed to spatial data. If there is anything you are unsure about, or want to catch up on, please do not hesitate to revisit older material, and ask us questions about it. We build on each week acquiring knowledge cumulatively, so don't let yourself get stuck anywhere down the line. But, if you're ready, today we will go a step further, and get your hands dirty with **spatial manipulation of your data**. 
+We hope that you are finding this to be really exciting stuff, and an opportunity to get yourselves accustomed to spatial data. If there is anything you are unsure about, or want to catch up on, please do not hesitate to revisit older material, and ask the teaching staff questions about it. We build on each week acquiring knowledge cumulatively, so don't let yourself get stuck anywhere down the line. But, if you're ready, today we will go a step further, and get your hands dirty with **spatial manipulation of your data**. 
 
 Thus far, our data manipulation exercises were such that you might be familiar with, from your earlier exposures to data analysis. Linking datasets using a common column, calculating a new variable (new column) from values of existing variables, these are all tasks which you can perform on spatial or non-spatial data. However today we will explore some exercises in data manipulation which are specific to *spatial* data analysis. After this session you can truly say you are masters of spatial data manipulation. So let's get started with that!
 
 The main objectives for this session are that by the end you will have:
 
 - used **geocoding** methods to translate postcodes into geographic coordinates 
-- made interactive point map with leaflet
+- made interactive point map with **leaflet**
 - met a new format of spatial shape file called **geojson**
 - subset points that are within a certain area using a **spatial operation**
 - created new polygons by generating **buffers** around points
-- counted the number of points that fall within a polygon (known as **points in polygon**)
+- counted the number of points that fall within a polygon, known as **points in polygon**
 
 These are all very useful tools for the spatial crime analyst, and we will hope to demonstrate this by working through an example project, where you would make use of all of these tools. 
 
@@ -28,7 +24,6 @@ The packages we will use today are:
 - `leaflet`
 - `purrr`
 - `readr`
-- `RColorBrewer`
 - `rjson`
 - `sf`
 
@@ -43,6 +38,7 @@ library(rjson)
 library(sf)
 ```
 
+## Criminality of place
 
 Let's consider the assumption that licenced premises which serve alcohol are associated with increased crimes. We might have some hypotheses about why this may be. 
 
@@ -54,15 +50,15 @@ On the other hand, it is possible that these areas are *crime generators*.
 
 > Crime generators are particular areas to which large numbers of people are attracted for reasons unrelated to any particular level of criminal motivation they might have or to any particular crime they might end up committing. Typical examples might include shopping precincts; entertainment districts; office concentrations; or sports stadiums. 
 
-(To read  further in crime attractors vs crime generators turn to your recommended reading of [Brantingham, P., & Brantingham, P. (1995). Criminality of place. European journal on criminal policy and research, 3(3), 5-26.](https://link.springer.com/content/pdf/10.1007/BF02242925.pdf)). There have since been more developments, for example about crime radiators and absorbers as well ([watch this Risky Places lecture from Kate Bowers:](https://play.kth.se/media/Risky+PlacesA+Crime+absorbers,+crime+radiators+as+risky+places,+Prof+Kate+Bowers,+UCL/0_zya4j354) to learn more!)
+To read  further in crime attractors vs crime generators turn to your recommended reading of [Brantingham, P., & Brantingham, P. (1995). Criminality of place. European journal on criminal policy and research, 3(3), 5-26.](https://link.springer.com/content/pdf/10.1007/BF02242925.pdf)). There have since been more developments, for example about crime radiators and absorbers as well ([watch this Risky Places lecture from Kate Bowers:](https://play.kth.se/media/Risky+PlacesA+Crime+absorbers,+crime+radiators+as+risky+places,+Prof+Kate+Bowers,+UCL/0_zya4j354) to learn more!
 
 It's possible that some licensed premises attract crimes, due to their reputation. However it is also possible that some of them are simply located in areas that are busy, attracts lots of people for lots of reasons, and crimes occurr as a result of an abundance of opportunities instead. 
 
 In any case, what we want to do is to examine whether certain outlets have more crimes near them than others. We can do this using open data, some R code, and the spatial operations discussed above. So let's get to it!
 
-## Getting some (more) data
+## Getting data of this week
 
-Manchester City Council have an [Open Data Catalogue](http://open.manchester.gov.uk/open/homepage/3/manchester_open_data_catalogue) on their website, which you can use to browse through what sorts of data they release to the public. There are some more and some less interesting data sets made available here. It's not quite as impressive as the open data from some of the cities in the US such as [New York](https://opendata.cityofnewyork.us/) or [Dallas ](https://www.dallasopendata.com/) but we'll take it. 
+Manchester City Council have an [Open Data Catalogue](http://open.manchester.gov.uk/open/homepage/3/manchester_open_data_catalogue) on their website, which you can use to browse through what sorts of data they release to the public. There are some more and some less interesting data sets made available here. It's not quite as impressive as the open data from some of the cities in the US such as [New York](https://opendata.cityofnewyork.us/) or [Dallas](https://www.dallasopendata.com/) but we'll take it. 
 
 One interesting data set, especially for our questions about the different alcohol outlets is the [Licensed Premises](http://www.manchester.gov.uk/open/downloads/file/169/licensed_premises) data set. This details all the currently active licenced premises in Manchester. You can see there is a link to download now. 
 
@@ -74,7 +70,7 @@ So without dragging this on any further, let's read in the licensed premises dat
 lic_prem <- read_csv("http://www.manchester.gov.uk/open/download/downloads/id/169/licensed_premises.csv")
 ```
 
-You can always check if this worked by looking to your global environment on the righ hand side and seeing if this 'lic_prem' object has appeared. If it has, you should see it has `r I(nrow(lic_prem))` observations (rows), and `r I(ncol(lic_prem))` variables (columns). 
+You can always check if this worked by looking to your global environment on the right hand side and seeing if this 'lic_prem' object has appeared. If it has, you should see it has `r I(nrow(lic_prem))` observations (rows), and `r I(ncol(lic_prem))` variables (columns). 
 
 Let's have a look at what this data set looks like. You can use the `View()` function for this: 
 
@@ -88,9 +84,10 @@ We can see there are some interesting and perhaps less interesting columns in th
 
 We could use spatial operations here, and geocode all the postcodes at this point, then use a spatial file of city centre to select only the points contained in this area. The only reason we're not doing this is because the geocode function takes a bit of time to geocode each address. It would only be about 10 - 15 minutes, but we don't want to leave you sitting around in the lab for this long, so instead we will try to subset the data using pattern matching in text. In particular we will be using the `grepl()` function. This function takes a **pattern** and looks for it in some text. If it finds the pattern, it returns TRUE, and if it does not, it returns FALSE. So you have to pass two parameters to the `grepl()` function, one of them being the pattern that you want it to look for, and the other being the object in which to search. 
 
-So for example, if we have an object that is some text, and we want to find if it contains the letter "a", we would pass those inside the grepl() function, which would tell us TRUE (yes it's there) or FALSE (no it's not there):
+So for example, if we have an object that is some text, and we want to find if it contains the letter "a", we would pass those inside the `grepl()` function, which would tell us TRUE (yes it's there) or FALSE (no it's not there):
 
 ```{r}
+#example 1: some_text with 'a'
 some_text <- "this is some text that has some letter 'a's"
 grepl("a", some_text)
 ```
@@ -98,13 +95,14 @@ grepl("a", some_text)
 You can see this returns TRUE, because there is at least one occurrence of the letter a. If there wasn't, we'd get FALSE: 
 
 ```{r}
+#example 2: some_text without 'a'
 some_text <- "this is some text tht h_s some letter '_'s"
 grepl("a", some_text)
 ```
 
-#### Activity 2: Pattern matching to find city centre premises
+### Activity 2: Pattern matching to find city centre premises
 
-So we can use this, to select all the cases where we find the pattern "M1 " in the postcode. *NOTICE* the space in our search pattern. It's not "M1" it's "M1 ". Can you guess why?
+So we can use `grepl()`, to select all the cases where we find the pattern "M1 " in the postcode. *NOTICE* the space in our search pattern. It's not "M1" it's "M1&nbsp;". Can you guess why?
 
 Well, M1 will be found in M1 but also in M13, which is the University of Manchester's postcode, and not the part of city centre in which we are interested. 
 
@@ -118,36 +116,34 @@ city_centre_prems <- lic_prem %>%
 
 Now we only have `r I(nrow(city_centre_prems))` observations (see your global environment), which is a much more manageable number. 
 
-### Geocoding from an address
-Great OK so we have this list of licensed premises, and we have their address, which is clearly *some* sort of spatial information, but how would you put this on a map? 
+## Geocoding from an address
+So we have this list of licensed premises, and we have their address, which is clearly *some* sort of spatial information, but how would you put this on a map?
 
 Any ideas? 
 
-We can, at the most basic, geocode the postcode. This will put all the establisments to the centroid of the postcode. Postcodes are used in the United Kingdom as alphanumeric codes, that were devised by Royal Mail. A full postcode is known as a "postcode unit" and designates an area with a number of addresses or a single major delivery point. [You can search the Royal Mail for information on post codes here.](https://www.royalmail.com/business/search/google/POSTCODE). 
+We can, at the most basic, geocode the postcode. This will put all the establishments to the centroid of the postcode. Postcodes are used in the United Kingdom as alphanumeric codes, that were devised by Royal Mail. A full postcode is known as a "postcode unit" and designates an area with a number of addresses or a single major delivery point. [You can search the Royal Mail for information on post codes here.](https://www.royalmail.com/business/search/google/POSTCODE). 
 
 Here is a map of the postcode areas in Greater Manchester: 
 
 ![](img/750px-M_postcode_area_map.svg.png)
 
-Now the centroid of the post code area represents the central point of the shapefile. For example, here you can see some polygons with their centroids illustrated by points: 
+The centroid of the post code area represents the central point of the polygons. For example, here you can see some polygons with their centroids illustrated by points in polygons.
 
 ![](img/6R9sn.png)
 
-This is not quite as precise as geocoding the actual address, but let's just stick with this approach for now.
+This is not quite as precise as geocoding the actual address, but let's stick with this approach for now.
 
 So we need something that will help us get the coordinates for the relevant post code centroid. For this we can use the [Open postcode](https://data.gov.uk/dataset/091feb1c-aea6-45c9-82bf-768a15c65307/open-postcode-geo) geo from [data.gov.uk](https://www.data.gov.uk/). Open Postcode Geo is a postcode dataset and API optimised for geocoding applications. You can use Open Postcode Geo to geocode a dataset, geocode user input, and therefore build a proximity search. Data is derived from the Office for National Statistics postcode database and is free to use, **subject to including attributions to ONS, OS (Ordinance Survey) and Royal Mail**.
 
 Postcodes can be entered at area, district, sector, and unit level - see Postcode map for the geographical relationship between these. We can use the Application Programme Interface (API) to query postcodes and read them directly into R, attaching a latitude and a longitude to our dataframe. 
 
-#### Activity 3: Getting address from post code using an API
+### Activity 3: Getting address from post code using an API
 
 What is an API? I once gave an hour long demo on using APIs, if you would like to watch you can see here: [APIs demo](https://vimeo.com/438506088). 
 
 But essentially, the way we use it here, an API is a way for us to query data from the web using an url. In this case, we will use the Open Postcode Geo API (detailed above), and give it an address in the URL. Then, it will return to us the coordinates of that address. 
 
-Try this in a browser. Open up chrome, or firefox, or whatever you use and type "http://api.getthedata.com/postcode/" plus your post code, but instead of the space add a plus sign. 
-
-For example, the uni postcode is "M13 9PL". So to query the coordinates for the university we use the url: "http://api.getthedata.com/postcode/M13+9PL"
+Try this in a browser. Open up chrome, or firefox, or whatever you use and type "http://api.getthedata.com/postcode/" plus your post code, but instead of the space add a plus sign. For example, the uni postcode is "M13 9PL". So to query the coordinates for the university we use the url: "http://api.getthedata.com/postcode/M13+9PL"
 
 You should see a result like this: 
 
@@ -155,7 +151,7 @@ You should see a result like this:
 
 This is called a JSON file, you can see it has lots of info about this post code, for example it tells us the country is England, and it gives us a value for latitude and for longitude. 
 
-It's all very well seeing this in a browser, but how can we get this into R? Well we can use a function called `fromJSON()` from the `rjson` package, which reads in JSON files and turns them into the nice dataframes we know and love. Inside the `fromJSON()` we use the `readlines()` function to get the data from the URL. We save all this into a geocode_result object: 
+It's all very well seeing this in a browser, but how can we import this into R? Well we can use a function called `fromJSON()` from the `rjson` package, which reads in JSON files and turns them into the dataframes we know and love. Inside the `fromJSON()` we use the `readlines()` function to get the data from the URL. We save all this into a `geocode_result` object: 
 
 ```{r}
 geocode_result <- fromJSON(readLines("http://api.getthedata.com/postcode/M13+9PL"))
@@ -167,18 +163,16 @@ We get a warning about an incomplete final line. For now ignore this, as it seem
 geocode_result
 ```
 
-Ahh it contains all the information we saw earlier in the browser. How nice!
+It contains all the information we saw earlier in the browser. How nice!
 
 This is great for one postcode at a time, but remember what I said about being lazy, and automating. We want the computer to do the work for us. To do this, we need to set up our query (the url) in a way that lets us give many postcodes in, and get many results out.  For that we can use the `paste0()` function and the `gsub()` function. `paste0()` can be used to paste together different bits of text, while `gsub()` substitutes certain characters (in this case spaces) for other characters (in this case +). So to get from M13 9PL to M13+9PL we use `gsub(" ", "+", "M13 9PL")`, first saying what to replace, then what to replace it with, and finally in what object (or character string). 
 
 So let's say we assign our postcode to an object called "address":
-
 ```{r}
 address <- "M13 9PL"
 ```
 
 We can then use this in the combination of paste0 and gsub to build the URL for our query: 
-
 ```{r}
 geocode_result <- fromJSON(readLines(paste0("http://api.getthedata.com/postcode/",gsub(" ", "+", address))))
 ```
@@ -193,30 +187,28 @@ geocode_result$data$longitude
 So how can we apply this to a whole dataframe? Well here I build two functions `geocode_addys_getlng()` to get the longitudes and `geocode_addys_getlat()` to get the latitudes. You can unpick this code if you like, but if you want, you're welcome to just run these to create the functions in your environment and use
 
 ```{r}
-geocode_addys_getlng <- function(x){
-  
-  geocode_result <- fromJSON(readLines(paste0("http://api.getthedata.com/postcode/", gsub(" ", "", x))))
-  return(ifelse(!is.null(geocode_result$data$longitude), geocode_result$data$longitude, NA))
-}
+#function 1: longitudes
+geocode_getlng <- function(x){
+  geocode_result <- fromJSON(readLines(paste0("http://api.getthedata.com/postcode/",gsub(" ", "+", x))))
+  if (!is.null(geocode_result$data$longitude)) {return(geocode_result$data$longitude)} 
+  else {return(NA)}}
 
-geocode_addys_getlat <- function(x){
-  
-  geocode_result <- fromJSON(readLines(paste0("http://api.getthedata.com/postcode/", gsub(" ", "", x))))
-  return(ifelse(!is.null(geocode_result$data$latitude), geocode_result$data$latitude, NA))
-}
+#function 2:  latitudes
+geocode_getlat <- function(x){
+  geocode_result <- fromJSON(readLines(paste0("http://api.getthedata.com/postcode/",gsub(" ", "+", x))))
+  if (!is.null(geocode_result$data$latitude)) {return(geocode_result$data$latitude)} 
+  else {return(NA)}}
 ```
 
-Now to apply these functions to the whole dataframe, we will use the `mutate()` function to create a new column for longitue and one for latitude, and for each one apply the relevant function with the `map_chr` function from the purr package. 
+Now to apply these functions to the whole dataframe, we will use the `mutate()` function to create a new column for longitude and one for latitude, and for each one apply the relevant function with the `map_chr` function from the purr package. 
 
 ```{r, warning=FALSE, message=FALSE}
 city_centre_prems <- city_centre_prems %>% 
-  mutate(longitude = map_chr(POSTCODE, geocode_addys_getlng),
-         latitude = map_chr(POSTCODE, geocode_addys_getlat))
+  mutate(longitude = map_chr(POSTCODE, geocode_getlng),
+         latitude = map_chr(POSTCODE, geocode_getlat))
 ```
 
-Be patient, this will take a while, each postcode has to be referenced against their database and the relevant  coordinates extracted. For each point you will see a note appear in red, and while R is working you will see the red stop sign on the top right corner of the Console window:
-
-![](img/r_is_working.png)
+Be patient, this will take a while, each postcode has to be referenced against their database and the relevant  coordinates extracted. For each point you will see a note appear in red, and while R is working you will see the red stop sign on the top right corner of the Console window.
 
 Also think about how incredibly fast and easy this actually is, if you consider a potential alternative where you have to manualy find some coordinates for each address. That sounds pretty awful, doesn't it? Compared to that, setting the above functions running, and stepping away to make a cup of tea is really a pretty excellent alternative, no?
 
@@ -254,14 +246,14 @@ Not a super usseful map, definitely won't win map of the week, but it was really
 
 You might of course want to add some content to your map. 
 
-#### Adding points manually:
+#### Adding points manually
 
 You can add a point manually:
 
 ```{r}
 m <- leaflet() %>%
   addTiles()  %>% 
-  addMarkers(lng=-2.230899, lat=53.464987, popup="You are here")
+  addMarkers(lng=-2.230899, lat=53.464987, popup="burglary")
 m  
 ```
 
@@ -271,16 +263,16 @@ Or many points manually, with some popup text as well:
 
 latitudes = c(53.464987, 53.472726, 53.466649) 
 longitudes = c(-2.230899, -2.245481, -2.243421) 
-popups = c("You are here", "Here is another point", "Here is another point") 
+popups = c("burglary", "robbery", "stop and search")
 df = data.frame(latitudes, longitudes, popups)      
 
-m <- leaflet(data = df) %>%
+map_practice <- leaflet(data = df) %>%
   addTiles()  %>%  
   addMarkers(lng=~longitudes, lat=~latitudes, popup=~popups)
-m  
+map_practice
 ```
 
-#### Adding data from elsewhere
+#### Adding data
 
 Last time around we added crime data to our map.  In this case, we want to be mapping our licensed premises in the city centre, right? So let's do this: 
 
@@ -288,10 +280,10 @@ Last time around we added crime data to our map.  In this case, we want to be ma
 city_centre_prems$latitude <- as.numeric(city_centre_prems$latitude)
 city_centre_prems$longitude <- as.numeric(city_centre_prems$longitude)
 
-m <- leaflet(data = city_centre_prems) %>%
-  addProviderTiles("Stamen.Toner") %>% 
-  addMarkers(lng=~longitude, lat=~latitude, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME))
-m  
+mcr_map <- leaflet(data = city_centre_prems) %>%
+  addTiles() %>%
+  addMarkers(~longitude, ~latitude, popup = ~paste("Longitude: ", longitude, ", Latitude: ", latitude))
+mcr_map 
 ```
 
 Should be looking familiar as well.  Now let's say you wanted to save this map. You can do this by clicking on the export button at the top of the plot viewer, and choose the *Save as Webpage* option saving this as a .html file: 
@@ -306,15 +298,13 @@ One thing you might have noticed is that we still have some points that are not 
 
 Spatial operations are a vital part of geocomputation. Spatial objects can be modified in a multitude of ways based on their location and shape. For a comprehensive overview of spatial operations in R I would recommend the relevant chatper [Chapter 4: Spatial Operations](https://geocompr.robinlovelace.net/spatial-operations.html) from the project of Robin Lovelace and Jakub Nowosad, [Geocomputation with R](https://geocompr.robinlovelace.net/spatial-operations.html). 
 
-> Spatial operations differ from non-spatial operations in some ways. To illustrate the point, imagine you are researching road safety. Spatial joins can be used to find road speed limits related with administrative zones, even when no zone ID is provided. But this raises the question: should the road completely fall inside a zone for its values to be joined? Or is simply crossing or being within a certain distance sufficent? When posing such questions it becomes apparent that spatial operations differ substantially from attribute operations on data frames: the type of spatial relationship between objects must be considered. 
-
-- [(Lovelace & Nowosad, 2018)](https://geocompr.robinlovelace.net/spatial-operations.html)
+> Spatial operations differ from non-spatial operations in some ways. To illustrate the point, imagine you are researching road safety. Spatial joins can be used to find road speed limits related with administrative zones, even when no zone ID is provided. But this raises the question: should the road completely fall inside a zone for its values to be joined? Or is simply crossing or being within a certain distance sufficent? When posing such questions it becomes apparent that spatial operations differ substantially from attribute operations on data frames: the type of spatial relationship between objects must be considered.[(Lovelace & Nowosad, 2018)](https://geocompr.robinlovelace.net/spatial-operations.html)
 
 So you can see we can do exciting spatial operations with our spatial data, which we cannot with the non-spatial stuff. 
 
 ### Coordinate reference systems revisited
 
-One important note before we begin to do this brings us back to some of the learning from the second session on map projections and coordinate reference systems, like we discussed in the lecture today. We spoke about all the ways of flattening out the earth, and ways of making sense what that means for the maps, and also how to be able to point to specific locations within these. The latter refers to the **Coordinate Reference System** or CRS the most common ones we will use are **WGS 84** and **British National Grid**. 
+One important note before we begin to do this brings us back to some of the learning from the second session on map projections and coordinate reference systems, like we discussed in the lecture today. We spoke about all the ways of flattening out the earth, and ways of making sense what that means for the maps, and also how to be able to point to specific locations within these. The latter refers to the **Coordinate Reference System** or CRS the most common ones we will use are **WGS84** and **British National Grid**. 
 
 So why are we talking about this? 
 
@@ -325,7 +315,6 @@ If we are looking to carry out operations that involve two different spatial obj
 So how do we know what CRS our spatial objects are? Well the `sf` package contains a handy function called `st_crs()` which let's us check. All you need to pass into the brackets of this function is the name of the object you want to know the CRS of. 
 
 So let's check what is the CRS of our licenced premises:
-
 
 ```{r}
 #For our spatial operations we will be using functions that belong to the `sf` package. So make sure you have this loaded up.
@@ -349,7 +338,7 @@ Now let's check the CRS of this spatial version of our licensed premises:
 st_crs(cc_spatial)
 ```
 
-We can now see that we have this coordinate system as WGS 84. We need to then make sure that any other spatial object with which we want to perform spatial operations is also in the same CRS. 
+We can now see that we have this coordinate system as **WGS84**. We need to then make sure that any other spatial object with which we want to perform spatial operations is also in the same CRS. 
 
 ### Meet a new format of shapefile: geojson
 
@@ -366,21 +355,19 @@ manchester_ward <- st_read("https://raw.githubusercontent.com/eonk/cm_book/main/
 ```
 
 Let's select only the city centre ward, using the `filter()` function from dplyr
-
 ```{r}
 city_centre <- manchester_ward %>%
   filter(wd16nm == "City Centre")
 ```
 
 Let's see how this looks, using the `plot()` function: 
-
 ```{r}
 plot(st_geometry(city_centre))
 ```
 
 Now we could use this to make sure that our points included in `cc_spatial` are in fact only licensed premises in the city centre. This will be your first spatial operation. Excited? Let's do this!
 
-#### Activity 5: Subset points to those within a polygon
+### Activity 5: Subset points to those within a polygon
 
 So we have our polygon, our spatial file of the city centre ward. We now want to subset our point data, the cc_spatial data, which has points representing licensed premises. 
 
@@ -439,7 +426,7 @@ plot(st_geometry(cc_intersects), col = "red", add=T)
 
 COOL, we have successfully performed our first spatial operation, we managed to subset our points data set to include only those points which are inside the polgon for city centre. See how this was much easier, and more reliable than the hacky workaround using pattern matching? Yay!
 
-#### Activity 6: Building buffers
+### Activity 6: Building buffers
 
 Right, but what we want to do really to go back to our original question. We want to know about crime in and around out areas of interest, in this case our licensed premises. But how can we count this? 
 
@@ -543,7 +530,7 @@ plot(st_geometry(violent_spatial), col = 'red', add = T)
 
 OKAY, so some crimes fall inside some buffers, others not so much. Well, let's get to our last spatial operation of the day, the famous points in polygon, to get to answering which licensed premises have the most violent crimes near them. 
 
-#### Activity 7: Counting Points in Polygon
+### Activity 7: Counting Points in Polygon
 
 When you have a polygon layer and a point layer - and want to know how many or which of the points fall within the bounds of each polygon, you can use this method of analysis. In computational geometry, the point-in-polygon (PIP) problem asks whether a given point in the plane lies inside, outside, or on the boundary of a polygon. As you can see, this is quite relevant to our problem, wanting to count how many crimes (points) fall within 100 meters of our licensed premises (our buffer polygons). 
 
@@ -570,87 +557,4 @@ leaflet(crimes_per_prem) %>%
             title = 'Violent crimes', position = "bottomleft") 
 ```
 
-It's not the neatest of maps, with all these overlaps, but we can talk about prettifying maps another day. You've done enough today. 
-
-## Summary
-
-Today we learned to: 
-- use **geocoding** methods to translate postcodes into geographic coordinates      
-
-- make interactive point map with leaflet
-
-- about a new format of spatial shape file called **geojson**
-
-- subset points that are within a certain area using a **spatial operation**
-
-- create new polygons by generating **buffers** around points
-
-- count the number of points that fall within a polygon (known as **points in polygon**)
-
-
-
-
-<!-- ## Homework -->
-
-<!-- In the homework you will now apply your learning to a new problem. To do so, please complete the following tasks:  -->
-
-<!-- ### **Geocode the addresses:**  -->
-<!-- Use the geocode function to geocode, but this time pass the actual address values, rather than just the post code.  -->
-
-<!-- You can geocode from addresses. For example, if we want to geocode the location of [Shoryu ramen](https://www.shoryuramen.com/stores/76-manchester), we could use the address to do so: -->
-
-<!-- ```{r} -->
-<!-- geocode("1 Piccadilly, Manchester M1 1RG", source = "dsk") -->
-<!-- ``` -->
-
-<!-- You can see that this is slightly different than the postcode centroid:  -->
-
-<!-- ```{r} -->
-<!-- geocode("M1 1RG", source = 'dsk') -->
-<!-- ``` -->
-
-
-<!-- - **1) Discuss why you think the geocode for the address is different than the geocode for the postcode** -->
-<!-- - **2) Geocode the address for all the city centre licensed premises** -->
-<!-- - **3) Did this work OK? Do you have any geocoded to weird locations? Why do you think this might be?** -->
-<!-- - **4) Fix (or at describe how you would fix) any issues with geocoding that you identified above** -->
-
-
-<!-- Make sure you think a little bit about this. Not only do you have to consider what variable to pass to the `geocode()` function, but also whether that's enough information to get the relevant coordinates.  -->
-
-
-
-<!-- ```{r, echo=FALSE, eval=FALSE, message=FALSE, warning=FALSE} -->
-
-<!-- city_centre_prems$postcode_coords2 <- geocode(paste(city_centre_prems$LOCATIONTEXT, ", UK", sep=""), source = 'dsk') -->
-
-<!-- city_centre_prems$longitude2 <- city_centre_prems$postcode_coords2$lon -->
-<!-- city_centre_prems$latitude2 <- city_centre_prems$postcode_coords2$lat -->
-
-<!-- m <- leaflet(data = city_centre_prems) %>% -->
-<!--   addProviderTiles("Stamen.Toner") %>%  -->
-<!--   addCircleMarkers(lng=~longitude, lat=~latitude, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME), radius = 2, color = "red") %>%  -->
-<!--   addCircleMarkers(lng=~longitude2, lat=~latitude2, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME), radius = 2, color = "blue") -->
-<!-- m   -->
-
-<!-- city_centre_prems$postcode_coords3 <- geocode(paste(city_centre_prems$LOCATIONTEXT, ", ", city_centre_prems$POSTCODE, ", UK", sep=""), source = 'dsk') -->
-
-<!-- city_centre_prems$longitude3 <- city_centre_prems$postcode_coords3$lon -->
-<!-- city_centre_prems$latitude3 <- city_centre_prems$postcode_coords3$lat -->
-
-<!-- m <- leaflet(data = city_centre_prems) %>% -->
-<!--   addProviderTiles("Stamen.Toner") %>%  -->
-<!--   addCircleMarkers(lng=~longitude, lat=~latitude, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME), radius = 2, color = "#a6cee3") %>% -->
-<!--   addCircleMarkers(lng=~longitude2, lat=~latitude2, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME), radius = 2, color = "#1f78b4")%>% -->
-<!--   addCircleMarkers(lng=~longitude3, lat=~latitude3, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME), radius = 2, color = "#b2df8a") %>%  -->
-<!--   addLegend("topleft",  -->
-<!--   colors =c("#a6cee3",  "#1f78b4", "#b2df8a"), -->
-<!--   labels= c("postcode", "address","both"), -->
-<!--   title= "Geocoding approach", -->
-<!--   opacity = 1) -->
-<!-- m   -->
-
-<!-- ``` -->
-
-
-
+It's not the neatest of maps, with all these overlaps, but we can talk about prettifying maps another day. You've done enough today."m1

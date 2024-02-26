@@ -414,8 +414,6 @@ sociologically inclined might be able to offer more examples in the way of inter
 
 - [Tompson, Lisa, Henry Partridge, and Naomi Shepherd. "Hot routes: Developing a new technique for the spatial analysis of crime." Crime Mapping: A Journal of Research and Practice 1, no. 1 (2009): 77-96.](http://discovery.ucl.ac.uk/20057/)
 
-For an additional tutorial on creating hot routes in R you can read Dr Solymosi's blog post here: [rekadata.net/blog/hot-routes-tutorial/](https://rekadata.net/blog/hot-routes-tutorial/)
-
 While sometimes there may be issues with linking points to routes due to problems such as bad geocoding, as we had discusses in great detail in week 4, there are obvious advantages to considering crime as distributed along networks, rather than continuous space. 
 
 Now we have some ways of identifying hot spots under our belts!

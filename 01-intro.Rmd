@@ -162,7 +162,7 @@ As indicated above, the window in the bottom left corner is the main **console**
 
 Same idea with a personalised greeting: if you want to print 'Hello Manchester', you will need to have "Hello Manchester" inside the brackets:
 
-```{r helloreka}
+```{r hellomanchester}
 print("Hello Manchester")
 ```
 

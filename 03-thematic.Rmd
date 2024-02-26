@@ -30,23 +30,22 @@ crimes <- read_csv("https://raw.githubusercontent.com/eonk/cm_book/main/data/201
 ```
 
 ```{r, eval=FALSE}
-#The following assumes you have a subdirectory called BoundaryData in your data folder, if not then you will need to change to the pathfile where you store your LSOA shapefile
+#The following assumes you have a subdirectory called BoundaryData in your data folder, if not then you will need to change to the 'pathfile' where you store your LSOA shapefile. 
 shp_name <- "data/BoundaryData/england_lsoa_2011.shp"
 manchester_lsoa <- st_read(shp_name)
 
-#Alternatively, you can download the LSOA shapefile from where we saved the data. 
-#Important! note that I store it in on my Data folder You HAVE TO change that if needed.
+#Alternatively, you can download the 'LSOA shapefile' from where we saved the data. 
+#Important! note that I store it in on my 'Data' folder You HAVE TO change that if needed.
 download.file("https://www.dropbox.com/s/h5c1okn4m6t3rqe/BoundaryData.zip?dl=1" , 
-              destfile="data/BoundaryData.zip",
-              mode = "wb")
+              destfile="data/BoundaryData.zip", # change to your local directory
+              mode = "wb") # write binary data
 
 #Important! note that I extract file to the data/BoundaryData folder. You HAVE TO change exdir (the directory to extract files to)
 unzip("data/BoundaryData.zip", exdir = "data/BoundaryData")
-
 manchester_lsoa <- st_read("data/BoundaryData/BoundaryData/england_lsoa_2011.shp")
 ```
 
-Once you import the data, let's count the number of crimes in each LSOA units like what we did in the week 2!
+Once you import the data, let's count the number of crimes in each LSOA units like what we did in the week 2.
 
 ```{r, eval=FALSE, message=FALSE}
 #count the number of crimes in each LSOA

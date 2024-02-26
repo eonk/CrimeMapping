@@ -1,25 +1,23 @@
 # More on thematic maps
 
-## Introduction
-
 In this session we are going to discuss some additional features around thematic maps we did not cover in week 3. We are going to discuss how to address some of the problems we confront when we are trying to use use choropleth maps, as well as some alternatives to point based maps. We will also introduce the modifiable area unit problem.
 
 Before we do any of this, we need to load the libraries we will use today:
 
+- `cartogram`
+- `DCluster`
+- `dplyr`
+- `geogrid`
+- `ggplot2`
+- `ggspatial`
+- `hexbin`
+- `janitor`
 - `sf`
-- `tmap`
 - `sp`
 - `spdep`
-- `DCluster`
-- `cartogram`
-- `ggplot2`
-- `dplyr`
+- `tmap`
 - `readxl`
 - `readr`
-- `janitor`
-- `hexbin`
-- `ggspatial`
-- `geogrid`
 
 ```{r, warning=FALSE, message=FALSE, echo=FALSE}
 library(sf)
@@ -38,13 +36,14 @@ library(ggspatial)
 library(geogrid)
 ```
 
-Some of the above are new libraries we will use for the first time this week. Remember, if you don't already have these you will need to install them. 
+Some of the above are new packages we will use for the first time this week. Remember, if you don't already have these you will need to install them. 
 
-### Pro-tip: do I need to install this package?
+## Pro-tip: do I need to install this package?
 
-You might have noticed that in your list of available packages you might see more than you remember downloading. The idea of *dependencies* has come up throughout the semester. Packages have *dependencies* when their code is *dependent* on (uses code from) another package. For example, if I write some code that I think will be useful, so I release this in the form of the package "rekaR", but I use ggplot2 in the code, then ggplot2 will be a dependency of rekaR. As a default, R will install all the dependencies for a package when you install your package. So this way you might end up with some packages there that you didn't realise you had. 
+You might have noticed that in your list of available packages you might see more than you remember downloading. The idea of *dependencies* has come up throughout the semester. Packages have *dependencies* when their code is *dependent* on (uses code from) another package. For example, if we write some code that we think will be useful, so we release this in the form of the package "manchesterR", but we use ggplot2 in the code, then ggplot2 will be a dependency of manchesterR. 
+As a default, R will install all the dependencies for a package when we install our package, manchesterR. So this way we might end up with some packages there that we didn't realise we had.
 
-Why am I telling you this? Well you should always check if you have a package, before installing it. And I wanted to share with you some neat code from a Stackoverflow discussion (if you are not yet familiar with Stackoverflow you have not been Google-ing your error messages enough) [here](https://stackoverflow.com/questions/4090169/elegant-way-to-check-for-missing-packages-and-install-them) to do this. I'll comment it a bit, so you can follow along what it does **but you don't have to if you don't want to**. This is just an optional extra. 
+Why are we telling you this? Well you should always check if you have a package, before installing it. And I wanted to share with you some neat code from a Stackoverflow discussion (if you are not yet familiar with Stackoverflow you have not been Google-ing your error messages enough) [here](https://stackoverflow.com/questions/4090169/elegant-way-to-check-for-missing-packages-and-install-them) to do this. We'll comment it a bit, so you can follow along what it does **but you don't have to if you don't want to**. This is just an extra. 
 
 So as a first step, you have to assign a list of all the packages you have to check to an object. Let's say I tell you that today we will be using the following packaes: "sp", "rgdal", "classInt", "RColorBrewer", "ggplot2", "hexbin", "ggmap", "XML", and "dplyr". Then you can add these to an object called `libs`, using the `c()` function: 
 
@@ -55,23 +54,33 @@ libs <- c("sf", "tmap", "sp", "spdep", "DCluster", "cartogram")
 Now you can run the below bit of code, and you will see in the console an output of what is and isn't installed, as well as install the packages that are not!
 
 ```{r}
-for (x in libs){                                                #cycle through each item in libs object
-  if(x %in% rownames(installed.packages()) == FALSE) {          #if the package is not installed
-    print(paste0("installing ", x, "..."))                      #print a message to tell me
-    install.packages(x)                                         #and then install the packages
-  }
-  else{                                                         #otherwise (if it is installed)
-    print (paste0(x, " is already installed "))                 #print a message to tell me
-  }
-  library(x, character.only = TRUE)                             #and then load the packages
+for (x in libs) {
+    # Check if the package is installed
+    if (!(x %in% rownames(installed.packages()))) {
+        # If not installed, print a message and install the package
+        cat("Installing ", x, "...\n")
+        install.packages(x)
+    } else {
+        # If installed, print a message
+        cat(x, "is already installed.\n")
+    }
+    # Load the package
+    library(x, character.only = TRUE)
 }
 ```
 
 As you can see if you read through the comments there, this bit of code checks each package in the list you pass to tbe `libs` object when you create it, and if it is not installed it installs for you, and if it is, it just loads it for you. It can be a handy bit of code to keep around. 
 
-#### Activity 1: Getting some messy data
+We also want to introduce `pacmac`, developed by Dason Kurkiewicz, to make your life a lot easier in the realm of R packages. While the `library()` function does its job, but could be the tedious task, installing and loading each package one by one. The `p_load()` function, a single line code will automatically checks for missing missing packages and installs/loads all libraries into you R. So, try! 
 
-So far, we've really been spoilt by using neat and easy-to-access data typical of 'western' countries. This week we will have a little exercise in using data when there may not be such clear ways to access neat and tidy data. Specifically,  we're going to look at some data from India! We'll be using two datasets:
+```{r eval = FALSE}
+library(pacman)
+p_load(cartogram, DCluster, dplyr, geogrid, ggplot2,  ggspatial, hexbin, janitor, sf, sp, spdep, tmap, readxl, readr)
+```
+
+### Activity 1: Getting some messy data
+
+So far, we've really been spoilt by using neat and easy-to-access data typical of 'western' countries. This week we will have a little exercise in using data when there may not be such clear ways to access neat and tidy data. Specifically, we're going to look at some data from India! We'll be using two datasets:
 
 * A shapefile of India (including boundaries of 'states' and 'districts')
 * District-level data on households and crop yields
@@ -122,7 +131,7 @@ yield_data <- yield_data %>%
   dplyr::select(stname, distname, year, rice_ta, rice_tq)
 ```
 
-#### Activity 3: Comparing shapefiles
+### Activity 3: Comparing shapefiles
 
 Now we've read in our rice yield data, we can test which shapefile will work best with the district names in our yield data. For this, we'll use a basic 'for' loop which will test each shapefile (1951/61/71/81/91/2001) individually. This will show us which shapefile has the most matching district names (across India) with the yield data. Don't worry about loops in R, they're something you can learn if you're interested but otherwise you can copy + paste the code below - so long as you understand what it's doing overall. Chris' advanced R will cover loops this week. N.B. You may need to change 'shapefile_location <- ' to tell R where you have saved your shapefiles!
 
@@ -172,7 +181,7 @@ ggplot(district_match_results) +
 
 So, before continuing you should look at the table and graph you've just made and decide which shapefile we should use now. Which one will be the best for representing your attribute table? 
 
-#### Activity 4: Joining datasets
+### Activity 4: Joining datasets
 
 One last thing before we can continue mapping - joining our yield and shapefile datasets together! Some name cleaning is required first, to make sure they match up. Hopefully you found before that the 1971 shapefile has the highest percentage of district name matches with our yield data - so we'll read that one in now:
 
@@ -208,7 +217,7 @@ head(district_yields)
 
 In previous sessions we discussed how to map rates. It seems a fairly straightforward issue, you calculate a rate by dividing your numerator (eg: number of crimes or rice production) by your denominator (eg: daytime population or farming area). You get your variable with the relevant rate and you map it using a choropleth map. However, things are not always that simple. Rates are funny animals. This popped up in your preparation material as the problem "insensitivity to sample size" and we will demonstrate in the next activity. 
 
-### Activity 4: The case of Saharsa
+### Activity 5: The case of Saharsa
 
 Let's look at our yield data, here yield means the amount of rice produced (in tonnes, 1 tonne = 1000kg) per hectare (a square of land with 100 metre-long sides) of rice farmland. 
 
@@ -280,7 +289,7 @@ Saharsa's rice production is around 130 tonnes in most years. But it only takes 
 
 This is a problem that was first noted by epidemiologists doing disease mapping. But a number of other disciplines have now noted this and used some of the approaches developed by public health researchers that confronted this problem when producing maps of disease (techniques and approaches used by spatial epidemiologists are very similar to those used by criminologists -in case you ever think of changing careers or need inspiration for how to solve a crime analysis problem).
 
-### Activity 5: Smoothing as a way to address insensitivity to sample size
+### Activity 6: Smoothing as a way to address insensitivity to sample size
 
 One way of dealing with this is by **smoothing** the rates. This basically as the word implies aims for a smoother representation that avoids hard spikes associated with random noise. There are different ways of doing that. Some ways use a non-spatial approach to smoothing, using something called a **empirical bayesian smoother**. How does this work? This approach takes the raw rates and tries to “shrink” them towards the overall average. 
 
@@ -365,7 +374,7 @@ Notice that the quantiles are not the same, so that will make your comparison di
 
 ## Binning points
 
-We're going to move away from area-level data now, and go back to point-level data. 
+We're going to move away from area-level data now, and go back to point-level data.
 
 In GIS it is often difficult to present point-based data because in many instances there are several different points and data symbologies that need to be shown. As the number of different data points grows they can become complicated to interpret and manage which can result in convoluted and sometimes inaccurate maps. This becomes an even larger problem in web maps that are able to be depicted at different scales because smaller scale maps need to show more area and more data. This makes the maps convoluted if multiple data points are included.
 
@@ -407,7 +416,7 @@ Rectangular binning is the simplest binning method and as such it heavily used. 
 
 In many applications binning is done using a technique called **hexagonal binning**. This technique uses hexagon shapes to create a grid of points and develops a spatial histogram that shows different data points as a range or group of pairs with common distances and directions. In hexagonal binning the number of points falling within a particular rectangular or hexagon in a gridded surface is what makes the different colors to easily visualize data [(Smith, 2012)](https://www.mapbox.com/blog/binning-alternative-point-maps/). Hexagonnal binning was first developed in 1987 and today “hexbinning” is conducted by laying a hexagonal grid on top of 2-dimensional data [(Johnson, 2011)](http://indiemaps.com/blog/2011/10/hexbins/). Once this is done users can conduct data point counts to determine the number of points for each hexagon [(Johnson, 2011)](http://indiemaps.com/blog/2011/10/hexbins/). The bins are then symbolized differently to show meaningful patterns in the data.
 
-#### Activity 6: Hexbinning
+### Activity 7: Hexbinning
 
 So how can we use hexbinning to solve our antisocial behaviour days of action task? Well let's say we split Manchester city centre into hexagons, and count the number of antisocial behaviour instances in these. We can then identify the top hexagons, and locate our booths somewhere within these. 
 
@@ -487,7 +496,7 @@ So I mentioned we'd go over some reasons why you should consider aggregating int
 
 ![](img/EE17F7E03F82-web.png)
 
-#### Activity 6: Rectangular binning
+### Activity 8: Rectangular binning
 
 Now, to again illustrate the differences of different approaches, let's see what this map would look like with: 
 
@@ -500,7 +509,6 @@ ggplot(sf_mcr_asb, aes(x = lng, y = lat)) +
   scale_fill_gradientn(colours = c("white","red"), 
                        name = "Frequency") 
 ```
-
 
 b) hexagonal binning: 
 
@@ -607,7 +615,7 @@ Most often you will just have to remain aware of the MAUP and it's possible effe
 
 For the purposes of this course, it's enough that you know of, and understand the MAUP and its implications. Always be smart when choosing your appropriate spatial unit of analysis, and when you use binning of any form, make sure you consider how and if your conclusions might change compared to another possible approach. 
 
-### Activity 7: Considering MAUP
+### Activity 9: Considering MAUP
 
 ##  Transforming polygons
 
@@ -659,7 +667,7 @@ ggplot() +
 
 We can see that in smaller LAs we don't even really see the result, as the boundary lines pretty much cover everything. Hmm. Now what we can do is transform the shapes. 
 
-#### Activity 8: Cartograms
+### Activity 10: Cartograms
 
 The last thing we will do today is make some cartograms! Cartogram types of maps distort reality to convey information. They resize and exaggerate any variable on an attribute value.
 

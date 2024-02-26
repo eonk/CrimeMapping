@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Making Maps in R | Crime Mapping in R</title>
   <meta name="description" content="This is a study material for Criminology students at the University of Manchester." />
-  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Making Maps in R | Crime Mapping in R" />
   <meta property="og:type" content="book" />
@@ -51,7 +51,7 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
@@ -222,48 +222,62 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html"><i class="fa fa-check"></i><b>4</b> Performing spatial operations in R</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#getting-some-more-data"><i class="fa fa-check"></i><b>4.1</b> Getting some (more) data</a>
+<li class="chapter" data-level="4.1" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#criminality-of-place"><i class="fa fa-check"></i><b>4.1</b> Criminality of place</a></li>
+<li class="chapter" data-level="4.2" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#getting-data-of-this-week"><i class="fa fa-check"></i><b>4.2</b> Getting data of this week</a>
 <ul>
-<li class="chapter" data-level="4.1.1" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#activity-1-subsetting-using-pattern-matching"><i class="fa fa-check"></i><b>4.1.1</b> Activity 1: Subsetting using pattern matching</a></li>
-<li class="chapter" data-level="4.1.2" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#geocoding-from-an-address"><i class="fa fa-check"></i><b>4.1.2</b> Geocoding from an address</a></li>
+<li class="chapter" data-level="4.2.1" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#activity-1-subsetting-using-pattern-matching"><i class="fa fa-check"></i><b>4.2.1</b> Activity 1: Subsetting using pattern matching</a></li>
+<li class="chapter" data-level="4.2.2" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#activity-2-pattern-matching-to-find-city-centre-premises"><i class="fa fa-check"></i><b>4.2.2</b> Activity 2: Pattern matching to find city centre premises</a></li>
 </ul></li>
-<li class="chapter" data-level="4.2" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#making-interactive-maps-with-leaflet"><i class="fa fa-check"></i><b>4.2</b> Making interactive maps with leaflet</a>
+<li class="chapter" data-level="4.3" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#geocoding-from-an-address"><i class="fa fa-check"></i><b>4.3</b> Geocoding from an address</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#activity-4-making-an-interactive-map"><i class="fa fa-check"></i><b>4.2.1</b> Activity 4: Making an interactive map</a></li>
+<li class="chapter" data-level="4.3.1" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#activity-3-getting-address-from-post-code-using-an-api"><i class="fa fa-check"></i><b>4.3.1</b> Activity 3: Getting address from post code using an API</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#spatial-operations"><i class="fa fa-check"></i><b>4.3</b> Spatial operations</a>
+<li class="chapter" data-level="4.4" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#making-interactive-maps-with-leaflet"><i class="fa fa-check"></i><b>4.4</b> Making interactive maps with leaflet</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#coordinate-reference-systems-revisited"><i class="fa fa-check"></i><b>4.3.1</b> Coordinate reference systems revisited</a></li>
-<li class="chapter" data-level="4.3.2" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#meet-a-new-format-of-shapefile-geojson"><i class="fa fa-check"></i><b>4.3.2</b> Meet a new format of shapefile: geojson</a></li>
+<li class="chapter" data-level="4.4.1" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#activity-4-making-an-interactive-map"><i class="fa fa-check"></i><b>4.4.1</b> Activity 4: Making an interactive map</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#summary-3"><i class="fa fa-check"></i><b>4.4</b> Summary</a></li>
+<li class="chapter" data-level="4.5" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#spatial-operations"><i class="fa fa-check"></i><b>4.5</b> Spatial operations</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#coordinate-reference-systems-revisited"><i class="fa fa-check"></i><b>4.5.1</b> Coordinate reference systems revisited</a></li>
+<li class="chapter" data-level="4.5.2" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#meet-a-new-format-of-shapefile-geojson"><i class="fa fa-check"></i><b>4.5.2</b> Meet a new format of shapefile: geojson</a></li>
+<li class="chapter" data-level="4.5.3" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#activity-5-subset-points-to-those-within-a-polygon"><i class="fa fa-check"></i><b>4.5.3</b> Activity 5: Subset points to those within a polygon</a></li>
+<li class="chapter" data-level="4.5.4" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#activity-6-building-buffers"><i class="fa fa-check"></i><b>4.5.4</b> Activity 6: Building buffers</a></li>
+<li class="chapter" data-level="4.5.5" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#activity-7-counting-points-in-polygon"><i class="fa fa-check"></i><b>4.5.5</b> Activity 7: Counting Points in Polygon</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html"><i class="fa fa-check"></i><b>5</b> More on thematic maps</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a>
+<li class="chapter" data-level="5.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#pro-tip-do-i-need-to-install-this-package"><i class="fa fa-check"></i><b>5.1</b> Pro-tip: do I need to install this package?</a>
 <ul>
-<li class="chapter" data-level="5.1.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#pro-tip-do-i-need-to-install-this-package"><i class="fa fa-check"></i><b>5.1.1</b> Pro-tip: do I need to install this package?</a></li>
+<li class="chapter" data-level="5.1.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#activity-1-getting-some-messy-data"><i class="fa fa-check"></i><b>5.1.1</b> Activity 1: Getting some messy data</a></li>
+<li class="chapter" data-level="5.1.2" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#activity-3-comparing-shapefiles"><i class="fa fa-check"></i><b>5.1.2</b> Activity 3: Comparing shapefiles</a></li>
+<li class="chapter" data-level="5.1.3" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#activity-4-joining-datasets"><i class="fa fa-check"></i><b>5.1.3</b> Activity 4: Joining datasets</a></li>
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#mapping-rates-learning-from-yield-mapping"><i class="fa fa-check"></i><b>5.2</b> Mapping rates, learning from yield mapping</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#activity-4-the-case-of-saharsa"><i class="fa fa-check"></i><b>5.2.1</b> Activity 4: The case of Saharsa</a></li>
-<li class="chapter" data-level="5.2.2" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#activity-5-smoothing-as-a-way-to-address-insensitivity-to-sample-size"><i class="fa fa-check"></i><b>5.2.2</b> Activity 5: Smoothing as a way to address insensitivity to sample size</a></li>
+<li class="chapter" data-level="5.2.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#activity-5-the-case-of-saharsa"><i class="fa fa-check"></i><b>5.2.1</b> Activity 5: The case of Saharsa</a></li>
+<li class="chapter" data-level="5.2.2" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#activity-6-smoothing-as-a-way-to-address-insensitivity-to-sample-size"><i class="fa fa-check"></i><b>5.2.2</b> Activity 6: Smoothing as a way to address insensitivity to sample size</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#binning-points"><i class="fa fa-check"></i><b>5.3</b> Binning points</a>
 <ul>
 <li class="chapter" data-level="5.3.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#the-binning-process"><i class="fa fa-check"></i><b>5.3.1</b> The Binning Process</a></li>
 <li class="chapter" data-level="5.3.2" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#different-binning-techniques"><i class="fa fa-check"></i><b>5.3.2</b> Different Binning Techniques</a></li>
-<li class="chapter" data-level="5.3.3" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#multivariate-binning"><i class="fa fa-check"></i><b>5.3.3</b> Multivariate binning</a></li>
-<li class="chapter" data-level="5.3.4" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#benefits-of-binning"><i class="fa fa-check"></i><b>5.3.4</b> Benefits of Binning</a></li>
+<li class="chapter" data-level="5.3.3" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#activity-7-hexbinning"><i class="fa fa-check"></i><b>5.3.3</b> Activity 7: Hexbinning</a></li>
+<li class="chapter" data-level="5.3.4" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#activity-8-rectangular-binning"><i class="fa fa-check"></i><b>5.3.4</b> Activity 8: Rectangular binning</a></li>
+<li class="chapter" data-level="5.3.5" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#multivariate-binning"><i class="fa fa-check"></i><b>5.3.5</b> Multivariate binning</a></li>
+<li class="chapter" data-level="5.3.6" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#benefits-of-binning"><i class="fa fa-check"></i><b>5.3.6</b> Benefits of Binning</a></li>
 </ul></li>
 <li class="chapter" data-level="5.4" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#a-note-of-caution-maup"><i class="fa fa-check"></i><b>5.4</b> A note of caution: MAUP</a>
 <ul>
 <li class="chapter" data-level="5.4.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#what-is-maup"><i class="fa fa-check"></i><b>5.4.1</b> What is MAUP?</a></li>
 <li class="chapter" data-level="5.4.2" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#why-does-maup-matter"><i class="fa fa-check"></i><b>5.4.2</b> Why does MAUP matter?</a></li>
 <li class="chapter" data-level="5.4.3" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#what-can-we-do"><i class="fa fa-check"></i><b>5.4.3</b> What can we do?</a></li>
-<li class="chapter" data-level="5.4.4" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#activity-7-considering-maup"><i class="fa fa-check"></i><b>5.4.4</b> Activity 7: Considering MAUP</a></li>
+<li class="chapter" data-level="5.4.4" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#activity-9-considering-maup"><i class="fa fa-check"></i><b>5.4.4</b> Activity 9: Considering MAUP</a></li>
 </ul></li>
-<li class="chapter" data-level="5.5" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#transforming-polygons"><i class="fa fa-check"></i><b>5.5</b> Transforming polygons</a></li>
+<li class="chapter" data-level="5.5" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#transforming-polygons"><i class="fa fa-check"></i><b>5.5</b> Transforming polygons</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#activity-10-cartograms"><i class="fa fa-check"></i><b>5.5.1</b> Activity 10: Cartograms</a></li>
+</ul></li>
 <li class="chapter" data-level="5.6" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#references-and-further-reading"><i class="fa fa-check"></i><b>5.6</b> References and further reading</a>
 <ul>
 <li class="chapter" data-level="5.6.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#binning"><i class="fa fa-check"></i><b>5.6.1</b> Binning</a></li>
@@ -322,7 +336,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html"><i class="fa fa-check"></i><b>8</b> Regression analysis (a refresher)</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#introduction-1"><i class="fa fa-check"></i><b>8.1</b> Introduction</a>
+<li class="chapter" data-level="8.1" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a>
 <ul>
 <li class="chapter" data-level="8.1.1" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#activity-1-getting-some-homicide-data"><i class="fa fa-check"></i><b>8.1.1</b> Activity 1: Getting some homicide data</a></li>
 <li class="chapter" data-level="8.1.2" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#activity-2-familiarise-yourself-with-the-data"><i class="fa fa-check"></i><b>8.1.2</b> Activity 2: Familiarise yourself with the data</a></li>
@@ -363,7 +377,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="9" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html"><i class="fa fa-check"></i><b>9</b> Spatial regression models</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#introduction-2"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+<li class="chapter" data-level="9.1" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#introduction-1"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
 <li class="chapter" data-level="9.2" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#looking-at-the-residuals-and-testing-for-spatial-autocorrelation-in-regression"><i class="fa fa-check"></i><b>9.2</b> Looking at the residuals and testing for spatial autocorrelation in regression</a>
 <ul>
 <li class="chapter" data-level="9.2.1" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#activity-1-a-non-spatial-regression-on-spatial-data---listen-to-the-residuals"><i class="fa fa-check"></i><b>9.2.1</b> Activity 1: A non-spatial regression on spatial data - listen to the residuals</a></li>
@@ -415,16 +429,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="making-maps-in-r" class="section level1 hasAnchor" number="2">
 <h1><span class="header-section-number">Chapter 2</span> Making Maps in R<a href="making-maps-in-r.html#making-maps-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This week we will start making some maps in R, and learn about how we can take regular crime data, and assign the appropriate geometry for our chosen unit of analysis. We will produce some maps, using possibly familiar ggplot notation, and learn some key terms around projectsion and coordinate reference systems which will be essential for your work in the coming weeks.</p>
+<p>This week we will start making some maps in R, and learn about how we can take regular crime data, and assign the appropriate geometry for our chosen unit of analysis. We will produce some maps, using possibly familiar <code>ggplot</code> notation, and learn some key terms around projection and coordinate reference systems which will be essential for your work in the coming weeks.</p>
 <p>Today we will use the following packages, so make sure you have them installed:</p>
 <ul>
-<li><code>readr</code></li>
-<li><code>tibble</code></li>
-<li><code>janitor</code></li>
-<li><code>sf</code></li>
+<li><code>dplyr</code></li>
 <li><code>ggplot2</code></li>
 <li><code>ggspatial</code></li>
-<li><code>dplyr</code></li>
+<li><code>janitor</code></li>
+<li><code>readr</code></li>
+<li><code>sf</code></li>
+<li><code>tibble</code></li>
 </ul>
 <div id="a-quick-introduction-of-terms" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> A quick introduction of terms<a href="making-maps-in-r.html#a-quick-introduction-of-terms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -447,7 +461,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="objects-1" class="section level4 hasAnchor" number="2.1.1.3">
 <h4><span class="header-section-number">2.1.1.3</span> Objects<a href="making-maps-in-r.html#objects-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>In spatial analysis it is customary to refer to places as objects. These objects can be a whole country, or a road. In forestry, the objects of interest might be trees, and their location will be represented as points. On the other hand, studies of social or economic patterns may need to consider the two-dimensional extent of places, which will therefore be represented as areas. These representations of the world are part of what is called the <strong>vector data model</strong>: A representation of the world using points, lines, and polygons. Vector models are useful for storing data that have discrete boundaries, such as country borders, land parcels, and streets. This is made up of points, lines, and areas (polygons):</p>
+<p>In spatial analysis it is customary to refer to places as objects. These objects can be a whole country, or a road. In forestry, the objects of interest might be trees, and their location will be represented as points. On the other hand, studies of social or economic patterns may need to consider the two-dimensional extent of places, which will therefore be represented as areas. These representations of the world are part of what is called the <strong>vector data model</strong>: A representation of the world using points, lines, and polygons. Vector models are useful for storing data that have discrete boundaries, such as country borders, land parcels, and streets. This is made up of pointsn (e.g., coordinates), lines (e.g., roads, rivers), and polygons (e.g., regions, areas):</p>
 <ul>
 <li>Points
 <ul>
@@ -457,9 +471,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>Lines are ordered sequences of points connected by straight lines</li>
 </ul></li>
-<li>Areas (polygons)
+<li>Polygons
 <ul>
-<li>Areas are ordered rings of points, also connected by straight lines to form polygons. It can contain holes, or be linked with separate islands.</li>
+<li>Polygons are ordered rings of points, also connected by straight lines to form polygons. It can contain holes, or be linked with separate islands.</li>
 </ul></li>
 </ul>
 <p><img src="img/ptlinepoly.png" /></p>
@@ -468,7 +482,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="networks" class="section level4 hasAnchor" number="2.1.1.4">
 <h4><span class="header-section-number">2.1.1.4</span> Networks<a href="making-maps-in-r.html#networks" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>We already mentioned lines that constitute objects of spatial data, such as streets, roads, railroads, etc. Networks constitute one-dimensional structures embedded in two or three dimensions. Discrete point objects may be distributed on the network, representing phenomena such as landmarks, or observation points. Mathematically, a network forms a graph, and many techniques developed for graphs have application to networks. These include various ways of measuring a network’s connectivity, or of finding the shortest path between pairs of points on a network. You can have a look at the <a href="https://docs.qgis.org/2.18/en/docs/training_manual/vector_analysis/network_analysis.html">lesson on network analysis in the QGIS documentation</a></p>
+<p>We already mentioned lines that constitute objects of spatial data, such as streets, roads, railroads, etc. Networks constitute one-dimensional structures embedded in two or three dimensions (e.g., . Discrete point objects may be distributed on the network, representing phenomena such as landmarks, or observation points. Mathematically, a network forms a graph, and many techniques developed for graphs have application to networks. These include various ways of measuring a network’s connectivity, or of finding the shortest path between pairs of points on a network. You can have a look at the <a href="https://docs.qgis.org/2.18/en/docs/training_manual/vector_analysis/network_analysis.html">lesson on network analysis in the QGIS documentation</a></p>
 <p><img src="img/topology_fromgransportgeopraphy.png" /></p>
 </div>
 <div id="maps-reference-and-thematic-maps" class="section level4 hasAnchor" number="2.1.1.5">
@@ -536,7 +550,7 @@ This will be important later on when we are linking data from different projecti
 <p>Or, if you know the path to your file, you can code it in there, within quotation marks:</p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="making-maps-in-r.html#cb56-1" tabindex="-1"></a>crimes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/2019-06-greater-manchester-street.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 32058 Columns: 12
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (9): Crime ID, Month, Reported by, Falls within, Location, LSOA code, LS...
 ## dbl (2): Longitude, Latitude
@@ -657,7 +671,6 @@ This will be important later on when we are linking data from different projecti
 <div id="mapping-points-with-sf" class="section level3 hasAnchor" number="2.4.1">
 <h3><span class="header-section-number">2.4.1</span> Mapping points with sf<a href="making-maps-in-r.html#mapping-points-with-sf" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Let’s get started with making some maps using <code>sf</code>. First, make sure you install the package, and then load with <code>library()</code> function.</p>
-<p><strong>On Mac and Linux a few requirements must be met to install sf. These are described in the package’s README at <a href="github.com/r-spatial/sf">github.com/r-spatial/sf</a>.</strong></p>
 <div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="making-maps-in-r.html#cb76-1" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code></pre></div>
 <pre><code>## Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE</code></pre>
 <p>Now we can use the functions of sf in order to introduce geometries. Let’s start with the points</p>
@@ -816,7 +829,7 @@ Contains OS data © Crown copyright [and database right] (year)”</p>
 <p>Now use the <code>st_read()</code> function to read in the shapefile:</p>
 <div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="making-maps-in-r.html#cb92-1" tabindex="-1"></a>manchester_lsoa <span class="ot">&lt;-</span> <span class="fu">st_read</span>(shp_name)</span></code></pre></div>
 <pre><code>## Reading layer `england_lsoa_2011&#39; from data source 
-##   `/Users/eonkim/Desktop/R/CM_book/data/BoundaryData/england_lsoa_2011.shp&#39; 
+##   `/Users/eonkim/Desktop/R/CrimeMapping/data/BoundaryData/england_lsoa_2011.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 282 features and 3 fields
 ## Geometry type: POLYGON
