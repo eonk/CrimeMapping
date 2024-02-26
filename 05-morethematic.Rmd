@@ -261,13 +261,19 @@ area_comparison <- district_yields %>%
   summarise(mean_area = mean(rice_ta)) %>%
   dplyr::select(district, mean_area)
 
-print(area_comparison)
+ggplot(area_comparison) + 
+  geom_col(aes(x = district, y = mean_area)) + 
+  coord_flip()
 ```
 
 Although it doesn't have the smallest rice farmland area, Saharsa's rice land is pretty small. Remember that the rate is simply dividing the number of relevant events (rice production) by the exposure variable (in this case area of rice farmland). Most times Saharsa has very low yields ( < 1 tonne per hectare):
 
 ```{r}
-print(filter(district_yields, district == 'saharsa'))
+saharsa_rice_yield <- filter(district_yields, district == 'saharsa')
+
+ggplot(saharsa_rice_yield) +
+  geom_col(aes(x = year, y = rice_yield)) +
+  labs(x = "Year", y = "Saharsa rice yield")
 ```
 
 Saharsa's rice production is around 130 tonnes in most years. But it only takes one good year of rice growth and, bang, it goes to the top of the league. So a standard map of rates is bound to be noisy. There is the instability that is introduced by virtue of having areas that may be sparsely populated and in which one single event, like in this case a bumper crop, will produce a very noticeable change in the rate. In fact, if you look at the counties with the highest yields in the yield dataset you will notice all of them are places like Saharsa, areas that have small areas of rice farmland (RICE_TA). So they have high yields not because they produce massive amounts of rice, but because of the instability of rates.
