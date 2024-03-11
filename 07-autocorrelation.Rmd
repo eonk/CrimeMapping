@@ -83,8 +83,8 @@ burglary_spatial = st_as_sf(burglary, coords = c("longitude", "latitude"),
                  crs = 4326, agr = "constant")
 
 #step4: select burglaries that intersect with the Manchester city LSOA map.
-bur_mc <- st_intersects(lsoa_WGS84, burglary_spatial)
-bur_mc <- burglary_spatial[unlist(bur_mc),]
+bur_mc_intersects <- st_intersects(lsoa_WGS84, burglary_spatial)
+bur_mc <- burglary_spatial[unlist(bur_mc_intersects),]
 
 #step5: check results
 plot(st_geometry(bur_mc))
@@ -167,8 +167,8 @@ tmap_mode("view")
 tm_shape(cc_burglary) + 
   tm_fill("burglary", style = "quantile", palette = "Reds", id="code") +
   tm_borders() +
-  tm_layout(main.title = "Burglary counts", main.title.size = 0.7 ,
-            legend.position = c("right", "top"), legend.title.size = 0.8)
+  tm_layout(main.title = "Burglary counts", main.title.size = 0.7, legend.title.size = 0.8) +
+  tm_view(view.legend.position = c("right", "top"))
 
 ```
 
@@ -178,7 +178,7 @@ So now we have a new spatial object `cc_burglary` with the 23 LSOA units that co
 
 The id argument in the tm_fill ensures that when you click over any of the areas you get not only the count of burglaries in that LSOA (the quantity we are mapping) gets displayed within a bubble, but you also get to see the code that identifies that LSOA.
 
-Move your cursor over the LSOA covering the West of Beswick (E01033688). You will see this area had 34 burglaries in 2019. Using the rook criteria identify the first order neighbors of this LSOA. List their identifiers. Are things different if we use the queen criteria? If so, how does it change? Think and think hard about what the lecture by Luc Anseling discussed. Have you identified *all* the neighbours of this area? (there are multiple ways of answering this question, just make sure you reason your answer).
+Move your cursor over the LSOA covering the West of Beswick (E01033688). You will see this area had 34 burglaries in 2019. Using the rook criteria identify the first order neighbors of this LSOA. List their identifiers. Are things different if we use the queen criteria? If so, how does it change? Think and think hard about what the lecture by Luc Anselin discussed. Have you identified *all* the neighbours of this area? (there are multiple ways of answering this question, just make sure you reason your answer).
 
 ## Creating a list of neighbours
 
@@ -305,7 +305,7 @@ So the Moran's I here is 0.13, which is not very large. The Index is bounded by 
 
 The Spatial Autocorrelation (Global Moran's I) tool is an inferential statistic, which means that the results of the analysis are always interpreted within the context of its null hypothesis. For the Global Moran's I statistic, the null hypothesis states that the attribute being analysed is randomly distributed among the features in your study area; said another way, the spatial processes promoting the observed pattern of values is random chance. Imagine that you could pick up the values for the attribute you are analysing and throw them down onto your features, letting each value fall where it may. This process (picking up and throwing down the values) is an example of a random chance spatial process. When the p-value returned by this tool is statistically significant, you can reject the null hypothesis. 
 
-In some software you can use statistical tests invoking asymptotic theory, but like Luc ANselin mentions in his videos, the most appropriate way of doing these tests is by using a computational approach, such as a Monte Carlo procedure. The way Monte Carlo works is that the values of burglary are randomly assigned to the polygons, and the Moran’s I is computed. This is repeated several times to establish a distribution of expected values under the null hypothesis. The observed value of Moran’s I is then compared with the simulated distribution to see how likely it is that the observed values could be considered a random draw.
+In some software you can use statistical tests invoking asymptotic theory, but like Luc Anselin mentions in his videos, the most appropriate way of doing these tests is by using a computational approach, such as a Monte Carlo procedure. The way Monte Carlo works is that the values of burglary are randomly assigned to the polygons, and the Moran’s I is computed. This is repeated several times to establish a distribution of expected values under the null hypothesis. The observed value of Moran’s I is then compared with the simulated distribution to see how likely it is that the observed values could be considered a random draw.
 
 If confused, watch [this quick video](https://www.youtube.com/watch?v=5nM5e2_1OQ0) on monte carlo simulations. 
 
