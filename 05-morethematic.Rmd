@@ -197,6 +197,7 @@ shapefile$state_ut <- tolower(shapefile$state_ut)
 # Clean the yield data's state and district names in the same way
 # Using allow_dupes = TRUE means that repeated district names are not made into unique names
 yield_data$distname <- make_clean_names(tolower(yield_data$distname), allow_dupes = TRUE)
+yield_data$stname <- tolower(yield_data$stname)
 
 # Join the two datasets together, the 'by' argument in right_join describes which columns
 # are equivalent in each dataset
