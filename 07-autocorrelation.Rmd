@@ -40,10 +40,11 @@ manchester_lsoa <- st_read("data/BoundaryData/england_lsoa_2011.shp")
 #Alternatively, you can download the LSOA shapefile from where we saved the data. 
 #Important! note that I store it in on my Data folder You HAVE TO change that if needed.
 download.file("https://www.dropbox.com/s/h5c1okn4m6t3rqe/BoundaryData.zip?dl=1" , 
-              destfile="/data/BoundaryData.zip")
+              destfile="data/BoundaryData.zip", # change to your local directory
+              mode = "wb")
 #Important! note that I extract file to the data/BoundaryData folder. you HATE TO change exdir (the directory to extract files to)
-unzip("/data/BoundaryData.zip", exdir = "/data/BoundaryData")
-manchester_lsoa <- st_read("data/BoundaryData/england_lsoa_2011.shp")
+unzip("data/BoundaryData.zip", exdir = "data/BoundaryData")
+manchester_lsoa <- st_read("data/BoundaryData/BoundaryData/england_lsoa_2011.shp")
 ```
 
 Now check the coordinate system.
