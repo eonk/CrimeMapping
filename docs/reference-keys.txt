@@ -105,9 +105,8 @@ scale
 zone
 why-does-maup-matter
 what-can-we-do
-activity-9-considering-maup
 transforming-polygons
-activity-10-cartograms
+activity-9-cartograms
 references-and-further-reading
 binning
 maup

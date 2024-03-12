@@ -169,7 +169,6 @@ tm_shape(cc_burglary) +
   tm_borders() +
   tm_layout(main.title = "Burglary counts", main.title.size = 0.7, legend.title.size = 0.8) +
   tm_view(view.legend.position = c("right", "top"))
-
 ```
 
 So now we have a new spatial object `cc_burglary` with the 23 LSOA units that compose the City Centre Ward of Manchester. By focusing in a smaller subset of areas we can understand perhaps a bit better what comes next. But again we carry on. Do you perceive here some degree of spatial autocorrelation?
