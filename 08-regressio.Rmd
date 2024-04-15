@@ -85,8 +85,8 @@ Now, imagine that we play a game. Imagine we have all the respondents waiting in
 ```{r}
 ggplot(ncovr, aes(x = HR90)) + 
   geom_density() +
-  geom_vline(xintercept = median(ncovr$HR90), linetype = "dashed", size = 1, color="red") + # median = 4.377
-  geom_vline(xintercept = mean(ncovr$HR90), linetype = "dashed", size = 1, color="blue") + # mean = 6.183
+  geom_vline(xintercept = median(ncovr$HR90), linetype = "dashed", linewidth = 1, color="red") + # median = 4.377
+  geom_vline(xintercept = mean(ncovr$HR90), linetype = "dashed", linewidth = 1, color="blue") + # mean = 6.183
   ggtitle("Density estimate, mean and median of homicide rate 1990")
 ```
 
@@ -220,7 +220,7 @@ This is the expected value of Y, homicide rate, when X, resource deprivation is 
 
 In the output above we saw there was something called the residuals. The residuals are the differences between the observed values of Y for each case minus the predicted or expected value of Y, in other words the distances between each point in the dataset and the regression line (see the visual example below). 
 
-![drawing](img/mYzliZjY4ZDc0NjI3YWQ3YWVlM2MzZmUzN2MwOWY.jpg)
+![](img/mYzliZjY4ZDc0NjI3YWQ3YWVlM2MzZmUzN2MwOWY.jpg)
 
 You see that we have our line, which is our predicted values, and then we have the black dots which are our actually observed values. The distance between them is essentially the amount by which we were wrong, and all these distances between observed and predicted values are our residuals. Least square estimation essentially aims to reduce the average of the squares of all these distances: that's how it draws the line.
 
@@ -234,7 +234,7 @@ The residuals capture how much variation is unexplained, how much we still have 
 
 We can use information from the residuals to produce a measure of effect size, of how good our model is in predicting variation in our dependent variables. Remember our game where we try to guess homicide (Y)? If we did not have any information about X our best bet for Y would be the mean of Y. The regression line aims to improve that prediction. By knowing the values of X we can build a regression line that aims to get us closer to the actual values of Y (look at the Figure below). 
 
-![r squared](img/weight2.png)
+![](img/weight2.png)
 
 The distance between the mean (our best guess without any other piece of information) and the observed value of Y is what we call the **total variation**. The residual is the difference between our predicted value of Y  and the observed value of Y. This is what we cannot explain (i.e. variation in Y that is *unexplained*). The difference between the mean value of Y and the expected value of Y (the value given by our regression line) is how much better we are doing with our prediction by using information about X (i.e. in our previous example it would be variation in Y that can be *explained* by knowing about resource deprivation). <!---Not sure if this sentence makes sense?---> How much closer the regression line gets us to the observed values. We can then contrast these two different sources of variation (explained and unexplained) to produce a single measure of how good our model is. The formula is as follows:
 
@@ -263,11 +263,11 @@ In real applications, we have access to a set of observations from which we can 
 
 We can compute standard errors for the regression coefficients to quantify our uncertainty about these estimates. These standard errors can in turn be used to produce confidence intervals. This would require us to assume that the residuals are normally distributed. As seen in the image, and for a simple regression model, you are assuming that the values of Y are approximately normally distributed for each level of X:
 
-![normalityresiduals](img/Doe4.3.png)
+![](img/Doe4.3.png)
 
 In those circumstances we can trust the confidence intervals that we can draw around the regression line as in the image below:
 
-![estimated](img/SimpleLinearRegressionJags-ICON-FREQ-EST.png "Image taken from John Krushcke blog http://doingbayesiandataanalysis.blogspot.co.uk/")
+![](img/SimpleLinearRegressionJags-ICON-FREQ-EST.png "Image taken from John Krushcke blog http://doingbayesiandataanalysis.blogspot.co.uk/")
 
 The dark-blue line marks the best fit. The two dark-pink lines mark the limits of the confidence interval. The light-pink lines show the sampling distributions around each of the confidence-interval limits (the many regression lines that would result from repeated sampling); notice that the best-fit line falls at the extreme of each sampling distribution.
 
