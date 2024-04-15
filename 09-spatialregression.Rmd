@@ -30,7 +30,7 @@ Then we will be using the ncovr data from last week. You can go back to last wee
 Last week we did not treat the data as spatial and, consequently, relied on the .csv file. But notice that in the unzipped ncovr file there is also a shapefile that we can load as a spatial object into R:
 
 ```{r}
-shp_name <- "data/ncovr/ncovr/NAT.shp"
+shp_name <- "data/ncovr/NAT.shp"
 ncovr_sf <- st_read(shp_name)
 ```
 

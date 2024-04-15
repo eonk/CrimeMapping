@@ -203,7 +203,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3" data-path="thematic-maps-in-r.html"><a href="thematic-maps-in-r.html"><i class="fa fa-check"></i><b>3</b> Thematic maps in R</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="thematic-maps-in-r.html"><a href="thematic-maps-in-r.html#intro-and-recap"><i class="fa fa-check"></i><b>3.1</b> Intro and recap</a>
+<li class="chapter" data-level="3.1" data-path="thematic-maps-in-r.html"><a href="thematic-maps-in-r.html#introduction"><i class="fa fa-check"></i><b>3.1</b> Introduction</a>
 <ul>
 <li class="chapter" data-level="3.1.1" data-path="thematic-maps-in-r.html"><a href="thematic-maps-in-r.html#activity-1-spot-the-difference"><i class="fa fa-check"></i><b>3.1.1</b> Activity 1: Spot the difference</a></li>
 </ul></li>
@@ -335,7 +335,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html"><i class="fa fa-check"></i><b>8</b> Regression analysis (a refresher)</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a>
+<li class="chapter" data-level="8.1" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#introduction-1"><i class="fa fa-check"></i><b>8.1</b> Introduction</a>
 <ul>
 <li class="chapter" data-level="8.1.1" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#activity-1-getting-some-homicide-data"><i class="fa fa-check"></i><b>8.1.1</b> Activity 1: Getting some homicide data</a></li>
 <li class="chapter" data-level="8.1.2" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#activity-2-familiarise-yourself-with-the-data"><i class="fa fa-check"></i><b>8.1.2</b> Activity 2: Familiarise yourself with the data</a></li>
@@ -376,7 +376,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="9" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html"><i class="fa fa-check"></i><b>9</b> Spatial regression models</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#introduction-1"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+<li class="chapter" data-level="9.1" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#introduction-2"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
 <li class="chapter" data-level="9.2" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#looking-at-the-residuals-and-testing-for-spatial-autocorrelation-in-regression"><i class="fa fa-check"></i><b>9.2</b> Looking at the residuals and testing for spatial autocorrelation in regression</a>
 <ul>
 <li class="chapter" data-level="9.2.1" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#activity-1-a-non-spatial-regression-on-spatial-data---listen-to-the-residuals"><i class="fa fa-check"></i><b>9.2.1</b> Activity 1: A non-spatial regression on spatial data - listen to the residuals</a></li>
@@ -428,8 +428,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="thematic-maps-in-r" class="section level1 hasAnchor" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Thematic maps in R<a href="thematic-maps-in-r.html#thematic-maps-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="intro-and-recap" class="section level2 hasAnchor" number="3.1">
-<h2><span class="header-section-number">3.1</span> Intro and recap<a href="thematic-maps-in-r.html#intro-and-recap" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="introduction" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Introduction<a href="thematic-maps-in-r.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Last week we showed you fairly quickly how to create maps by understanding how data may have spatial elements, and how that can be linked to geometries.</p>
 <p>This week we will get to know how to think about thematic maps, and how to apply your learning to creating your own maps of this variety. In our lecture videos this week we discuss in detail issues with choropleth maps. So the focus of today’s lab is going to be around thematic maps and some of the choices we discussed.</p>
 <p>We will also introduce faceting and <strong>small multiples</strong>, which is a format for comparing the geographical distribution of different social phenomena. For this session we will be using the spatial object that you created last week and complement it with additional information from the census. So first of all you will have to rerun the code you used to create the <em>manchester_lsoa</em> <code>sf</code> object. Apart from doing so, you want to start your session loading the libraries you know for sure you will need:</p>
@@ -444,7 +444,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>You may not remember all of what you did to generate that file so let’s not waste time and just cut and paste from below (but try to remember what each of the lines of code is doing and if you are not clear look at the notes from last week). Imagine you had to do all of this again by pointing and clicking in a graphical user interface rather than just sending the code to the console! As you will see time and time again, code in the end is a much more efficient way of talking to a computer.</p>
 <div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="thematic-maps-in-r.html#cb108-1" tabindex="-1"></a>crimes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/eonk/cm_book/main/data/2019-06-greater-manchester-street.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 32058 Columns: 12
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ─────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (9): Crime ID, Month, Reported by, Falls within, Location, LSOA code, LS...
 ## dbl (2): Longitude, Latitude

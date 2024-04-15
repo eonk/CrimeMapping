@@ -52,7 +52,7 @@ activity-9-join-data-to-sf-object
 activity-10-mapping-our-data-at-polygon-level
 summary-1
 thematic-maps-in-r
-intro-and-recap
+introduction
 activity-1-spot-the-difference
 creating-thematic-maps
 classification-systems-for-thematic-maps
@@ -141,7 +141,7 @@ local-spatial-autocorrelation
 activity-9-get-data-and-weights-for-all-manchester
 activity-10-exploring-a-local-indicator-of-spatial-association-local-morans-i.
 regression-analysis-a-refresher
-introduction
+introduction-1
 activity-1-getting-some-homicide-data
 activity-2-familiarise-yourself-with-the-data
 motivating-regression
@@ -164,7 +164,7 @@ activity-9-interaction-effects
 model-building-and-variable-selection
 regression-assumptions
 spatial-regression-models
-introduction-1
+introduction-2
 looking-at-the-residuals-and-testing-for-spatial-autocorrelation-in-regression
 activity-1-a-non-spatial-regression-on-spatial-data---listen-to-the-residuals
 activity-2-spatial-autocorrelation-again

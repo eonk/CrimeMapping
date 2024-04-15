@@ -1,6 +1,6 @@
 # Thematic maps in R
 
-## Intro and recap
+## Introduction
 
 Last week we showed you fairly quickly how to create maps by understanding how data may have spatial elements, and how that can be linked to geometries. 
 
